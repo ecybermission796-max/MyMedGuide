@@ -30,6 +30,19 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
   z-index: 2;
 }
 
+/* Gray banner: full width, top at 0, extends 2% below nav buttons */
+#gray-banner{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: calc(80px + 2%);
+  background-color: #B3B3B3;
+  z-index: 3;
+  pointer-events: none;
+}
+
 
 
 .img-btn {
@@ -76,6 +89,7 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 /* bug-image view: center and constrain width */
 #bug-image{max-width:50%;margin:0 auto}
 #bug-image h2, #bug-image h3, #bug-image h4{text-align:center}
+#bug-image img{max-width:50%;height:auto !important}
 .view-header{display:flex;align-items:center;justify-content:center;margin-bottom:12px}
 .view-header h2{margin:0;text-align:center}
 
@@ -116,12 +130,12 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 /* Browse view center buttons */
 .browse-center{display:flex;gap:14px;justify-content:center;align-items:center;margin:18px 0}
 .browse-btn{display:flex;flex-direction:column;align-items:center;border:0;background:transparent;cursor:pointer}
-.browse-btn img{height:240px;width:auto;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
+.browse-btn img{height:240px;width:auto;border-radius:0;box-shadow:none;background:transparent}
 .browse-btn .btn-label{margin-top:8px;color:#333;font-weight:600;font-size:25px}
 .placeholder{padding:18px;color:#666;text-align:center}
 
 /* bugs table layout: images row then filename row repeated */
 .bugs-table{width:100%;border-collapse:collapse;margin:8px 0}
 .bugs-table td{width:25%;vertical-align:top;padding:8px;text-align:center}
-.bugs-table td img{max-width:100%;border-radius:6px}
+.bugs-table td img{max-width:100%;border-radius:0;box-shadow:none;background:transparent}
 .bugs-table td div{color:#333;font-size:0.95rem;line-height:1.2}

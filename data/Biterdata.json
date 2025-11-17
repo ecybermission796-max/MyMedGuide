@@ -25,6 +25,10 @@
                                      {
                                          "items":  [
                                                        {
+                                                           "description":  "including hives and anaphylaxis (in rare cases)",
+                                                           "title":  "Allergic reactions"
+                                                       },
+                                                       {
                                                            "description":  "Itching, redness, and swelling at the bite site",
                                                            "title":  "Skin Irritation"
                                                        },
@@ -33,12 +37,8 @@
                                                            "title":  "Psychological Impact"
                                                        },
                                                        {
-                                                           "description":  "Psychological Impact:",
-                                                           "title":  "Scratching the bites can break the skin and increase the risk of bacterial or fungal infections."
-                                                       },
-                                                       {
-                                                           "description":  "Secondary Infections:",
-                                                           "title":  "Allergic reactions, including hives and anaphylaxis (in rare cases)"
+                                                           "description":  "Scratching the bites can break the skin and increase the risk of bacterial or fungal infections.",
+                                                           "title":  "Secondary Infections:"
                                                        }
                                                    ],
                                          "name":  "Health concern"
