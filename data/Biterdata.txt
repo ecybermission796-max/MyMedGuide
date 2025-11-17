@@ -4,8 +4,8 @@ bed_bug	Characteristics	Shape	"Oval and flat, unless they have recently fed."
 bed_bug	Characteristics	Color	"Light tan to reddish-brown, darkening after feeding."	
 bed_bug	Characteristics	Body	"Wingless, with a wrinkled upper body."	
 bed_bug	Health concern	Skin Irritation	"Itching, redness, and swelling at the bite site"	
-bed_bug	Health concern	"Allergic reactions, including hives and anaphylaxis (in rare cases)"	Secondary Infections:	
-bed_bug	Health concern	Scratching the bites can break the skin and increase the risk of bacterial or fungal infections.	Psychological Impact:	
+bed_bug	Health concern	Allergic reactions	including hives and anaphylaxis (in rare cases)	
+bed_bug	Health concern	Secondary Infections:	Scratching the bites can break the skin and increase the risk of bacterial or fungal infections.	
 bed_bug	Health concern	Psychological Impact	"Stress, anxiety, and insomnia due to the discomfort and fear associated with bed bug infestations."	
 black_widow	Characteristics	Female black _widow Body	"Shiny black or very dark brown with a large, rounded abdomen."	
 black_widow	Characteristics	Female black _widow Markings	"A red or orange hourglass shape on the underside of the abdomen, which can sometimes appear as two separate triangles or be faded."	

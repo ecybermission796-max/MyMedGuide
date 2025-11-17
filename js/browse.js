@@ -316,7 +316,7 @@ window.showBugImage = function(path){
             // convert description newlines to <br>
             const parts = desc.split(/\r?\n/).map(p=>p.trim()).filter(p=>p.length>0);
             if(parts.length){
-              html += '<p>' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
+              html += '<p style="text-align:center">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
             }
           }
           html += `</div>`;
