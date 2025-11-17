@@ -25,24 +25,20 @@
                                      {
                                          "items":  [
                                                        {
+                                                           "description":  "Itching, redness, and swelling at the bite site",
+                                                           "title":  "Skin Irritation"
+                                                       },
+                                                       {
+                                                           "description":  "Stress, anxiety, and insomnia due to the discomfort and fear associated with bed bug infestations.",
+                                                           "title":  "Psychological Impact"
+                                                       },
+                                                       {
                                                            "description":  "Psychological Impact:",
                                                            "title":  "Scratching the bites can break the skin and increase the risk of bacterial or fungal infections."
                                                        },
                                                        {
                                                            "description":  "Secondary Infections:",
                                                            "title":  "Allergic reactions, including hives and anaphylaxis (in rare cases)"
-                                                       },
-                                                       {
-                                                           "description":  "",
-                                                           "title":  "Stress, anxiety, and insomnia due to the discomfort and fear associated with bed bug infestations."
-                                                       },
-                                                       {
-                                                           "description":  "Itching, redness, and swelling at the bite site",
-                                                           "title":  "Skin Irritation:"
-                                                       },
-                                                       {
-                                                           "description":  "Stress, anxiety, and insomnia due to the discomfort and fear associated with bed bug infestations.",
-                                                           "title":  "Psychological Impact:"
                                                        }
                                                    ],
                                          "name":  "Health concern"
@@ -54,24 +50,36 @@
                                          {
                                              "items":  [
                                                            {
-                                                               "description":  "Lighter brown or gray with a more elongated body.",
-                                                               "title":  "Male black _widow�Body"
+                                                               "description":  "Shiny black or very dark brown with a large, rounded abdomen.",
+                                                               "title":  "Female black _widow Body"
                                                            },
                                                            {
-                                                               "description":  "About \\(1/4\\) to \\(1/3\\) inch long, though sizes can vary.�\\n\\n Much smaller than females, around \\(1/10\\) to \\(1/4\\) inch long.�",
-                                                               "title":  "Size"
+                                                               "description":  "Often has red and white bands or spots on the sides of the abdomen.",
+                                                               "title":  "Male black _widow Markings"
                                                            },
                                                            {
-                                                               "description":  "A red or orange hourglass shape on the underside of the abdomen, which can sometimes appear as two separate triangles or be faded.\\n\\nOften has red and white bands or spots on the sides of the abdomen.\\n\\nWill have an hourglass shape that becomes more defined as they mature.�",
-                                                               "title":  "Markings"
+                                                               "description":  "A red or orange hourglass shape on the underside of the abdomen, which can sometimes appear as two separate triangles or be faded.",
+                                                               "title":  "Female black _widow Markings"
+                                                           },
+                                                           {
+                                                               "description":  "Will have an hourglass shape that becomes more defined as they mature.",
+                                                               "title":  "Juvenile black _widow Markings"
                                                            },
                                                            {
                                                                "description":  "Light brown or gray, with stripes and spots that are red, orange, or yellow.",
-                                                               "title":  "Juvenile black _widow�Body"
+                                                               "title":  "Juvenile black _widow Body"
                                                            },
                                                            {
-                                                               "description":  "Shiny black or very dark brown with a large, rounded abdomen.",
-                                                               "title":  "Female black _widow�Body"
+                                                               "description":  "About 1/4 to 1/3 inch long, though sizes can vary.",
+                                                               "title":  "Female black _widow Size"
+                                                           },
+                                                           {
+                                                               "description":  "Lighter brown or gray with a more elongated body.",
+                                                               "title":  "Male black _widow Body"
+                                                           },
+                                                           {
+                                                               "description":  "Much smaller than females, around 1/10 to 1/4 inch long.",
+                                                               "title":  "Male black _widow Size"
                                                            }
                                                        ],
                                              "name":  "Characteristics"
@@ -79,7 +87,7 @@
                                          {
                                              "items":  [
                                                            {
-                                                               "description":  "�Young children, the very ill, and the elderly are at higher risk for severe complications and potentially fatal outcomes.",
+                                                               "description":  "Young children, the very ill, and the elderly are at higher risk for severe complications and potentially fatal outcomes.",
                                                                "title":  "Risk factors"
                                                            },
                                                            {
@@ -91,19 +99,19 @@
                                                                "title":  "Within hours"
                                                            },
                                                            {
-                                                               "description":  "�In rare cases, a black _widow bite can cause cardiac problems like heart inflammation, but this is usually reversible with treatment.",
+                                                               "description":  "In rare cases, a black _widow bite can cause cardiac problems like heart inflammation, but this is usually reversible with treatment.",
                                                                "title":  "Cardiac issues"
                                                            },
                                                            {
-                                                               "description":  "Can develop, including severe muscle cramps, abdominal pain, sweating, nausea, vomiting, and high blood pressure.�",
+                                                               "description":  "Can develop, including severe muscle cramps, abdominal pain, sweating, nausea, vomiting, and high blood pressure.",
                                                                "title":  "Serious symptoms"
                                                            },
                                                            {
-                                                               "description":  "Call 911 or go to the emergency room immediately if you experience any of the following, especially if you are a child or an older adult:�Severe pain or worsening whole-body symptomsDifficulty breathingHeart palpitations or racing pulseSigns of infection (fever or yellow discharge)Severe headache or vision problems�",
+                                                               "description":  "Call 911 or go to the emergency room immediately if you experience any of the following, especially if you are a child or an older adult: Severe pain or worsening whole-body symptomsDifficulty breathingHeart palpitations or racing pulseSigns of infection (fever or yellow discharge)Severe headache or vision problems",
                                                                "title":  "When to seek emergency care"
                                                            },
                                                            {
-                                                               "description":  "�Most healthy individuals recover fully within 24 to 48 hours, though milder symptoms can last for several weeks.",
+                                                               "description":  "Most healthy individuals recover fully within 24 to 48 hours, though milder symptoms can last for several weeks.",
                                                                "title":  "Recovery time"
                                                            },
                                                            {
@@ -111,7 +119,7 @@
                                                                "title":  "Within an hour"
                                                            },
                                                            {
-                                                               "description":  "�There is a risk of secondary infection if the bite is not properly cleaned.�",
+                                                               "description":  "There is a risk of secondary infection if the bite is not properly cleaned.",
                                                                "title":  "Infection risk"
                                                            }
                                                        ],

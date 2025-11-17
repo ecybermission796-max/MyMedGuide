@@ -1,0 +1,18 @@
+Create individual webpage for each bug
+
+On the bugs view, when clicking a bug button/picutre, it is supposed to link to a new webpage/view that shows the following things:
+1. the original picture of the bug button/picture as clicked.
+2. The data fetched from Biterdata.json, that matched the Keywords column using the name of the clicked bug picture/button. The name of the clicked picture/button should be stripped off any file extension such as .jpg and .png.
+Right now two Keywords "bed_bug" and "black_widow" should be available, once updates finished, track and make sure these two bugs can be found and data can be fetched.
+
+
+right now it is showing "No descriptive data found for this item" in both bed_bug and black_widow picture. When clicking these buttons. Check why no data is fetched when clicking bed_bug.png button and black_widow.png button.
+
+There is an error in convert-biters-csv.ps1 When converting csv to json, do not replace "_" with " "
+
+
+
+
+The json file is generated correct. However, when clicking the bed_bug.png picture/button, the page should search in Biterdata.json, and search the keyword bed_bug and find it in the json file. It should locate two sections: characteristics and health concern. It is now showing "No descriptive data..." This is wrong and should be fixed.
+
+This still didn't fixe the issue. 

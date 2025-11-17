@@ -1,46 +1,40 @@
 <#
-This script was previously `convert-biters-csv.ps1` and is now deprecated.
-It is kept for compatibility but delegates to `convert-biters-txt.ps1` which parses TAB-delimited TXT files.
+Convert an exported TAB-delimited TXT (from Excel "Save As" tab delimited) into a nested JSON structure for the Bugs pages.
+Usage (from repo root):
+  Powershell.exe -ExecutionPolicy Bypass -File .\scripts\convert-biters-txt.ps1 -txt .\rawfiles\biters.txt -out .\data\Biterdata.json
+
+TXT format expected (headers):
+  Keywords\tSection\tTitle\tDescription
+
+Behavior:
+  - Non-recursive grouping by Keywords.
+  - Within each keyword pages are grouped by Section; within Section grouped by Title.
+  - Multiple rows with the same Title are combined into a single description (joined with blank line between paragraphs).
+  - Outputs a JSON object keyed by the keyword string (exact text from Keywords column).
 #>
 
 param(
-  [Parameter(Mandatory=$false)] [string]$csv = ".\rawfiles\bugs.csv",
+  [Parameter(Mandatory=$false)] [string]$txt = ".\rawfiles\biters.txt",
   [Parameter(Mandatory=$false)] [string]$out = ".\data\Biterdata.json"
 )
 
-Write-Host "This script is deprecated; use convert-biters-txt.ps1 to convert TAB-delimited TXT files."
-if(-not (Test-Path .\scripts\convert-biters-txt.ps1)){
-  Write-Error "convert-biters-txt.ps1 not found in scripts/ directory"
-  exit 1
-}
-
-# convert the csv file by calling the new script (assuming the csv has tab separated fields)
-& .\scripts\convert-biters-txt.ps1 -txt $csv -out $out
-
-param(
-  [Parameter(Mandatory=$false)] [string]$csv = ".\rawfiles\bugs.csv",
-  [Parameter(Mandatory=$false)] [string]$out = ".\data\bugs.json"
-)
-
-if(-not (Test-Path $csv)){
-  Write-Error "CSV file not found: $csv. Export your Excel file to CSV first and provide the path via -csv"
+if(-not (Test-Path $txt)){
+  Write-Error "TXT file not found: $txt. Export your Excel file to Tab-delimited text first and provide the path via -txt"
   exit 2
 }
 
-# Import CSV (PowerShell's Import-Csv handles commas and quoted fields)
-$rows = Import-Csv -Path $csv -ErrorAction Stop
-if($rows.Count -eq 0){ Write-Error "No rows found in CSV"; exit 3 }
+# Import-CSV with tab delimiter; this handles the header row similarly to CSV
+$rows = Import-Csv -Path $txt -Delimiter "`t" -ErrorAction Stop
+if($rows.Count -eq 0){ Write-Error "No rows found in TXT"; exit 3 }
 
 # Build nested grouping: keyword -> section -> title -> [descriptions]
 $grouped = @{}
 foreach($row in $rows){
-  # Safely coerce CSV fields to strings. Import-Csv can yield non-string types
-  # (booleans, numbers, etc.) which would cause .Trim() to fail.
   $kw = $row.Keywords
   if ($kw -eq $null) { $kw = '' } else { $kw = [string]$kw }
   $kw = $kw.Trim()
   if($kw -eq '') { continue }
-  # normalize keyword: collapse multiple spaces, preserve underscores
+  # preserve underscores, collapse multiple spaces
   $kw = ($kw -replace '\s+',' ').Trim()
 
   $sec = $row.Section
@@ -82,7 +76,6 @@ foreach($kw in $grouped.Keys){
     $titles = $sections[$secName]
     foreach($t in $titles.Keys){
       $descParts = $titles[$t] | Where-Object { $_ -ne $null }
-      # join multiple description rows into paragraphs
       $descText = ($descParts -join "\n\n").Trim()
       $items += @{ title = $t; description = $descText }
     }
@@ -91,11 +84,9 @@ foreach($kw in $grouped.Keys){
   $outObj[$kw] = @{ sections = $secArr }
 }
 
-# Build a filename->keyword map to help client-side matching (e.g. bed_bug -> "bed bug")
+# Build a filename->keyword map to help client-side matching (e.g. bed_bug -> "bed_bug")
 $filenameMap = @{ }
 foreach($kw in $outObj.Keys){
-  # normalize keyword and create several filename-like variants
-  # Safely coerce keyword to string (avoid using -or which is a boolean operator)
   $nk = $kw
   if ($nk -eq $null) { $nk = '' } else { $nk = [string]$nk }
   $nk = $nk.Trim().ToLower()
@@ -105,7 +96,6 @@ foreach($kw in $outObj.Keys){
   $variants += ($nk -replace '\s+','_')
   $variants += ($nk -replace '\s+','-')
   $variants += ($nk -replace '\s+','')
-  # aggressive: strip non-alphanumeric
   $aggressive = ($nk -replace '[^a-z0-9]','')
   if($aggressive -ne ''){ $variants += $aggressive }
 

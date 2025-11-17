@@ -1,1 +1,1 @@
-PowerShell.exe -ExecutionPolicy Bypass -File .\scripts\convert-biters-csv.ps1 -csv .\rawfiles\Biterdata.csv -out .\data\Biterdata.json
+PowerShell.exe -ExecutionPolicy Bypass -File .\scripts\convert-biters-txt.ps1 -txt .\data\Biterdata.txt -out .\data\Biterdata.json
