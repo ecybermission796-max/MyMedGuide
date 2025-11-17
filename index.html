@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Biters Guide</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+</head>
+<body>
+  <nav id="main-nav" class="buttons" role="navigation" aria-label="Main Navigation">
+    <button class="img-btn" data-route="home" aria-label="Home">
+      <img src="images/Home.png" alt="Home" style="height: 40px; width: auto;">
+    </button>
+    <button class="img-btn" data-route="browse" aria-label="Browse Biters">
+      <img src="images/Browse.png" alt="Browse" style="height: 40px; width: auto;">
+    </button>
+    <button class="img-btn" data-route="recognition" aria-label="Picture Recognition">
+      <img src="images/Picture_Recognition.png" alt="Picture Recognition" style="height: 40px; width: auto;">
+    </button>
+    <button class="img-btn" data-route="providers" aria-label="Nearby Healthcare">
+      <img src="images/Nearyby_Providers.png" alt="Nearby Healthcare" style="height: 40px; width: auto;">
+    </button>
+  </nav>
+
+  <div id="app">
+    <img src="images/BG_triangle.png" alt="Background Triangle" class="bg-triangle">
+    <img src="images/Topbanner.png" alt="Top Banner" class="top-banner">
+    <!-- MAIN HOME VIEW -->
+    <main id="home" class="view active" role="main">
+      <div class="bg" style="background-image:url('images/bg/home-bg.jpg')"></div>
+      <div class="overlay">
+      </div>
+    </main>
+
+    <!-- BROWSE VIEW -->
+    <section id="browse" class="view" role="region" aria-label="Browse">
+      <header class="view-header">
+        <h2>Browse Biters</h2>
+      </header>
+      <!-- center area with quick browse buttons -->
+      <div class="browse-center" aria-hidden="false">
+        <a href="#" class="img-btn browse-btn" data-route="bugs" aria-label="Bugs">
+          <img src="images/Browse_Bugs_Button.jpg" alt="Browse Bugs" />
+          <div class="btn-label">Bugs</div>
+        </a>
+        <button class="img-btn browse-btn" data-route="animals" aria-label="Animals">
+          <img src="images/Browse_Animals_Button.jpg" alt="Browse Animals" />
+          <div class="btn-label">Animals</div>
+        </button>
+        <button class="img-btn browse-btn" data-route="plants" aria-label="Plants">
+          <img src="images/Browse_Poisionus_Plants_button.jpg" alt="Browse Poisonous Plants" />
+          <div class="btn-label">Plants</div>
+        </button>
+      </div>
+    </section>
+
+    <!-- RECOGNITION VIEW -->
+    <section id="recognition" class="view" role="region" aria-label="Picture Recognition">
+      <header class="view-header">
+        <h2>Picture Recognition</h2>
+      </header>
+      <div class="content">
+        <div class="rec-controls">
+          <p>Upload a photo to search for similar images or prepare for AI recognition integration.</p>
+          <input id="file-input" type="file" accept="image/*" />
+        </div>
+
+        <div class="rec-frame">
+          <div id="preview" class="preview"></div>
+        </div>
+
+        <button id="search-similar" class="small">Search similar (placeholder)</button>
+      </div>
+
+      <!-- Submit placeholder for future AI recognition endpoint -->
+      <button id="rec-submit" class="small rec-submit">Submit</button>
+    </section>
+
+    <!-- PROVIDERS VIEW -->
+    <section id="providers" class="view" role="region" aria-label="Nearby Healthcare">
+      <header class="view-header">
+        <h2>Nearby Healthcare Providers</h2>
+      </header>
+      <!-- replicate top buttons inside providers view so they remain visible/clickable here -->
+      <div id="map" style="height:60vh"></div>
+      <div class="legend">Providers loaded from OpenStreetMap Overpass query</div>
+    </section>
+
+    <!-- BUGS VIEW -->
+    <section id="bugs" class="view" role="region" aria-label="Bugs">
+      <header class="view-header">
+        <h2>Bugs</h2>
+      </header>
+      <div class="grid" id="bugs-grid">
+        <p class="placeholder">No content yet. Populate `data/bugs.json` or use the Browse list.</p>
+      </div>
+    </section>
+
+    <!-- ANIMALS VIEW -->
+    <section id="animals" class="view" role="region" aria-label="Animals">
+      <header class="view-header">
+        <h2>Animals</h2>
+      </header>
+      <div class="grid" id="animals-grid">
+        <p class="placeholder">No content yet. Populate `data/animals.json` or use the Browse list.</p>
+      </div>
+    </section>
+
+    <!-- PLANTS VIEW -->
+    <section id="plants" class="view" role="region" aria-label="Plants">
+      <header class="view-header">
+        <h2>Plants</h2>
+      </header>
+      <div class="grid" id="plants-grid">
+        <p class="placeholder">No content yet. Populate `data/plants.json` or use the Browse list.</p>
+      </div>
+    </section>
+
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/browse.js"></script>
+  <script src="js/recognition.js"></script>
+  <script src="js/providers.js"></script>
+</body>
+</html>
