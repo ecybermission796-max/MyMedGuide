@@ -72,6 +72,10 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 .small{padding:10px 14px;border-radius:8px;background:#eee;border:0}
 .view{display:none;padding:20px;padding-top:calc(var(--top-controls-height) + 8px)}
 .view.active{display:block}
+
+/* bug-image view: center and constrain width */
+#bug-image{max-width:50%;margin:0 auto}
+#bug-image h2, #bug-image h3, #bug-image h4{text-align:center}
 .view-header{display:flex;align-items:center;justify-content:center;margin-bottom:12px}
 .view-header h2{margin:0;text-align:center}
 
@@ -112,8 +116,8 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 /* Browse view center buttons */
 .browse-center{display:flex;gap:14px;justify-content:center;align-items:center;margin:18px 0}
 .browse-btn{display:flex;flex-direction:column;align-items:center;border:0;background:transparent;cursor:pointer}
-.browse-btn img{height:120px;width:auto;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
-.browse-btn .btn-label{margin-top:8px;color:#333;font-weight:600}
+.browse-btn img{height:240px;width:auto;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
+.browse-btn .btn-label{margin-top:8px;color:#333;font-weight:600;font-size:25px}
 .placeholder{padding:18px;color:#666;text-align:center}
 
 /* bugs table layout: images row then filename row repeated */
