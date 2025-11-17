@@ -27,7 +27,7 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
   left: 50%;
   transform: translateX(-50%);
   width: 25%;
-  z-index: 2;
+  z-index: 4;
 }
 
 /* Gray banner: full width, top at 0, extends 2% below nav buttons */
@@ -130,12 +130,15 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 /* Browse view center buttons */
 .browse-center{display:flex;gap:14px;justify-content:center;align-items:center;margin:18px 0}
 .browse-btn{display:flex;flex-direction:column;align-items:center;border:0;background:transparent;cursor:pointer}
-.browse-btn img{height:240px;width:auto;border-radius:0;box-shadow:none;background:transparent}
+.browse-btn img{height:240px;width:auto;border-radius:0;box-shadow:none;background:rgba(0,0,0,0)}
 .browse-btn .btn-label{margin-top:8px;color:#333;font-weight:600;font-size:25px}
 .placeholder{padding:18px;color:#666;text-align:center}
 
 /* bugs table layout: images row then filename row repeated */
 .bugs-table{width:100%;border-collapse:collapse;margin:8px 0}
 .bugs-table td{width:25%;vertical-align:top;padding:8px;text-align:center}
-.bugs-table td img{max-width:100%;border-radius:0;box-shadow:none;background:transparent}
+.bugs-table td img{max-width:100%;border-radius:0;box-shadow:none;background:rgba(0,0,0,0)}
 .bugs-table td div{color:#333;font-size:0.95rem;line-height:1.2}
+
+/* animal and plant view images: shrink to 50% */
+#animals-grid .card img, #plants-grid .card img{width:50%;height:auto;margin:0 auto;display:block}
