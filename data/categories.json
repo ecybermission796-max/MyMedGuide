@@ -1,6 +1,6 @@
 [
-  {"id":"spiders","title":"Spiders","image":"images/categories/spiders.jpg","desc":"Arachnids with venomous species"},
-  {"id":"snakes","title":"Snakes","image":"images/categories/snakes.jpg","desc":"Venomous and non-venomous snakes"},
-  {"id":"plants","title":"Poisonous Plants","image":"images/categories/plants.jpg","desc":"Toxic plants to avoid"},
-  {"id":"others","title":"Other Bugs","image":"images/categories/others.jpg","desc":"Bees, wasps, centipedes and more"}
+  {"id":"spiders","title":"Spiders","image":"images/categories/spiders.png","desc":"Arachnids with venomous species"},
+  {"id":"snakes","title":"Snakes","image":"images/categories/snakes.png","desc":"Venomous and non-venomous snakes"},
+  {"id":"plants","title":"Poisonous Plants","image":"images/categories/plants.png","desc":"Toxic plants to avoid"},
+  {"id":"others","title":"Other Bugs","image":"images/categories/others.png","desc":"Bees, wasps, centipedes and more"}
 ]

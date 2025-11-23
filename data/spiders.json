@@ -2,8 +2,8 @@
   {
     "id":"latrodectus",
     "name":"Black Widow",
-    "thumb":"images/items/black-widow-thumb.jpg",
-    "image":"images/items/black-widow.jpg",
+    "thumb":"images/items/black-widow-thumb.png",
+    "image":"images/items/black-widow.png",
     "description":"Venomous spider with glossy black body and red hourglass marking.",
     "symptoms":"Muscle pain, cramps, sweating, nausea.",
     "first_aid":"Clean wound, seek immediate medical attention; antivenom may be required."
