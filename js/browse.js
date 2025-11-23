@@ -10,6 +10,8 @@ window.loadCategories = async function(){
   const cbox = document.getElementById('categories');
   const itemsBox = document.getElementById('items');
   const detail = document.getElementById('detail');
+  // If these elements don't exist (e.g., in bugs/animals/plants views), bail out
+  if (!cbox || !itemsBox || !detail) { console.debug('loadCategories: required elements not found, skipping'); return; }
   cbox.innerHTML = ''; itemsBox.classList.add('hidden'); detail.classList.add('hidden');
 
   const resp = await fetch('data/categories.json');
@@ -101,9 +103,17 @@ window.loadBugsImages = async function(){
     const fallbackFiles = [
       'images/bugs/bed_bug.png',
       'images/bugs/black_widow.png',
-      'images/bugs/bumble_bee.png',
+      'images/bugs/Blister Beetle.png',
+      'images/bugs/bumble bee.png',
+      'images/bugs/bumble_bee.jpg',
+      'images/bugs/centipede.png',
       'images/bugs/Chigger_Trombiculidae.png',
+      'images/bugs/flea.png',
+      'images/bugs/human_botfly.png',
       'images/bugs/mosquito.png',
+      'images/bugs/Nuttallilella.png',
+      'images/bugs/Trantuala.png',
+      'images/bugs/wasp.png',
       'images/bugs/wheel bug.png'
     ];
     files = fallbackFiles;

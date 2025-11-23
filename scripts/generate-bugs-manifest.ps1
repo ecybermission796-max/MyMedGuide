@@ -9,8 +9,8 @@ if(-not (Test-Path $targetDir)){
   exit 1
 }
 
-# Get files directly in images/bugs (no subdirectories)
-$files = Get-ChildItem -Path $targetDir -File | Where-Object { $_.Extension -match '(?i)^(\.jpg|\.jpeg|\.png)$' } | ForEach-Object { "images/bugs/$($_.Name)" }
+# Get files directly in images/bugs (no subdirectories), prioritizing .png files
+$files = Get-ChildItem -Path $targetDir -File | Where-Object { $_.Extension -match '(?i)^(\.png)$' } | ForEach-Object { "images/bugs/$($_.Name)" }
 
 if($files.Count -eq 0){
   Write-Host "No image files found in $targetDir"
