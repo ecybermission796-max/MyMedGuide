@@ -4,8 +4,8 @@ bed_bug	Characteristics	Shape	"Oval and flat, unless they have recently fed."
 bed_bug	Characteristics	Color	"Light tan to reddish-brown, darkening after feeding."	
 bed_bug	Characteristics	Body	"Wingless, with a wrinkled upper body."	
 bed_bug	Health concern	Skin Irritation	"Itching, redness, and swelling at the bite site"	
-bed_bug	Health concern	"Allergic reactions, including hives and anaphylaxis (in rare cases)"	Secondary Infections:	
-bed_bug	Health concern	Scratching the bites can break the skin and increase the risk of bacterial or fungal infections.	Psychological Impact:	
+bed_bug	Health concern	Allergic reactions	including hives and anaphylaxis (in rare cases)	
+bed_bug	Health concern	Secondary Infections:	Scratching the bites can break the skin and increase the risk of bacterial or fungal infections.	
 bed_bug	Health concern	Psychological Impact	"Stress, anxiety, and insomnia due to the discomfort and fear associated with bed bug infestations."	
 black_widow	Characteristics	Female black _widow Body	"Shiny black or very dark brown with a large, rounded abdomen."	
 black_widow	Characteristics	Female black _widow Markings	"A red or orange hourglass shape on the underside of the abdomen, which can sometimes appear as two separate triangles or be faded."	
@@ -24,13 +24,42 @@ black_widow	Health concern	Recovery time	"Most healthy individuals recover fully
 black_widow	Health concern	Risk factors	"Young children, the very ill, and the elderly are at higher risk for severe complications and potentially fatal outcomes."	
 black_widow	Health concern	Cardiac issues	"In rare cases, a black _widow bite can cause cardiac problems like heart inflammation, but this is usually reversible with treatment."	
 black_widow	Health concern	Infection risk	There is a risk of secondary infection if the bite is not properly cleaned.	
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				
+poison_hemlock	Characteristics	Size	"2 to 10 feet tall, with some sources stating it can reach up to 12 feet"	
+poison_hemlock	Characteristics	Shape	"triangular, lacy, fern-like leaf shape"	
+poison_hemlock	Characteristics	Color	grayish-brown color when mature.	
+poison_hemlock	Characteristics	body	"smooth, hollow, and ridged stems with distinctive purple spots, which are covered in hairless and lacy, fern-like leaves that resemble parsley"	
+poison_hemlock	Health concern	Risk factors	"Central nervous system suppression, coma, kidney failure, low blood pressure, muscle breakdown, muscle death, muscle paralysis, adnd respiratory paralysis"	
+poison_hemlock	What to do		"instantly seek emergency help, get fresh air, throw out all contaiminated things, wash your skin, and wash your eyes"	
+human_botfly	Characteristics	Size	12-18mm long	
+human_botfly	Characteristics	Shape	"A chunky, bee-like aperrence"	
+human_botfly	Characteristics	Color	"A yellow face, a metalic blue abdomen, and orange legs."	
+human_botfly	Health concern	Pain and Discomfort	" The developing larva creates a firm, painful, and itchy lump (known as a ""warble"") under the skin. A person may feel sensations of movement or sharp, stabbing pain as the larva moves or anchors itself with its spines."	
+human_botfly	Health concern	Inflammation and Discharge	" A local inflammatory response with redness, swelling, and a serous, bloody, or pus-like discharge from a central breathing hole (punctum) is common."	
+human_botfly	Health concern	Tissue Damage and Scarring	" As the larva grows, it consumes living tissue and can cause damage to the muscle. After the larva is removed and the wound heals, a significant scar may be left behind. "	
+German shepherd	Characteristics	Size	" Males stand 24 to 26 inches tall at the shoulder and typically weigh between 65 to 90 pounds. Females are slightly smaller, standing 22 to 24 inches and weighing 50 to 70 pounds."	
+German shepherd	Characteristics	Build	" They have a strong, athletic build with a body that is typically longer than it is tall. The back can be straight (common in working lines) or sloped toward the hindquarters (often seen in show lines)."	
+German shepherd	Characteristics	Head and Face	" The head is proportionate to the body, tapering to a strong, square-cut muzzle with a black nose and powerful jaws. They have medium-sized, dark, almond-shaped eyes that convey a keen and intelligent expression."	
+German shepherd	Characteristics	Ears	" A signature trait is their large, medium-sized ears which are broad at the base and carried erect and parallel when alert."	
+German shepherd	Characteristics	Tail	" They possess a long, bushy tail that hangs in a slight saber-like curve when at rest."	
+German shepherd	Characteristics	Coat and Color	" The German Shepherd has a dense double coat to protect them in various weather. The outer coat is typically medium-length, dense, and straight or slightly wavy. Common colors include black and tan/red, black and cream, sable, and solid black. "	
+German shepherd	Health concern	Deep Puncture Wounds and Lacerations	 German Shepherds have strong jaws (bite force can exceed 238 pounds per square inch) capable of inflicting deep puncture wounds and significant soft tissue damage.	
+German shepherd	Health concern	Crushing Injuries and Bone Fractures	" The force of the bite can crush tissue and, in severe cases, break bones, especially in smaller victims like children or in sensitive areas like the hands and feet."	
+German shepherd	Health concern	Nerve and Tendon Damage	" The deep nature of the wounds can sever or damage nerves, tendons, and muscles, potentially leading to permanent loss of function, sensation, or chronic pain in the affected area."	
+German shepherd	Health concern	Scarring and Disfigurement	" Severe bites often require stitches or reconstructive surgery, which can result in permanent scarring or disfigurement. "	
+German shepherd	Health concern	Infectious Diseases and Complications	"Dog mouths harbor numerous bacteria, and any bite that breaks the skin is at risk of infection. "	
+German shepherd	Health concern	Bacterial Infections	 These are the most common health concerns.	
+German shepherd	Health concern	Cellulitis	" A rapidly spreading bacterial skin infection caused by bacteria like Pasteurella multocida, which is common in dog saliva."	
+German shepherd	Health concern	Staph and Strep Infections	" Common bacterial infections that can lead to abscesses, joint swelling, and fever."	
+German shepherd	Health concern	Capnocytophaga canimorsus infection	" A rare but potentially fatal infection, especially for individuals with weakened immune systems or who are asplenic (lacking a spleen). Symptoms can progress rapidly to sepsis, organ failure, and gangrene."	
+German shepherd	Health concern	Sepsis	" If an infection enters the bloodstream and spreads throughout the body, it can lead to sepsis, a life-threatening condition requiring immediate medical attention."	
+German shepherd	Health concern	Rabies	" This is a severe, almost always fatal viral disease once symptoms appear. The risk depends on the dog's vaccination status and local rabies prevalence. If the dog is a stray or unvaccinated, post-exposure prophylaxis (PEP) is necessary."	
+German shepherd	Health concern	Tetanus	 The bacteria that cause tetanus can enter the body through a puncture wound. A tetanus shot booster may be needed if it has been more than five years since your last vaccination. 	
+German shepherd	Health concern	Psychological Effects:Post-Traumatic Stress Disorder (PTSD)	 Victims may experience vivid flashbacks and intense fear.	
+German shepherd	Health concern	Psychological Effects:Anxiety and Fear	" Developing a lasting fear of dogs, which can impact daily life and social interactions."	
+German shepherd	Health concern	Psychological Effects:Depression	 The combination of physical injury and emotional distress can lead to depression. 	
+German shepherd	What to do		"You should seek immediate medical care after any dog bite that breaks the skin. Prompt medical evaluation is critical to prevent severe complications, including"	
+German shepherd	What to do		Uncontrollable bleeding.	
+German shepherd	What to do		A deep or large wound.	
+German shepherd	What to do		"Bites on the hands, face, neck, or feet."	
+German shepherd	What to do		"Signs of infection like spreading redness, swelling, increasing pain, or pus."	
+German shepherd	What to do		If you are unsure of the dog's vaccination status or have not had a tetanus shot in the last 5-10 years. 	

@@ -1,21 +1,32 @@
 <#
-This script was previously `convert-biters-csv.ps1` and is now deprecated.
-It is kept for compatibility but delegates to `convert-biters-txt.ps1` which parses TAB-delimited TXT files.
-#>
+Convert an exported CSV (from Excel) into a nested JSON structure for the Bugs pages.
+Usage (from repo root):
+  Powershell.exe -ExecutionPolicy Bypass -File .\scripts\convert-bugs-csv.ps1 -csv .\rawfiles\bugs.csv -out .\data\bugs.json
 
-param(
-  [Parameter(Mandatory=$false)] [string]$csv = ".\rawfiles\bugs.csv",
-  [Parameter(Mandatory=$false)] [string]$out = ".\data\Biterdata.json"
-)
+CSV format expected (headers):
+  Keywords,Section,Title,Description
 
-Write-Host "This script is deprecated; use convert-biters-txt.ps1 to convert TAB-delimited TXT files."
-if(-not (Test-Path .\scripts\convert-biters-txt.ps1)){
-  Write-Error "convert-biters-txt.ps1 not found in scripts/ directory"
-  exit 1
+Behavior:
+  - Non-recursive grouping by Keywords.
+  - Within each keyword pages are grouped by Section; within Section grouped by Title.
+  - Multiple rows with the same Title are combined into a single description (joined with blank line between paragraphs).
+  - Outputs a JSON object keyed by the keyword string (exact text from Keywords column).
+
+Output example:
+{
+  "bed bug": {
+    "sections": [
+      {
+        "name": "Overview",
+        "items": [
+          { "title": "Appearance", "description": "..." },
+          { "title": "Behavior", "description": "..." }
+        ]
+      }
+    ]
+  }
 }
-
-# convert the csv file by calling the new script (assuming the csv has tab separated fields)
-& .\scripts\convert-biters-txt.ps1 -txt $csv -out $out
+#>
 
 param(
   [Parameter(Mandatory=$false)] [string]$csv = ".\rawfiles\bugs.csv",
@@ -40,7 +51,8 @@ foreach($row in $rows){
   if ($kw -eq $null) { $kw = '' } else { $kw = [string]$kw }
   $kw = $kw.Trim()
   if($kw -eq '') { continue }
-  # normalize keyword: collapse multiple spaces, preserve underscores
+  # normalize keyword: convert underscores/hyphens to spaces, collapse spaces
+  $kw = $kw -replace '[_\-]+',' '
   $kw = ($kw -replace '\s+',' ').Trim()
 
   $sec = $row.Section
