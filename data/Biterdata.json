@@ -1,51 +1,86 @@
 ﻿{
-    "bed_bug":  {
-                    "sections":  [
-                                     {
-                                         "items":  [
-                                                       {
-                                                           "description":  "Light tan to reddish-brown, darkening after feeding.",
-                                                           "title":  "Color"
-                                                       },
-                                                       {
-                                                           "description":  "Wingless, with a wrinkled upper body.",
-                                                           "title":  "Body"
-                                                       },
-                                                       {
-                                                           "description":  "Oval and flat, unless they have recently fed.",
-                                                           "title":  "Shape"
-                                                       },
-                                                       {
-                                                           "description":  "About the size of an apple seed, or 5-7 mm.",
-                                                           "title":  "Size"
-                                                       }
-                                                   ],
-                                         "name":  "Characteristics"
-                                     },
-                                     {
-                                         "items":  [
-                                                       {
-                                                           "description":  "including hives and anaphylaxis (in rare cases)",
-                                                           "title":  "Allergic reactions"
-                                                       },
-                                                       {
-                                                           "description":  "Itching, redness, and swelling at the bite site",
-                                                           "title":  "Skin Irritation"
-                                                       },
-                                                       {
-                                                           "description":  "Stress, anxiety, and insomnia due to the discomfort and fear associated with bed bug infestations.",
-                                                           "title":  "Psychological Impact"
-                                                       },
-                                                       {
-                                                           "description":  "Scratching the bites can break the skin and increase the risk of bacterial or fungal infections.",
-                                                           "title":  "Secondary Infections:"
-                                                       }
-                                                   ],
-                                         "name":  "Health concern"
-                                     }
-                                 ]
-                },
-    "black_widow":  {
+    "poison hemlock":  {
+                           "sections":  [
+                                            {
+                                                "items":  [
+                                                              {
+                                                                  "description":  "grayish-brown color when mature.",
+                                                                  "title":  "Color"
+                                                              },
+                                                              {
+                                                                  "description":  "smooth, hollow, and ridged stems with distinctive purple spots, which are covered in hairless and lacy, fern-like leaves that resemble parsley",
+                                                                  "title":  "body"
+                                                              },
+                                                              {
+                                                                  "description":  "triangular, lacy, fern-like leaf shape",
+                                                                  "title":  "Shape"
+                                                              },
+                                                              {
+                                                                  "description":  "2 to 10 feet tall, with some sources stating it can reach up to 12 feet",
+                                                                  "title":  "Size"
+                                                              }
+                                                          ],
+                                                "name":  "Characteristics"
+                                            },
+                                            {
+                                                "items":  [
+                                                              {
+                                                                  "description":  "instantly seek emergency help, get fresh air, throw out all contaiminated things, wash your skin, and wash your eyes",
+                                                                  "title":  "Details"
+                                                              }
+                                                          ],
+                                                "name":  "What to do"
+                                            },
+                                            {
+                                                "items":  [
+                                                              {
+                                                                  "description":  "Central nervous system suppression, coma, kidney failure, low blood pressure, muscle breakdown, muscle death, muscle paralysis, adnd respiratory paralysis",
+                                                                  "title":  "Risk factors"
+                                                              }
+                                                          ],
+                                                "name":  "Health concern"
+                                            }
+                                        ]
+                       },
+    "human botfly":  {
+                         "sections":  [
+                                          {
+                                              "items":  [
+                                                            {
+                                                                "description":  "A yellow face, a metalic blue abdomen, and orange legs.",
+                                                                "title":  "Color"
+                                                            },
+                                                            {
+                                                                "description":  "A chunky, bee-like aperrence",
+                                                                "title":  "Shape"
+                                                            },
+                                                            {
+                                                                "description":  "12-18mm long",
+                                                                "title":  "Size"
+                                                            }
+                                                        ],
+                                              "name":  "Characteristics"
+                                          },
+                                          {
+                                              "items":  [
+                                                            {
+                                                                "description":  "As the larva grows, it consumes living tissue and can cause damage to the muscle. After the larva is removed and the wound heals, a significant scar may be left behind.",
+                                                                "title":  "Tissue Damage and Scarring"
+                                                            },
+                                                            {
+                                                                "description":  "The developing larva creates a firm, painful, and itchy lump (known as a \"warble\") under the skin. A person may feel sensations of movement or sharp, stabbing pain as the larva moves or anchors itself with its spines.",
+                                                                "title":  "Pain and Discomfort"
+                                                            },
+                                                            {
+                                                                "description":  "A local inflammatory response with redness, swelling, and a serous, bloody, or pus-like discharge from a central breathing hole (punctum) is common.",
+                                                                "title":  "Inflammation and Discharge"
+                                                            }
+                                                        ],
+                                              "name":  "Health concern"
+                                          }
+                                      ]
+                     },
+    "black widow":  {
                         "sections":  [
                                          {
                                              "items":  [
@@ -126,5 +161,158 @@
                                              "name":  "Health concern"
                                          }
                                      ]
-                    }
+                    },
+    "German shepherd":  {
+                            "sections":  [
+                                             {
+                                                 "items":  [
+                                                               {
+                                                                   "description":  "A signature trait is their large, medium-sized ears which are broad at the base and carried erect and parallel when alert.",
+                                                                   "title":  "Ears"
+                                                               },
+                                                               {
+                                                                   "description":  "They have a strong, athletic build with a body that is typically longer than it is tall. The back can be straight (common in working lines) or sloped toward the hindquarters (often seen in show lines).",
+                                                                   "title":  "Build"
+                                                               },
+                                                               {
+                                                                   "description":  "The German Shepherd has a dense double coat to protect them in various weather. The outer coat is typically medium-length, dense, and straight or slightly wavy. Common colors include black and tan/red, black and cream, sable, and solid black.",
+                                                                   "title":  "Coat and Color"
+                                                               },
+                                                               {
+                                                                   "description":  "Males stand 24 to 26 inches tall at the shoulder and typically weigh between 65 to 90 pounds. Females are slightly smaller, standing 22 to 24 inches and weighing 50 to 70 pounds.",
+                                                                   "title":  "Size"
+                                                               },
+                                                               {
+                                                                   "description":  "The head is proportionate to the body, tapering to a strong, square-cut muzzle with a black nose and powerful jaws. They have medium-sized, dark, almond-shaped eyes that convey a keen and intelligent expression.",
+                                                                   "title":  "Head and Face"
+                                                               },
+                                                               {
+                                                                   "description":  "They possess a long, bushy tail that hangs in a slight saber-like curve when at rest.",
+                                                                   "title":  "Tail"
+                                                               }
+                                                           ],
+                                                 "name":  "Characteristics"
+                                             },
+                                             {
+                                                 "items":  [
+                                                               {
+                                                                   "description":  "You should seek immediate medical care after any dog bite that breaks the skin. Prompt medical evaluation is critical to prevent severe complications, including\\n\\nUncontrollable bleeding.\\n\\nA deep or large wound.\\n\\nBites on the hands, face, neck, or feet.\\n\\nSigns of infection like spreading redness, swelling, increasing pain, or pus.\\n\\nIf you are unsure of the dog\u0027s vaccination status or have not had a tetanus shot in the last 5-10 years.",
+                                                                   "title":  "Details"
+                                                               }
+                                                           ],
+                                                 "name":  "What to do"
+                                             },
+                                             {
+                                                 "items":  [
+                                                               {
+                                                                   "description":  "A rapidly spreading bacterial skin infection caused by bacteria likePasteurella multocida, which is common in dog saliva.",
+                                                                   "title":  "Cellulitis"
+                                                               },
+                                                               {
+                                                                   "description":  "The combination of physical injury and emotional distress can lead to depression.",
+                                                                   "title":  "Psychological Effects:Depression"
+                                                               },
+                                                               {
+                                                                   "description":  "These are the most common health concerns.",
+                                                                   "title":  "Bacterial Infections"
+                                                               },
+                                                               {
+                                                                   "description":  "Common bacterial infections that can lead to abscesses, joint swelling, and fever.",
+                                                                   "title":  "StaphandStrep Infections"
+                                                               },
+                                                               {
+                                                                   "description":  "The force of the bite can crush tissue and, in severe cases, break bones, especially in smaller victims like children or in sensitive areas like the hands and feet.",
+                                                                   "title":  "Crushing Injuries and Bone Fractures"
+                                                               },
+                                                               {
+                                                                   "description":  "If an infection enters the bloodstream and spreads throughout the body, it can lead to sepsis, a life-threatening condition requiring immediate medical attention.",
+                                                                   "title":  "Sepsis"
+                                                               },
+                                                               {
+                                                                   "description":  "The deep nature of the wounds can sever or damage nerves, tendons, and muscles, potentially leading to permanent loss of function, sensation, or chronic pain in the affected area.",
+                                                                   "title":  "Nerve and Tendon Damage"
+                                                               },
+                                                               {
+                                                                   "description":  "Severe bites often require stitches or reconstructive surgery, which can result in permanent scarring or disfigurement.",
+                                                                   "title":  "Scarring and Disfigurement"
+                                                               },
+                                                               {
+                                                                   "description":  "German Shepherds have strong jaws (bite force can exceed 238 pounds per square inch) capable of inflicting deep puncture wounds and significant soft tissue damage.",
+                                                                   "title":  "Deep Puncture Wounds and Lacerations"
+                                                               },
+                                                               {
+                                                                   "description":  "The bacteria that cause tetanus can enter the body through a puncture wound. A tetanus shot booster may be needed if it has been more than five years since your last vaccination.",
+                                                                   "title":  "Tetanus"
+                                                               },
+                                                               {
+                                                                   "description":  "This is a severe, almost always fatal viral disease once symptoms appear. The risk depends on the dog\u0027s vaccination status and local rabies prevalence. If the dog is a stray or unvaccinated, post-exposure prophylaxis (PEP) is necessary.",
+                                                                   "title":  "Rabies"
+                                                               },
+                                                               {
+                                                                   "description":  "Victims may experience vivid flashbacks and intense fear.",
+                                                                   "title":  "Psychological Effects:Post-Traumatic Stress Disorder (PTSD)"
+                                                               },
+                                                               {
+                                                                   "description":  "Developing a lasting fear of dogs, which can impact daily life and social interactions.",
+                                                                   "title":  "Psychological Effects:Anxiety and Fear"
+                                                               },
+                                                               {
+                                                                   "description":  "Dog mouths harbor numerous bacteria, and any bite that breaks the skin is at risk of infection.",
+                                                                   "title":  "Infectious Diseases and Complications"
+                                                               },
+                                                               {
+                                                                   "description":  "A rare but potentially fatal infection, especially for individuals with weakened immune systems or who are asplenic (lacking a spleen). Symptoms can progress rapidly to sepsis, organ failure, andgangrene.",
+                                                                   "title":  "Capnocytophaga canimorsusinfection"
+                                                               }
+                                                           ],
+                                                 "name":  "Health concern"
+                                             }
+                                         ]
+                        },
+    "bed bug":  {
+                    "sections":  [
+                                     {
+                                         "items":  [
+                                                       {
+                                                           "description":  "Light tan to reddish-brown, darkening after feeding.",
+                                                           "title":  "Color"
+                                                       },
+                                                       {
+                                                           "description":  "Wingless, with a wrinkled upper body.",
+                                                           "title":  "Body"
+                                                       },
+                                                       {
+                                                           "description":  "Oval and flat, unless they have recently fed.",
+                                                           "title":  "Shape"
+                                                       },
+                                                       {
+                                                           "description":  "About the size of an apple seed, or 5-7 mm.",
+                                                           "title":  "Size"
+                                                       }
+                                                   ],
+                                         "name":  "Characteristics"
+                                     },
+                                     {
+                                         "items":  [
+                                                       {
+                                                           "description":  "including hives and anaphylaxis (in rare cases)",
+                                                           "title":  "Allergic reactions"
+                                                       },
+                                                       {
+                                                           "description":  "Itching, redness, and swelling at the bite site",
+                                                           "title":  "Skin Irritation"
+                                                       },
+                                                       {
+                                                           "description":  "Stress, anxiety, and insomnia due to the discomfort and fear associated with bed bug infestations.",
+                                                           "title":  "Psychological Impact"
+                                                       },
+                                                       {
+                                                           "description":  "Scratching the bites can break the skin and increase the risk of bacterial or fungal infections.",
+                                                           "title":  "Secondary Infections:"
+                                                       }
+                                                   ],
+                                         "name":  "Health concern"
+                                     }
+                                 ]
+                }
 }

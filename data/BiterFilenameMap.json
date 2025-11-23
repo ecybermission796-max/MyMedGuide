@@ -1,6 +1,22 @@
 ﻿{
-    "black_widow":  "black_widow",
-    "bed_bug":  "bed_bug",
-    "blackwidow":  "black_widow",
-    "bedbug":  "bed_bug"
+    "poison_hemlock":  "poison hemlock",
+    "human botfly":  "human botfly",
+    "poisonhemlock":  "poison hemlock",
+    "poison-hemlock":  "poison hemlock",
+    "human_botfly":  "human botfly",
+    "black widow":  "black widow",
+    "bed_bug":  "bed bug",
+    "bed-bug":  "bed bug",
+    "german shepherd":  "German shepherd",
+    "german-shepherd":  "German shepherd",
+    "human-botfly":  "human botfly",
+    "germanshepherd":  "German shepherd",
+    "humanbotfly":  "human botfly",
+    "black_widow":  "black widow",
+    "bed bug":  "bed bug",
+    "blackwidow":  "black widow",
+    "poison hemlock":  "poison hemlock",
+    "black-widow":  "black widow",
+    "bedbug":  "bed bug",
+    "german_shepherd":  "German shepherd"
 }
