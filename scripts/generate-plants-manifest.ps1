@@ -12,8 +12,8 @@ if (-not (Test-Path $TargetDir -PathType Container)) {
   exit 1
 }
 
-# Get all image files in the target directory (not in subdirectories)
-$files = Get-ChildItem -Path $TargetDir -File | Where-Object { $_.Extension -match '(?i)^(\.jpg|\.jpeg|\.png)$' } | ForEach-Object { "$TargetDir/$($_.Name)" }
+# Get all image files in the target directory (not in subdirectories), prioritizing .png files
+$files = Get-ChildItem -Path $TargetDir -File | Where-Object { $_.Extension -match '(?i)^(\.png)$' } | ForEach-Object { "$TargetDir/$($_.Name)" }
 
 # Sort files alphabetically
 $files = $files | Sort-Object
