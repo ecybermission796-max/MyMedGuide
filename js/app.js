@@ -14,7 +14,31 @@ document.addEventListener('DOMContentLoaded', () => {
     // if browse show categories by default
     if(name==='browse'){ window.loadCategories && window.loadCategories() }
     if(name==='providers'){ window.initProviders && window.initProviders() }
-  if(name==='bugs'){ window.loadBugsImages && window.loadBugsImages(); }
+    if(name==='bugs'){
+      window.loadBugsImages && window.loadBugsImages();
+      // attempt to run or refresh the bugs manifest when entering the bugs view
+      if(window.generateBugsManifest){
+        window.generateBugsManifest();
+      } else if(window.maybeGenerateBugsManifest){
+        window.maybeGenerateBugsManifest();
+      }
+    }
+    if(name==='animals'){
+      // attempt to run or refresh the animals manifest when entering the animals view
+      if(window.generateAnimalsManifest){
+        window.generateAnimalsManifest();
+      } else if(window.maybeGenerateAnimalsManifest){
+        window.maybeGenerateAnimalsManifest();
+      }
+    }
+    if(name==='plants'){
+      // attempt to run or refresh the plants manifest when entering the plants view
+      if(window.generatePlantsManifest){
+        window.generatePlantsManifest();
+      } else if(window.maybeGeneratePlantsManifest){
+        window.maybeGeneratePlantsManifest();
+      }
+    }
     // ensure the top navigation (buttons) remains visible across view switches
     const topNav = document.getElementById('main-nav') || document.querySelector('nav.buttons, .buttons');
     if(topNav){
