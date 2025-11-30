@@ -11,3 +11,8 @@ git commit -m "Update plant and animal pictures"
 
 # 4. Push to GitHub (main branch)
 git push origin main
+
+
+# cd D:\GitPage
+# python -m http.server 8000
+# Open http://localhost:8000

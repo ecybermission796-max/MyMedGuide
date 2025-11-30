@@ -270,11 +270,11 @@ window.showBugImage = function(path){
     const fileBase = path.split('/').pop();
     const keyCandidate = filenameToKey(fileBase);
 
-    // build header + image
-    let html = `<header class="view-header"><h2>${keyCandidate}</h2></header>`;
-    html += `<div style="padding:16px;text-align:center"><img class="featured" src="${src}" alt="${keyCandidate}"></div>`;
+    // build header + image (keep header and image separate from biter text)
+    const headerHtml = `<header class="view-header"><h2>${keyCandidate}</h2></header>`;
+    const imageHtml = `<div style="padding:16px;text-align:center"><img class="featured" src="${src}" alt="${keyCandidate}"></div>`;
 
-    // load data and render matching sections
+    // load data and render matching sections into a content block
     const data = await loadBiterData();
     // find matching key in data keys using normalized comparison
     const keys = Object.keys(data || {});
@@ -320,30 +320,30 @@ window.showBugImage = function(path){
       console.debug('showBugImage: tried candidates=', uniqCandidates);
       console.debug('showBugImage: available normalized keys=', Object.keys(normMap));
     }
+    let contentHtml = '';
     if(matchKey){
       const info = data[matchKey];
       if(info && Array.isArray(info.sections)){
         for(const section of info.sections){
-          html += `<div class="bug-section"><h3>${section.name}</h3>`;
+          contentHtml += `<div class="bug-section"><h3>${section.name}</h3>`;
           for(const item of (section.items || [])){
-            // create safe paragraph preserving newlines
             const title = item.title || '';
             const desc = (item.description || '').toString();
-            html += `<h4>${title}</h4>`;
-            // convert description newlines to <br>
+            contentHtml += `<h4>${title}</h4>`;
             const parts = desc.split(/\r?\n/).map(p=>p.trim()).filter(p=>p.length>0);
             if(parts.length){
-              html += '<p class="bug-desc">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
+              contentHtml += '<p class="bug-desc">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
             }
           }
-          html += `</div>`;
+          contentHtml += `</div>`;
         }
       }
     } else {
-      html += `<div style="padding:16px"><p>No descriptive data found for this item.</p></div>`;
+      contentHtml = `<div style="padding:16px"><p>No descriptive data found for this item.</p></div>`;
     }
 
-    v.innerHTML = html;
+    // Compose final HTML with wrapper/background and limited text width
+    v.innerHTML = headerHtml + imageHtml + `<div class="biter-wrapper"><div class="biter-data">${contentHtml}</div></div>`;
     // activate the view using the app's showView if available so navigation behaves consistently
     if(window.showView) window.showView('bug-image');
     else {
@@ -593,8 +593,8 @@ window.showAnimalImage = function(path){
     const src = encodeURI(path);
     const fileBase = path.split('/').pop();
     const keyCandidate = filenameToKey(fileBase);
-    let html = `<header class="view-header"><h2>${keyCandidate}</h2></header>`;
-    html += `<div style="padding:16px;text-align:center"><img src="${src}" alt="${keyCandidate}" style="max-width:90%;height:auto;border-radius:8px;border:2px solid #ddd"></div>`;
+    const headerHtml = `<header class="view-header"><h2>${keyCandidate}</h2></header>`;
+    const imageHtml = `<div style="padding:16px;text-align:center"><img class="featured" src="${src}" alt="${keyCandidate}"></div>`;
 
     const data = await loadBiterData();
     const keys = Object.keys(data || {});
@@ -625,28 +625,29 @@ window.showAnimalImage = function(path){
     for(const cand of uniqCandidates){
       if(normMap[cand]){ matchKey = normMap[cand]; console.debug('showAnimalImage: matched candidate', cand, '->', matchKey); break; }
     }
+    let contentHtml = '';
     if(matchKey){
       const info = data[matchKey];
       if(info && Array.isArray(info.sections)){
         for(const section of info.sections){
-          html += `<div class="animal-section"><h3>${section.name}</h3>`;
+          contentHtml += `<div class="animal-section"><h3>${section.name}</h3>`;
           for(const item of (section.items || [])){
             const title = item.title || '';
             const desc = (item.description || '').toString();
-            html += `<h4>${title}</h4>`;
+            contentHtml += `<h4>${title}</h4>`;
             const parts = desc.split(/\r?\n/).map(p=>p.trim()).filter(p=>p.length>0);
             if(parts.length){
-              html += '<p style="text-align:center">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
+              contentHtml += '<p class="bug-desc">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
             }
           }
-          html += `</div>`;
+          contentHtml += `</div>`;
         }
       }
     } else {
-      html += `<div style="padding:16px"><p>No descriptive data found for this item.</p></div>`;
+      contentHtml = `<div style="padding:16px"><p>No descriptive data found for this item.</p></div>`;
     }
 
-    v.innerHTML = html;
+    v.innerHTML = headerHtml + imageHtml + `<div class="biter-wrapper"><div class="biter-data">${contentHtml}</div></div>`;
     if(window.showView) window.showView('animal-image');
     else {
       const views = document.querySelectorAll('.view');
@@ -878,8 +879,8 @@ window.showPlantImage = function(path){
     const src = encodeURI(path);
     const fileBase = path.split('/').pop();
     const keyCandidate = filenameToKey(fileBase);
-    let html = `<header class="view-header"><h2>${keyCandidate}</h2></header>`;
-    html += `<div style="padding:16px;text-align:center"><img src="${src}" alt="${keyCandidate}" style="max-width:90%;height:auto;border-radius:8px;border:2px solid #ddd"></div>`;
+    const headerHtml = `<header class="view-header"><h2>${keyCandidate}</h2></header>`;
+    const imageHtml = `<div style="padding:16px;text-align:center"><img class="featured" src="${src}" alt="${keyCandidate}"></div>`;
 
     const data = await loadBiterData();
     const keys = Object.keys(data || {});
@@ -910,28 +911,29 @@ window.showPlantImage = function(path){
     for(const cand of uniqCandidates){
       if(normMap[cand]){ matchKey = normMap[cand]; console.debug('showPlantImage: matched candidate', cand, '->', matchKey); break; }
     }
+    let contentHtml = '';
     if(matchKey){
       const info = data[matchKey];
       if(info && Array.isArray(info.sections)){
         for(const section of info.sections){
-          html += `<div class="plant-section"><h3>${section.name}</h3>`;
+          contentHtml += `<div class="plant-section"><h3>${section.name}</h3>`;
           for(const item of (section.items || [])){
             const title = item.title || '';
             const desc = (item.description || '').toString();
-            html += `<h4>${title}</h4>`;
+            contentHtml += `<h4>${title}</h4>`;
             const parts = desc.split(/\r?\n/).map(p=>p.trim()).filter(p=>p.length>0);
             if(parts.length){
-              html += '<p style="text-align:center">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
+              contentHtml += '<p class="bug-desc">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
             }
           }
-          html += `</div>`;
+          contentHtml += `</div>`;
         }
       }
     } else {
-      html += `<div style="padding:16px"><p>No descriptive data found for this item.</p></div>`;
+      contentHtml = `<div style="padding:16px"><p>No descriptive data found for this item.</p></div>`;
     }
 
-    v.innerHTML = html;
+    v.innerHTML = headerHtml + imageHtml + `<div class="biter-wrapper"><div class="biter-data">${contentHtml}</div></div>`;
     if(window.showView) window.showView('plant-image');
     else {
       const views = document.querySelectorAll('.view');

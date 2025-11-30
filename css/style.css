@@ -37,10 +37,41 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
   left: 0;
   right: 0;
   width: 100%;
-  height: calc(80px + 2vh);
+  /* extended by 20% */
+  height: calc(96px + 2.4vh);
   background-color: #B3B3B3;
   z-index: 3;
   pointer-events: none;
+}
+
+/* Biter data wrapper: background extends 5% wider on each side than the text
+   Text width = 65vw, background width = 75vw (5% each side) */
+.biter-wrapper{
+  width:75vw;
+  max-width:1200px;
+  margin:18px auto;
+  display:flex;
+  justify-content:center;
+  background: rgba(255,255,255,0.4);
+  padding: 10px 0; /* vertical padding around the inner text */
+  border-radius:8px;
+}
+.biter-data{
+  width:65vw; /* limit text to 65% of viewport width */
+  max-width:1000px;
+  background: transparent;
+  padding:12px 18px;
+  box-sizing:border-box;
+}
+
+/* center titles and section headings inside biter-data */
+.biter-data h2, .biter-data h3, .biter-data h4, .biter-data .biter-section-name, .biter-data .biter-title {
+  text-align: center;
+}
+
+/* also center the view header titles for the generated image views */
+#bug-image .view-header h2, #animal-image .view-header h2, #plant-image .view-header h2 {
+  text-align: center;
 }
 .img-btn {
   background: none;
@@ -142,5 +173,10 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 
 /* Bug detail: constrain featured image and center description */
 #bug-image{max-width:900px;margin:12px auto;padding:12px;text-align:center}
-#bug-image img.featured{max-width:50%;height:auto;border-radius:0;box-shadow:none}
+#bug-image img.featured, #animal-image img.featured, #plant-image img.featured {
+  max-width:50%;
+  height:auto;
+  border-radius:0;
+  box-shadow:none;
+}
 .bug-desc{font-size:0.95rem;color:#333;margin:10px auto;max-width:60%;text-align:center}
