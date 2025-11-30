@@ -18,8 +18,8 @@ $files = Get-ChildItem -Path $TargetDir -File | Where-Object { $_.Extension -mat
 # Sort files alphabetically
 $files = $files | Sort-Object
 
-# Convert to JSON array
-$json = $files | ConvertTo-Json
+# Convert to JSON array (ensure array shape even for single item)
+$json = @($files) | ConvertTo-Json -Depth 1
 
 # Create output directory if it doesn't exist
 $outputDir = Split-Path -Parent $OutputFile

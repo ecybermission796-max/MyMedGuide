@@ -453,6 +453,24 @@ window.loadAnimalsImages = async function(){
     files = fallbackFiles;
   }
 
+  // Ensure we have an array. Some manifests were saved as a single JSON string
+  // (e.g. "images/animals/foo.png") which parses to a string. Coerce that
+  // into a single-element array so downstream `files.filter` calls succeed.
+  if(!Array.isArray(files)){
+    if(typeof files === 'string'){
+      files = [files];
+    } else if(files && typeof files === 'object'){
+      if(Array.isArray(files.files)) files = files.files;
+      else if(Array.isArray(files.paths)) files = files.paths;
+      else {
+        // Attempt to extract string values
+        try{ files = Object.values(files).flat().filter(v=>typeof v === 'string'); }catch(e){ files = []; }
+      }
+    } else {
+      files = [];
+    }
+  }
+
   const topLevelPattern = /^images\/animals\/[^\/]+\.(jpg|jpeg|png)$/i;
   files = files.filter(p => topLevelPattern.test(p));
   files = files.filter((v, i, a) => a.indexOf(v) === i);
@@ -719,6 +737,23 @@ window.loadPlantsImages = async function(){
     console.warn('could not load plants manifest or manifest empty', lastError);
     const fallbackFiles = [];
     files = fallbackFiles;
+  }
+
+  // Ensure we have an array. Some manifests were saved as a single JSON string
+  // (e.g. "images/plants/foo.png") which parses to a string. Coerce that
+  // into a single-element array so downstream `files.filter` calls succeed.
+  if(!Array.isArray(files)){
+    if(typeof files === 'string'){
+      files = [files];
+    } else if(files && typeof files === 'object'){
+      if(Array.isArray(files.files)) files = files.files;
+      else if(Array.isArray(files.paths)) files = files.paths;
+      else {
+        try{ files = Object.values(files).flat().filter(v=>typeof v === 'string'); }catch(e){ files = []; }
+      }
+    } else {
+      files = [];
+    }
   }
 
   const topLevelPattern = /^images\/plants\/[^\/]+\.(jpg|jpeg|png)$/i;
