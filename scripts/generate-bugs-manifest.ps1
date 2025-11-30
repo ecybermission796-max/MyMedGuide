@@ -15,7 +15,8 @@ $files = Get-ChildItem -Path $targetDir -File | Where-Object { $_.Extension -mat
 if($files.Count -eq 0){
   Write-Host "No image files found in $targetDir"
 } else {
-  $json = $files | ConvertTo-Json -Depth 1
+  # Ensure we always produce a JSON array even when only one file is present
+  $json = @($files) | ConvertTo-Json -Depth 1
   $json | Out-File -FilePath $outFile -Encoding UTF8
   Write-Host "Wrote $($files.Count) entries to $outFile"
 }
