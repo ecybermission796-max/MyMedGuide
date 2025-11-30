@@ -27,11 +27,21 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
   left: 50%;
   transform: translateX(-50%);
   width: 25%;
-  z-index: 2;
+  z-index: 5;
 }
 
-
-
+/* Gray banner: full width, top at 0, extends slightly below the nav area */
+#gray-banner{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: calc(80px + 2vh);
+  background-color: #B3B3B3;
+  z-index: 3;
+  pointer-events: none;
+}
 .img-btn {
   background: none;
   border: none;
@@ -102,7 +112,7 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 .nav-back{background:transparent;border:none;cursor:pointer;color:var(--accent)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;max-width:var(--max-width);margin:0 auto}
 .card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,0.08);cursor:pointer}
-.card img{width:100%;height:140px;object-fit:cover;display:block}
+.card img{width:100%;height:140px;object-fit:cover;display:block;border-radius:0;box-shadow:none;background:transparent}
 .card .meta{padding:10px}
 .detail{max-width:900px;margin:0 auto;background:var(--card-bg);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
 .hidden{display:none}
@@ -112,14 +122,14 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 /* Browse view center buttons */
 .browse-center{display:flex;gap:14px;justify-content:center;align-items:center;margin:18px 0}
 .browse-btn{display:flex;flex-direction:column;align-items:center;border:0;background:transparent;cursor:pointer}
-.browse-btn img{height:120px;width:auto;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
+.browse-btn img{height:240px;width:auto;border-radius:0;box-shadow:none;background:transparent}
 .browse-btn .btn-label{margin-top:8px;color:#333;font-weight:600}
 .placeholder{padding:18px;color:#666;text-align:center}
 
 /* bugs table layout: images row then filename row repeated */
 .bugs-table{width:100%;border-collapse:collapse;margin:8px 0}
 .bugs-table td{width:25%;vertical-align:top;padding:8px;text-align:center}
-.bugs-table td img{max-width:100%;border-radius:6px}
+.bugs-table td img{max-width:100%;border-radius:0;box-shadow:none}
 .bugs-table td div{color:#333;font-size:0.95rem;line-height:1.2}
 
 /* Biter detail rendering: section/title/description sizes */
@@ -129,3 +139,8 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 .biter-title{font-size:0.98rem;font-weight:600;margin:6px 0;color:#333}
 .biter-desc{font-size:0.9rem;color:#444;margin-bottom:8px}
 .biter-desc p{margin:6px 0}
+
+/* Bug detail: constrain featured image and center description */
+#bug-image{max-width:900px;margin:12px auto;padding:12px;text-align:center}
+#bug-image img.featured{max-width:50%;height:auto;border-radius:0;box-shadow:none}
+.bug-desc{font-size:0.95rem;color:#333;margin:10px auto;max-width:60%;text-align:center}

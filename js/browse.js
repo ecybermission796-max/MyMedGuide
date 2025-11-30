@@ -272,7 +272,7 @@ window.showBugImage = function(path){
 
     // build header + image
     let html = `<header class="view-header"><h2>${keyCandidate}</h2></header>`;
-    html += `<div style="padding:16px;text-align:center"><img src="${src}" alt="${keyCandidate}" style="max-width:90%;height:auto;border-radius:8px;border:2px solid #ddd"></div>`;
+    html += `<div style="padding:16px;text-align:center"><img class="featured" src="${src}" alt="${keyCandidate}"></div>`;
 
     // load data and render matching sections
     const data = await loadBiterData();
@@ -333,7 +333,7 @@ window.showBugImage = function(path){
             // convert description newlines to <br>
             const parts = desc.split(/\r?\n/).map(p=>p.trim()).filter(p=>p.length>0);
             if(parts.length){
-              html += '<p style="text-align:center">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
+              html += '<p class="bug-desc">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
             }
           }
           html += `</div>`;
