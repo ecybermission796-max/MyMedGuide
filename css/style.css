@@ -196,6 +196,22 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 }
 .bug-desc{font-size:0.95rem;color:#333;margin:10px auto;max-width:60%;text-align:center}
 
+/* Thumbnails grid for detail views */
+.detail-thumbs-wrapper{max-width:var(--max-width);margin:10px auto;padding:8px;text-align:center}
+.detail-thumbs{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;justify-items:center;align-items:center}
+.detail-thumb-card{width:100%;max-width:120px}
+.detail-thumb-card img{width:100%;height:80px;object-fit:cover;border-radius:6px;cursor:pointer;border:1px solid rgba(0,0,0,0.06)}
+@media (max-width:1200px){ .detail-thumbs{grid-template-columns:repeat(6,1fr)} }
+@media (max-width:900px){ .detail-thumbs{grid-template-columns:repeat(4,1fr)} .detail-thumb-card img{height:70px} }
+@media (max-width:600px){ .detail-thumbs{grid-template-columns:repeat(2,1fr)} .detail-thumb-card img{height:60px} }
+
+/* Floating overlay */
+.floating-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:100000;padding:20px}
+.floating-overlay.hidden{display:none}
+.floating-frame{width:60vw;height:60vw;background:#111;border:3px solid #000;box-shadow:0 12px 40px rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.floating-image-wrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.floating-image{max-width:100%;max-height:100%;transform-origin:center center;transition:transform 0.08s linear}
+
 /* Ensure the single-item image/detail views center the text cleanly and don't inherit
    the wider biter-wrapper widths used elsewhere. These tighter rules only apply to
    the generated image views so the presentation is centered on the page. */
