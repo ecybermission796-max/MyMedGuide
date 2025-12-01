@@ -113,23 +113,25 @@
       candidates.push({ keyword: kw, class: entry.class, other: (entry.OtherKeywords||[]).map(x=>normalize(x)) });
     }
 
-    // If exact match to keyword, return only that item
-    const exact = candidates.find(c=> normalize(c.keyword) === qnorm);
+    // If exact match to keyword OR exact match to any OtherKeywords, return only that item
+    const exact = candidates.find(c=> normalize(c.keyword) === qnorm || (c.other||[]).some(ok => normalize(ok) === qnorm));
     if(exact){
-      // find image asynchronously
       const img = await findImageForKeyword(exact.keyword, exact.class) || null;
       renderResults([{ keyword: exact.keyword, class: exact.class, img }]);
       return;
     }
 
-    // Tokenise query and perform fuzzy matching against keyword words
+    // Tokenise query and perform fuzzy matching against keyword words AND OtherKeywords words
     const tokens = qnorm.split(/[_\s\-]+|\W+/).filter(t=>t.length>0);
     const matches = [];
     for(const c of candidates){
       const kwWords = c.keyword.split(/[_\s\-]+/).map(w=>normalize(w)).filter(w=>w.length>0);
+      // break OtherKeywords into words as well
+      const okWords = (c.other||[]).flatMap(ok => ok.split(/[_\s\-]+/)).map(w=>normalize(w)).filter(w=>w.length>0);
+      const allWords = kwWords.concat(okWords);
       let matched = false;
       for(const tkn of tokens){
-        for(const w of kwWords){
+        for(const w of allWords){
           if(w === tkn){ matched = true; break; }
           if(w.includes(tkn) || tkn.includes(w)){ matched = true; break; }
           if(withinOneEdit(w, tkn)){ matched = true; break; }
@@ -139,7 +141,7 @@
       if(matched) matches.push(c);
     }
 
-    // de-dupe and fetch images
+    // de-duplicate and fetch images for all matches
     const seen = new Set(); const results = [];
     for(const m of matches){
       if(seen.has(m.keyword)) continue; seen.add(m.keyword);
