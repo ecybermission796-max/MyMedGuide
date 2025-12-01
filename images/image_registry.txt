@@ -1,0 +1,6 @@
+"keyword"	"Image_ct"	"Thumbnail_ct"	"Class"	"OtherKeywords"
+"german shepherd"	"3"	"3"	"Animals"	"dog, black, big dog, black back, big ear, large ear, rabies, tentanus"
+"bed bug"	"6"	"6"	"Bugs"	"tiny, reddish, brown, bed, itch"
+"black widow"	"4"	"4"	"Bugs"	"black, dark brown, spider, hourglass, red mark, venemous, swell, numbness, muscle ache"
+"human botfly"	"5"	"5"	"Bugs"	"chunky, bee-like, yellow, blue abdomen, pain, ichy, swell, larva"
+"poison hemlock"	"6"	"6"	"Plants"	"triangular, lacy, fern like, grayish-brown, smooth, hollow stem, purple spot, coma, low blood pressure"

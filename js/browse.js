@@ -342,8 +342,51 @@ window.showBugImage = function(path){
       contentHtml = `<div style="padding:16px"><p>No descriptive data found for this item.</p></div>`;
     }
 
-    // Compose final HTML with wrapper/background and limited text width
+    // Compose final HTML with wrapper/background and limited text width; leave space for thumbnails
     v.innerHTML = headerHtml + imageHtml + `<div class="biter-wrapper"><div class="biter-data">${contentHtml}</div></div>`;
+
+    // after rendering content, attempt to load thumbnails for this directory
+    (async function(){
+      try{
+        // compute directory for the provided path
+        const dir = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
+        const clsLower = (entry && entry.class)? entry.class.toString().toLowerCase() : (typeof keys !== 'undefined' && keys.length? (keys[0] || '').toString().toLowerCase() : 'bugs');
+        const manifestPaths = [
+          `images/${clsLower}/manifest.json`,
+          `./images/${clsLower}/manifest.json`,
+          `/images/${clsLower}/manifest.json`
+        ];
+        let files = [];
+        for(const mp of manifestPaths){
+          try{ const r = await fetch(mp, {cache:'no-store'}); if(r && r.ok){ files = await r.json(); break; } }catch(e){/*ignore*/}
+        }
+        if(Array.isArray(files) && files.length){
+          // find thumbnails under this dir
+          const dirLower = dir.toLowerCase();
+          const thumbFiles = files.filter(p => p.toLowerCase().startsWith(dirLower + '/thumbnails/'));
+          let thumbs = thumbFiles;
+          if(!thumbs.length){
+            // fall back: build thumbs from images in dir
+            const imgs = files.filter(p => p.toLowerCase().startsWith(dirLower + '/') && !p.toLowerCase().includes('/thumbnails/'));
+            thumbs = imgs.map(p => `${dir}/thumbnails/${p.split('/').pop()}`);
+          }
+          // render thumbnails grid, hide broken images via onerror
+          if(thumbs.length){
+            const wrapper = document.createElement('div'); wrapper.className = 'detail-thumbs-wrapper';
+            const grid = document.createElement('div'); grid.className = 'detail-thumbs';
+            for(const t of thumbs){
+              const card = document.createElement('div'); card.className = 'detail-thumb-card';
+              const imgEl = document.createElement('img'); imgEl.src = encodeURI(t); imgEl.alt = t.split('/').pop(); imgEl.loading = 'lazy';
+              imgEl.addEventListener('error', ()=>{ card.style.display='none'; });
+              imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(t)); });
+              card.appendChild(imgEl); grid.appendChild(card);
+            }
+            wrapper.appendChild(grid);
+            v.appendChild(wrapper);
+          }
+        }
+      }catch(e){ console.debug('Could not load thumbnails for', path, e); }
+    })();
     // activate the view using the app's showView if available so navigation behaves consistently
     if(window.showView) window.showView('bug-image');
     else {
@@ -352,6 +395,44 @@ window.showBugImage = function(path){
     }
   })();
 };
+
+// Floating image overlay and helper
+function ensureFloatingOverlay(){
+  let ov = document.getElementById('floating-image-overlay');
+  if(ov) return ov;
+  ov = document.createElement('div'); ov.id='floating-image-overlay'; ov.className='floating-overlay hidden';
+  const frame = document.createElement('div'); frame.className='floating-frame'; frame.tabIndex = -1;
+  const imgWrap = document.createElement('div'); imgWrap.className='floating-image-wrap';
+  const img = document.createElement('img'); img.className='floating-image'; imgWrap.appendChild(img);
+  frame.appendChild(imgWrap);
+  ov.appendChild(frame);
+  document.body.appendChild(ov);
+
+  // close when clicking outside frame
+  ov.addEventListener('click', (ev)=>{
+    if(ev.target === ov) { ov.classList.add('hidden'); resetFloating(); }
+  });
+
+  // wheel zoom handling on image
+  let scale = 1;
+  imgWrap.addEventListener('wheel', (ev)=>{ ev.preventDefault(); const delta = Math.sign(ev.deltaY); scale = Math.max(1, Math.min(5, scale - delta*0.1)); img.style.transform = `scale(${scale})`; });
+
+  // store reset function
+  ov._reset = () => { scale = 1; img.style.transform = 'scale(1)'; img.src=''; };
+  return ov;
+}
+
+function showFloatingImage(src){
+  const ov = ensureFloatingOverlay();
+  const img = ov.querySelector('.floating-image');
+  const frame = ov.querySelector('.floating-frame');
+  img.style.transform = 'scale(1)';
+  img.src = ''; // reset
+  img.src = src;
+  ov.classList.remove('hidden');
+}
+
+function resetFloating(){ const ov = document.getElementById('floating-image-overlay'); if(!ov) return; ov._reset(); }
 
 // simple HTML escape helper
 function escapeHtml(str){
@@ -648,6 +729,44 @@ window.showAnimalImage = function(path){
     }
 
     v.innerHTML = headerHtml + imageHtml + `<div class="biter-wrapper"><div class="biter-data">${contentHtml}</div></div>`;
+
+    // load thumbnails for this animal directory (re-use bug behavior)
+    (async function(){
+      try{
+        const dir = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
+        const clsLower = (entry && entry.class)? entry.class.toString().toLowerCase() : 'animals';
+        const manifestPaths = [
+          `images/${clsLower}/manifest.json`,
+          `./images/${clsLower}/manifest.json`,
+          `/images/${clsLower}/manifest.json`
+        ];
+        let files = [];
+        for(const mp of manifestPaths){
+          try{ const r = await fetch(mp, {cache:'no-store'}); if(r && r.ok){ files = await r.json(); break; } }catch(e){}
+        }
+        if(Array.isArray(files) && files.length){
+          const dirLower = dir.toLowerCase();
+          const thumbFiles = files.filter(p => p.toLowerCase().startsWith(dirLower + '/thumbnails/'));
+          let thumbs = thumbFiles;
+          if(!thumbs.length){
+            const imgs = files.filter(p => p.toLowerCase().startsWith(dirLower + '/') && !p.toLowerCase().includes('/thumbnails/'));
+            thumbs = imgs.map(p => `${dir}/thumbnails/${p.split('/').pop()}`);
+          }
+          if(thumbs.length){
+            const wrapper = document.createElement('div'); wrapper.className='detail-thumbs-wrapper';
+            const grid = document.createElement('div'); grid.className='detail-thumbs';
+            for(const t of thumbs){
+              const card = document.createElement('div'); card.className = 'detail-thumb-card';
+              const imgEl = document.createElement('img'); imgEl.src = encodeURI(t); imgEl.alt = t.split('/').pop(); imgEl.loading='lazy';
+              imgEl.addEventListener('error', ()=>{ card.style.display='none'; });
+              imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(t)); });
+              card.appendChild(imgEl); grid.appendChild(card);
+            }
+            wrapper.appendChild(grid); v.appendChild(wrapper);
+          }
+        }
+      }catch(e){ console.debug('Could not load thumbnails for', path, e); }
+    })();
     if(window.showView) window.showView('animal-image');
     else {
       const views = document.querySelectorAll('.view');
