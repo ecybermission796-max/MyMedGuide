@@ -64,4 +64,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // initial view
   showView('home');
+
+  // If page opened with hash params (e.g. from search results opened in new window),
+  // support showing a detail view via: #action=detail&cls=Bugs&kw=bed%20bug&img=/images/bugs/filename.jpg
+  try{
+    const h = window.location.hash ? window.location.hash.slice(1) : '';
+    if(h){
+      const params = new URLSearchParams(h);
+      if(params.get('action') === 'detail'){
+        const cls = params.get('cls') || '';
+        const kw = params.get('kw') || '';
+        const img = params.get('img') || '';
+        const clsLower = cls.toLowerCase();
+        // compute a sensible path if none provided
+        let path = img && img.length ? decodeURIComponent(img) : `images/${clsLower}/${kw.replace(/\s+/g,'_')}.png`;
+        if(clsLower === 'bugs' && window.showBugImage) window.showBugImage(path);
+        else if(clsLower === 'animals' && window.showAnimalImage) window.showAnimalImage(path);
+        else if(clsLower === 'plants' && window.showPlantImage) window.showPlantImage(path);
+      }
+    }
+  }catch(e){ console.warn('Error processing hash params:', e); }
 });

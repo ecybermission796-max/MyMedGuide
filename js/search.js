@@ -4,6 +4,28 @@
 
   function normalize(s){ return (s||'').toString().trim().toLowerCase(); }
 
+  // return true if two strings are within one edit (insert/delete/substitute)
+  function withinOneEdit(a,b){
+    if(a === b) return true;
+    let la = a.length, lb = b.length;
+    if(Math.abs(la-lb) > 1) return false;
+    // ensure a is shorter or equal
+    if(la > lb){ const t=a; a=b; b=t; const tmp=la; la=lb; lb=tmp; }
+    let i=0,j=0,diff=0;
+    while(i<a.length && j<b.length){
+      if(a[i] === b[j]){ i++; j++; continue; }
+      diff++;
+      if(diff > 1) return false;
+      if(la === lb){ // substitution
+        i++; j++; 
+      } else { // insertion in b or deletion in b
+        j++; 
+      }
+    }
+    if(i < a.length || j < b.length) diff += (a.length - i) + (b.length - j);
+    return diff <= 1;
+  }
+
   // find image for a given keyword by scanning the class manifest (if present)
   async function findImageForKeyword(keyword, cls){
     const manifestPaths = [
@@ -36,7 +58,6 @@
 
   // render results grid (items: [{keyword, class, img}])
   function renderResults(items){
-    // create a container similar to bugs view table
     const viewId = 'search-results';
     let v = document.getElementById(viewId);
     if(!v){
@@ -48,34 +69,30 @@
       if(window.showView) window.showView(viewId); else document.querySelectorAll('.view').forEach(el=> el.id===viewId?el.classList.add('active'):el.classList.remove('active'));
       return;
     }
-    // build table grid (4 columns)
-    const table = document.createElement('table'); table.className='bugs-table'; const tbody = document.createElement('tbody');
-    const rows = Math.ceil(items.length / 4) || 0;
-    for(let r=0;r<rows;r++){
-      const trImg = document.createElement('tr'); const trName = document.createElement('tr');
-      for(let c=0;c<4;c++){
-        const tdImg = document.createElement('td'); const tdName = document.createElement('td');
-        const idx = r*4 + c; if(idx < items.length){
-          const it = items[idx];
-          const a = document.createElement('a'); a.href='#'; a.className='result-link';
-          a.addEventListener('click',(ev)=>{ ev.preventDefault();
-            const path = it.img || `images/${it.class.toLowerCase()}/${encodeURIComponent(it.keyword)}.png`;
-            if(it.class.toLowerCase()==='bugs') window.showBugImage && window.showBugImage(path);
-            else if(it.class.toLowerCase()==='animals') window.showAnimalImage && window.showAnimalImage(path);
-            else if(it.class.toLowerCase()==='plants') window.showPlantImage && window.showPlantImage(path);
-          });
-          const img = document.createElement('img'); img.src = it.img || ''; img.alt = it.keyword; img.style.maxWidth='100%'; img.style.height='120px'; img.style.objectFit='cover';
-          a.appendChild(img); tdImg.appendChild(a);
-          const nameLink = document.createElement('a'); nameLink.href='#'; nameLink.textContent = it.keyword; nameLink.className='result-name';
-          nameLink.addEventListener('click',(ev)=>{ ev.preventDefault(); const path = it.img || `images/${it.class.toLowerCase()}/${encodeURIComponent(it.keyword)}.png`; if(it.class.toLowerCase()==='bugs') window.showBugImage && window.showBugImage(path); else if(it.class.toLowerCase()==='animals') window.showAnimalImage && window.showAnimalImage(path); else if(it.class.toLowerCase()==='plants') window.showPlantImage && window.showPlantImage(path); });
-          tdName.appendChild(nameLink);
-        }
-        trImg.appendChild(tdImg); trName.appendChild(tdName);
-      }
-      tbody.appendChild(trImg); tbody.appendChild(trName);
-    }
-    table.appendChild(tbody);
-    v.innerHTML = `<header class="view-header"><h2>Search Results</h2></header>`; v.appendChild(table);
+
+    // build centered flex grid (up to 4 per row visually)
+    const container = document.createElement('div'); container.className = 'search-grid';
+    container.style.display = 'flex';
+    container.style.flexWrap = 'wrap';
+    container.style.justifyContent = 'center';
+    container.style.gap = '12px';
+
+    items.forEach(it => {
+      const card = document.createElement('div'); card.className = 'search-card'; card.style.width = '220px'; card.style.textAlign = 'center';
+      const a = document.createElement('a'); a.href = '#'; a.className = 'result-link';
+      a.addEventListener('click', (ev)=>{ ev.preventDefault();
+        // open a duplicate page and request the detail view via hash params
+        const params = new URLSearchParams({ action: 'detail', cls: it.class, kw: it.keyword, img: it.img || '' });
+        const url = window.location.pathname + '#' + params.toString();
+        window.open(url, '_blank');
+      });
+      const img = document.createElement('img'); img.src = it.img || ''; img.alt = it.keyword; img.style.maxWidth = '100%'; img.style.height = '140px'; img.style.objectFit = 'cover'; img.style.display = 'block'; img.style.margin = '0 auto';
+      a.appendChild(img);
+      const name = document.createElement('div'); name.className = 'result-name'; name.style.marginTop = '6px'; name.textContent = it.keyword;
+      card.appendChild(a); card.appendChild(name); container.appendChild(card);
+    });
+
+    v.innerHTML = `<header class="view-header"><h2>Search Results</h2></header>`; v.appendChild(container);
     if(window.showView) window.showView(viewId); else document.querySelectorAll('.view').forEach(el=> el.id===viewId?el.classList.add('active'):el.classList.remove('active'));
   }
 
@@ -105,22 +122,29 @@
       return;
     }
 
-    // tokenise query and count matching otherKeywords
-    const tokens = qnorm.split(/\W+/).filter(t=>t.length>0);
-    const scored = [];
+    // Tokenise query and perform fuzzy matching against keyword words
+    const tokens = qnorm.split(/[_\s\-]+|\W+/).filter(t=>t.length>0);
+    const matches = [];
     for(const c of candidates){
-      let count = 0;
-      for(const ok of c.other){
-        for(const tkn of tokens){ if(ok === tkn || ok.includes(tkn) || tkn.includes(ok)){ count++; break; } }
+      const kwWords = c.keyword.split(/[_\s\-]+/).map(w=>normalize(w)).filter(w=>w.length>0);
+      let matched = false;
+      for(const tkn of tokens){
+        for(const w of kwWords){
+          if(w === tkn){ matched = true; break; }
+          if(w.includes(tkn) || tkn.includes(w)){ matched = true; break; }
+          if(withinOneEdit(w, tkn)){ matched = true; break; }
+        }
+        if(matched) break;
       }
-      if(count>0) scored.push({ item: c, score: count });
+      if(matched) matches.push(c);
     }
-    scored.sort((a,b)=> b.score - a.score);
-    // limit results to top 40 for performance
-    const results = [];
-    for(const s of scored.slice(0,40)){
-      const img = await findImageForKeyword(s.item.keyword, s.item.class) || null;
-      results.push({ keyword: s.item.keyword, class: s.item.class, img });
+
+    // de-dupe and fetch images
+    const seen = new Set(); const results = [];
+    for(const m of matches){
+      if(seen.has(m.keyword)) continue; seen.add(m.keyword);
+      const img = await findImageForKeyword(m.keyword, m.class) || null;
+      results.push({ keyword: m.keyword, class: m.class, img });
     }
     renderResults(results);
   }
