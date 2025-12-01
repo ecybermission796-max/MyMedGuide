@@ -113,40 +113,82 @@
       candidates.push({ keyword: kw, class: entry.class, other: (entry.OtherKeywords||[]).map(x=>normalize(x)) });
     }
 
-    // If exact match to keyword OR exact match to any OtherKeywords, return only that item
-    const exact = candidates.find(c=> normalize(c.keyword) === qnorm || (c.other||[]).some(ok => normalize(ok) === qnorm));
-    if(exact){
-      const img = await findImageForKeyword(exact.keyword, exact.class) || null;
-      renderResults([{ keyword: exact.keyword, class: exact.class, img }]);
-      return;
-    }
-
-    // Tokenise query and perform fuzzy matching against keyword words AND OtherKeywords words
+    // Scoring: exact keyword matches first; otherwise rank by number of token matches and closeness
     const tokens = qnorm.split(/[_\s\-]+|\W+/).filter(t=>t.length>0);
-    const matches = [];
-    for(const c of candidates){
-      const kwWords = c.keyword.split(/[_\s\-]+/).map(w=>normalize(w)).filter(w=>w.length>0);
-      // break OtherKeywords into words as well
-      const okWords = (c.other||[]).flatMap(ok => ok.split(/[_\s\-]+/)).map(w=>normalize(w)).filter(w=>w.length>0);
-      const allWords = kwWords.concat(okWords);
-      let matched = false;
-      for(const tkn of tokens){
-        for(const w of allWords){
-          if(w === tkn){ matched = true; break; }
-          if(w.includes(tkn) || tkn.includes(w)){ matched = true; break; }
-          if(withinOneEdit(w, tkn)){ matched = true; break; }
+
+    // Levenshtein distance for fine-grained closeness
+    function levenshtein(a,b){
+      if(a === b) return 0;
+      const al = a.length, bl = b.length;
+      if(al === 0) return bl;
+      if(bl === 0) return al;
+      const prev = new Array(bl+1); const cur = new Array(bl+1);
+      for(let j=0;j<=bl;j++) prev[j] = j;
+      for(let i=1;i<=al;i++){
+        cur[0] = i;
+        for(let j=1;j<=bl;j++){
+          const cost = a[i-1] === b[j-1] ? 0 : 1;
+          cur[j] = Math.min(prev[j]+1, cur[j-1]+1, prev[j-1]+cost);
         }
-        if(matched) break;
+        for(let j=0;j<=bl;j++) prev[j] = cur[j];
       }
-      if(matched) matches.push(c);
+      return cur[bl];
     }
 
-    // de-duplicate and fetch images for all matches
+    const scored = [];
+    for(const c of candidates){
+      const kw = normalize(c.keyword);
+      // exact keyword or exact otherKeywords
+      const isExactKeyword = kw === qnorm;
+      const exactOther = (c.other||[]).some(ok => normalize(ok) === qnorm);
+      if(isExactKeyword || exactOther){
+        // give exact keyword a big boost so they appear first
+        const base = isExactKeyword ? 10000 : 9000;
+        scored.push({ item: c, score: base });
+        continue;
+      }
+
+      // otherwise compute token match counts and distances
+      const kwWords = c.keyword.split(/[_\s\-]+/).map(w=>normalize(w)).filter(Boolean);
+      const okWords = (c.other||[]).flatMap(ok => ok.split(/[_\s\-]+/)).map(w=>normalize(w)).filter(Boolean);
+      const allWords = kwWords.concat(okWords);
+      let tokenMatches = 0;
+      let distSum = 0;
+      for(const tkn of tokens){
+        // find best matching word for this token
+        let bestDist = Infinity; let matched = false;
+        for(const w of allWords){
+          if(w === tkn){ bestDist = 0; matched = true; break; }
+          if(w.includes(tkn) || tkn.includes(w)){
+            bestDist = 0; matched = true; break; // treat substring as exact-like
+          }
+          const d = levenshtein(w, tkn);
+          if(d < bestDist) bestDist = d;
+        }
+        if(bestDist !== Infinity){
+          // count as match if distance <=1 or substring/exact
+          if(bestDist <= 1) { tokenMatches++; }
+          distSum += bestDist;
+        }
+      }
+      if(tokenMatches > 0){
+        // score: prefer keyword-word matches slightly higher than other-word matches by using word position
+        // combine tokenMatches and average distance into score
+        const avgDist = distSum / tokens.length;
+        const score = tokenMatches * 100 - Math.round(avgDist * 10);
+        scored.push({ item: c, score });
+      }
+    }
+
+    // sort scored descending by score, higher first
+    scored.sort((a,b) => b.score - a.score);
+
+    // prepare results (dedupe)
     const seen = new Set(); const results = [];
-    for(const m of matches){
-      if(seen.has(m.keyword)) continue; seen.add(m.keyword);
-      const img = await findImageForKeyword(m.keyword, m.class) || null;
-      results.push({ keyword: m.keyword, class: m.class, img });
+    for(const s of scored){
+      const k = s.item.keyword; if(seen.has(k)) continue; seen.add(k);
+      const img = await findImageForKeyword(s.item.keyword, s.item.class) || null;
+      results.push({ keyword: s.item.keyword, class: s.item.class, img });
     }
     renderResults(results);
   }
