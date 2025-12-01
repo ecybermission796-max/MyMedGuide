@@ -195,3 +195,34 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
   box-shadow:none;
 }
 .bug-desc{font-size:0.95rem;color:#333;margin:10px auto;max-width:60%;text-align:center}
+
+/* Ensure the single-item image/detail views center the text cleanly and don't inherit
+   the wider biter-wrapper widths used elsewhere. These tighter rules only apply to
+   the generated image views so the presentation is centered on the page. */
+#bug-image .biter-wrapper,
+#animal-image .biter-wrapper,
+#plant-image .biter-wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 12px auto;
+  display: flex;
+  justify-content: center;
+  background: transparent;
+  padding: 0;
+}
+#bug-image .biter-data,
+#animal-image .biter-data,
+#plant-image .biter-data {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 12px;
+  box-sizing: border-box;
+  background: transparent;
+}
+#bug-image .bug-desc, #animal-image .bug-desc, #plant-image .bug-desc{
+  max-width:80%;
+  margin-left:auto;
+  margin-right:auto;
+  text-align:center;
+}
