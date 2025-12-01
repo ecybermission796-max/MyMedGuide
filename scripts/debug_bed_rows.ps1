@@ -1,0 +1,1 @@
+"# REMOVED: temporary debug script" | Out-File -FilePath $PSCommandPath -Encoding UTF8

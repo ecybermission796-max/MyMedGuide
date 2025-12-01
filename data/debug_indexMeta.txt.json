@@ -1,0 +1,48 @@
+﻿{
+    "poison hemlock":  {
+                           "OtherKeywords":  [
+                                                 "triangular",
+                                                 "lacy",
+                                                 "fern like",
+                                                 "grayish-brown",
+                                                 "smooth",
+                                                 "hollow stem",
+                                                 "purple spot",
+                                                 "coma",
+                                                 "low blood pressure"
+                                             ],
+                           "Class":  "Plants"
+                       },
+    "human botfly":  {
+                         "OtherKeywords":  [
+                                               "chunky",
+                                               "bee-like",
+                                               "yellow",
+                                               "blue abdomen",
+                                               "pain",
+                                               "ichy",
+                                               "swell",
+                                               "larva"
+                                           ],
+                         "Class":  "Bugs"
+                     },
+    "black widow":  {
+                        "OtherKeywords":  [
+                                              "black",
+                                              "dark brown",
+                                              "spider",
+                                              "hourglass",
+                                              "red mark",
+                                              "venemous",
+                                              "swell",
+                                              "numbness",
+                                              "muscle ache"
+                                          ],
+                        "Class":  "Bugs"
+                    },
+    "German shepherd":  {
+                            "OtherKeywords":  [
+                                                  "dog",
+                                                  "black",
+                                                {}
+                                                  "black back",
