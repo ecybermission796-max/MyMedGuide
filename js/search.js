@@ -45,8 +45,20 @@
       try{
         const r = await fetch(mp, {cache:'no-store'});
         if(r && r.ok){
-          const files = await r.json();
-          if(!Array.isArray(files)) continue;
+          let files = await r.json();
+          // coerce non-array manifest formats (string or object) into an array, like browse.js does
+          if(!Array.isArray(files)){
+            if(typeof files === 'string') files = [files];
+            else if(files && typeof files === 'object'){
+              if(Array.isArray(files.files)) files = files.files;
+              else if(Array.isArray(files.paths)) files = files.paths;
+              else {
+                try{ files = Object.values(files).flat().filter(v=>typeof v === 'string'); }catch(e){ files = []; }
+              }
+            } else {
+              files = [];
+            }
+          }
           for(const f of files){
             if(filenameToKey(f) === normalize(keyword)) return f;
           }
@@ -86,7 +98,9 @@
         const url = window.location.pathname + '#' + params.toString();
         window.open(url, '_blank');
       });
-      const img = document.createElement('img'); img.src = it.img || ''; img.alt = it.keyword; img.style.maxWidth = '100%'; img.style.height = '140px'; img.style.objectFit = 'cover'; img.style.display = 'block'; img.style.margin = '0 auto';
+      const img = document.createElement('img'); img.src = it.img ? encodeURI(it.img) : ''; img.alt = it.keyword; img.style.maxWidth = '100%'; img.style.height = '140px'; img.style.objectFit = 'cover'; img.style.display = 'block'; img.style.margin = '0 auto';
+      // fallback: if encoded URL fails to load, try the raw path (some manifests may already be encoded)
+      img.onerror = () => { if(it.img && img.src !== it.img) img.src = it.img; };
       a.appendChild(img);
       const name = document.createElement('div'); name.className = 'result-name'; name.style.marginTop = '6px'; name.textContent = it.keyword;
       card.appendChild(a); card.appendChild(name); container.appendChild(card);
