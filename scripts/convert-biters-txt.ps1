@@ -29,12 +29,15 @@ if($rows.Count -eq 0){ Write-Error "No rows found in TXT"; exit 3 }
 
 # Build nested grouping: keyword -> section -> title -> [descriptions]
 $grouped = @{}
+# collect per-keyword metadata for index (Class and OtherKeywords)
+$indexMeta = @{}
 foreach($row in $rows){
   $kw = $row.Keywords
   if ($kw -eq $null) { $kw = '' } else { $kw = [string]$kw }
   $kw = $kw.Trim()
   if($kw -eq '') { continue }
-  # preserve underscores, collapse multiple spaces
+  # normalize keyword: convert underscores/hyphens to spaces, collapse spaces
+  $kw = $kw -replace '[_\-]+',' '
   $kw = ($kw -replace '\s+',' ').Trim()
 
   $sec = $row.Section
@@ -50,8 +53,29 @@ foreach($row in $rows){
   $desc = $row.Description
   if ($desc -eq $null) { $desc = '' } else { $desc = [string]$desc }
 
+  # If the TXT encodes Class or OtherKeywords using the Section column,
+  # treat those rows as metadata and populate the index, then skip content insertion.
+  $secLower = $sec.ToLower()
+  if($secLower -eq 'class'){
+    if(-not $indexMeta.ContainsKey($kw)){ $indexMeta[$kw] = @{ Class = ''; OtherKeywords = @() } }
+    if(-not [string]::IsNullOrWhiteSpace($desc) -and [string]::IsNullOrWhiteSpace($indexMeta[$kw].Class)){
+      $indexMeta[$kw].Class = $desc.Trim()
+    }
+    continue
+  }
+  if($secLower -eq 'otherkeywords' -or $secLower -eq 'other keywords'){
+    if(-not $indexMeta.ContainsKey($kw)){ $indexMeta[$kw] = @{ Class = ''; OtherKeywords = @() } }
+    if(-not [string]::IsNullOrWhiteSpace($desc)){
+      $parts = ($desc -split ',') | ForEach-Object { ($_ -replace '"','').Trim() } | Where-Object { $_ -ne '' }
+      foreach($p in $parts){ if(-not ($indexMeta[$kw].OtherKeywords -contains $p)){ $indexMeta[$kw].OtherKeywords += $p } }
+    }
+    continue
+  }
+
   if(-not $grouped.ContainsKey($kw)){
     $grouped[$kw] = @{}
+    # initialize index meta for this keyword only if not already present
+    if(-not $indexMeta.ContainsKey($kw)){ $indexMeta[$kw] = @{ Class = ''; OtherKeywords = @() } }
   }
   $sections = $grouped[$kw]
 
@@ -64,6 +88,25 @@ foreach($row in $rows){
     $titles[$title] = @()
   }
   $titles[$title] += $desc
+
+  # capture Class and OtherKeywords fields if provided as separate columns (case-insensitive)
+  $classVal = $null
+  $okVal = $null
+  if($row.PSObject.Properties.Match('Class')){ $classVal = [string]$row.Class }
+  elseif($row.PSObject.Properties.Match('class')){ $classVal = [string]$row.class }
+  if($row.PSObject.Properties.Match('OtherKeywords')){ $okVal = [string]$row.OtherKeywords }
+  elseif($row.PSObject.Properties.Match('Otherkeywords')){ $okVal = [string]$row.Otherkeywords }
+  elseif($row.PSObject.Properties.Match('otherkeywords')){ $okVal = [string]$row.otherkeywords }
+
+  if($classVal -ne $null -and $classVal.Trim() -ne ''){
+    if([string]::IsNullOrWhiteSpace($indexMeta[$kw].Class)){
+      $indexMeta[$kw].Class = $classVal.Trim()
+    }
+  }
+  if($okVal -ne $null -and $okVal.Trim() -ne ''){
+    $parts = ($okVal -split ',') | ForEach-Object { ($_ -replace '"','').Trim() } | Where-Object { $_ -ne '' }
+    foreach($p in $parts){ if(-not ($indexMeta[$kw].OtherKeywords -contains $p)){ $indexMeta[$kw].OtherKeywords += $p } }
+  }
 }
 
 # Compose output structure
@@ -82,6 +125,17 @@ foreach($kw in $grouped.Keys){
     $secArr += @{ name = $secName; items = $items }
   }
   $outObj[$kw] = @{ sections = $secArr }
+}
+
+# Build index object from collected metadata
+$indexObj = @{}
+foreach($kw in $outObj.Keys){
+  $meta = $indexMeta[$kw]
+  $classVal = ''
+  if($meta -and $meta.Class){ $classVal = $meta.Class.Trim() }
+  $oks = @()
+  if($meta -and $meta.OtherKeywords){ $oks = $meta.OtherKeywords }
+  $indexObj[$kw] = @{ class = $classVal; OtherKeywords = $oks }
 }
 
 # Build a filename->keyword map to help client-side matching (e.g. bed_bug -> "bed_bug")
@@ -110,13 +164,42 @@ foreach($kw in $outObj.Keys){
 $odir = Split-Path -Parent $out
 if(-not (Test-Path $odir)){ New-Item -ItemType Directory -Path $odir | Out-Null }
 
+
+
+# Validation: each item must have a class and at least one OtherKeywords entry
+$errors = @()
+foreach($k in $indexObj.Keys){
+  $entry = $indexObj[$k]
+  if([string]::IsNullOrWhiteSpace($entry.class)){
+    $errors += "Missing Class for keyword: '$k'"
+  }
+  if(-not $entry.OtherKeywords -or $entry.OtherKeywords.Count -eq 0){
+    $errors += "Missing OtherKeywords for keyword: '$k'"
+  }
+}
+if($errors.Count -gt 0){
+  Write-Error "Validation failed: the following problems were found:`n$($errors -join "`n")"
+  exit 4
+}
+
 # Write JSON with depth large enough for nested arrays
 $outJson = $outObj | ConvertTo-Json -Depth 10
 $outJson | Out-File -FilePath $out -Encoding UTF8
 Write-Host "Wrote $(($outObj.Keys).Count) keywords to $out"
 
+# Also write lowercase `biterdata.json` (client expects this path)
+$biterdataPath = Join-Path $odir 'biterdata.json'
+$outJson | Out-File -FilePath $biterdataPath -Encoding UTF8
+Write-Host "Wrote $(($outObj.Keys).Count) keywords to $biterdataPath"
+
+# Write index file that includes class and OtherKeywords arrays
+$indexPath = Join-Path $odir 'biterdata_index.json'
+$indexJson = $indexObj | ConvertTo-Json -Depth 5
+$indexJson | Out-File -FilePath $indexPath -Encoding UTF8
+Write-Host "Wrote index to $indexPath"
+
 # Write filename map next to output JSON so client can match filenames to keywords
-$mapFile = Join-Path (Split-Path -Parent $out) 'BiterFilenameMap.json'
+$mapFile = Join-Path $odir 'BiterFilenameMap.json'
 $mapJson = $filenameMap | ConvertTo-Json -Depth 5
 $mapJson | Out-File -FilePath $mapFile -Encoding UTF8
 Write-Host "Wrote filename map to $mapFile"

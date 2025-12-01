@@ -1,0 +1,66 @@
+﻿{
+    "poison hemlock":  {
+                           "class":  "Plants",
+                           "OtherKeywords":  [
+                                                 "triangular",
+                                                 "lacy",
+                                                 "fern like",
+                                                 "grayish-brown",
+                                                 "smooth",
+                                                 "hollow stem",
+                                                 "purple spot",
+                                                 "coma",
+                                                 "low blood pressure"
+                                             ]
+                       },
+    "human botfly":  {
+                         "class":  "Bugs",
+                         "OtherKeywords":  [
+                                               "chunky",
+                                               "bee-like",
+                                               "yellow",
+                                               "blue abdomen",
+                                               "pain",
+                                               "ichy",
+                                               "swell",
+                                               "larva"
+                                           ]
+                     },
+    "black widow":  {
+                        "class":  "Bugs",
+                        "OtherKeywords":  [
+                                              "black",
+                                              "dark brown",
+                                              "spider",
+                                              "hourglass",
+                                              "red mark",
+                                              "venemous",
+                                              "swell",
+                                              "numbness",
+                                              "muscle ache"
+                                          ]
+                    },
+    "German shepherd":  {
+                            "class":  "Animals",
+                            "OtherKeywords":  [
+                                                  "dog",
+                                                  "black",
+                                                  "big dog",
+                                                  "black back",
+                                                  "big ear",
+                                                  "large ear",
+                                                  "rabies",
+                                                  "tentanus"
+                                              ]
+                        },
+    "bed bug":  {
+                    "class":  "Bugs",
+                    "OtherKeywords":  [
+                                          "tiny",
+                                          "reddish",
+                                          "brown",
+                                          "bed",
+                                          "itch"
+                                      ]
+                }
+}
