@@ -94,7 +94,6 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
 .search-box input[type="search"]{flex:1;border:0;outline:none;padding:10px;font-size:1.1rem;border-radius:999px}
 .search-btn{background:transparent;border:0;padding:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
 .search-controls{width:100%;display:flex;justify-content:center;align-items:center;gap:8px}
-.earch-controls select{ }
 .search-controls select{width:220px;padding:8px;border-radius:8px;border:1px solid #ccc}
 .search-label{color:#fff;font-weight:600;margin-right:6px}
 
