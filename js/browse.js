@@ -33,30 +33,16 @@ window.loadCategories = async function(){
     itemsBox.classList.remove('hidden');
     itemsBox.innerHTML = '';
     list.forEach(item => {
-      const c = document.createElement('div'); c.className='card';
+      const c = document.createElement('div');
+      c.className = 'card';
       c.innerHTML = `<img src="${item.thumb}" alt="${item.name}"><div class="meta"><strong>${item.name}</strong></div>`;
-      c.addEventListener('click', ()=> showDetail(item));
       itemsBox.appendChild(c);
     });
   }
-
-  function showDetail(item){
-    document.getElementById('items').classList.add('hidden');
-    const d = detail;
-    d.classList.remove('hidden');
-    d.innerHTML = `
-      <h3>${item.name}</h3>
-      <img src="${item.image}" alt="${item.name}" style="max-width:100%;border-radius:8px">
-      <p>${item.description || ''}</p>
-      <h4>Symptoms / Effects</h4><p>${item.symptoms || 'N/A'}</p>
-      <h4>First Aid</h4><p>${item.first_aid || 'Seek medical care if severe'}</p>
-    `;
-  }
+  // end loadItems
 };
 
-// (removed extra click handler; app routing handles navigation and triggers loadBugsImages via showView)
-
-// load all images for bugs view from a manifest and render a 4-column table
+// load bugs images into the Bugs view
 window.loadBugsImages = async function(){
   const grid = document.getElementById('bugs-grid');
   if(!grid) return;
@@ -350,7 +336,8 @@ window.showBugImage = function(path){
       try{
         // compute directory for the provided path
         const dir = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
-        const clsLower = (entry && entry.class)? entry.class.toString().toLowerCase() : (typeof keys !== 'undefined' && keys.length? (keys[0] || '').toString().toLowerCase() : 'bugs');
+        const dirParts = dir.split('/').filter(p=>p.length>0);
+        const clsLower = dirParts.length >= 2 ? dirParts[1].toLowerCase() : 'bugs';
         const manifestPaths = [
           `images/${clsLower}/manifest.json`,
           `./images/${clsLower}/manifest.json`,
@@ -358,17 +345,43 @@ window.showBugImage = function(path){
         ];
         let files = [];
         for(const mp of manifestPaths){
-          try{ const r = await fetch(mp, {cache:'no-store'}); if(r && r.ok){ files = await r.json(); break; } }catch(e){/*ignore*/}
+          try{
+            const r = await fetch(mp, {cache:'no-store'});
+            if(r && r.ok){
+              let raw = await r.json();
+              // coerce non-array manifest formats into an array
+              if(!Array.isArray(raw)){
+                if(typeof raw === 'string') raw = [raw];
+                else if(raw && typeof raw === 'object'){
+                  if(Array.isArray(raw.files)) raw = raw.files;
+                  else if(Array.isArray(raw.paths)) raw = raw.paths;
+                  else { try{ raw = Object.values(raw).flat().filter(v=>typeof v === 'string'); }catch(e){ raw = []; } }
+                } else raw = [];
+              }
+              files = raw;
+              break;
+            }
+          }catch(e){/*ignore*/}
         }
         if(Array.isArray(files) && files.length){
-          // find thumbnails under this dir
-          const dirLower = dir.toLowerCase();
-          const thumbFiles = files.filter(p => p.toLowerCase().startsWith(dirLower + '/thumbnails/'));
+          // derive subdirectory name from path, e.g. images/bugs/black_widow/...
+          const dirParts = dir.split('/').filter(p=>p.length>0);
+          // If image is top-level (no subdirectory), fall back to using the
+          // filename (without extension) as the subdirectory name because
+          // many images live in `images/<class>/<basename>/thumbnails/...`.
+          const subdirName = dirParts.length >= 3 ? dirParts[2].toLowerCase() : (typeof baseRaw === 'string' ? baseRaw.toLowerCase() : null);
+          // find thumbnails entries whose path includes the same subdir and 'thumbnails'
+          const thumbFiles = files.filter(p => {
+            const parts = p.split('/');
+            return parts.length >= 3 && parts[2] && subdirName && parts[2].toLowerCase() === subdirName && parts.includes('thumbnails');
+          });
           let thumbs = thumbFiles;
           if(!thumbs.length){
-            // fall back: build thumbs from images in dir
-            const imgs = files.filter(p => p.toLowerCase().startsWith(dirLower + '/') && !p.toLowerCase().includes('/thumbnails/'));
-            thumbs = imgs.map(p => `${dir}/thumbnails/${p.split('/').pop()}`);
+            // fallback: find images in the same subdir and map to thumbnails path
+            const imgs = files.filter(p => { const parts = p.split('/'); return parts.length >= 3 && parts[2] && subdirName && parts[2].toLowerCase() === subdirName && !parts.includes('thumbnails'); });
+            thumbs = imgs.map(p => {
+              const parts = p.split('/'); const filename = parts.pop(); const base = parts.slice(0,3).join('/'); return `${base}/thumbnails/${filename}`;
+            });
           }
           // render thumbnails grid, hide broken images via onerror
           if(thumbs.length){
@@ -378,11 +391,22 @@ window.showBugImage = function(path){
               const card = document.createElement('div'); card.className = 'detail-thumb-card';
               const imgEl = document.createElement('img'); imgEl.src = encodeURI(t); imgEl.alt = t.split('/').pop(); imgEl.loading = 'lazy';
               imgEl.addEventListener('error', ()=>{ card.style.display='none'; });
-              imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(t)); });
+              // clicking a thumbnail should open the corresponding parent (big) image
+              const bigPath = (typeof t === 'string') ? t.replace(/\/thumbnails\//i, '/') : t;
+              imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(bigPath)); });
               card.appendChild(imgEl); grid.appendChild(card);
             }
             wrapper.appendChild(grid);
-            v.appendChild(wrapper);
+            // insert thumbnails before the textual biter-data so they appear between
+            // the featured image and the descriptive text
+            const biterWrapperEl = v.querySelector('.biter-wrapper');
+            if(biterWrapperEl){
+              const biterDataEl = biterWrapperEl.querySelector('.biter-data');
+              if(biterDataEl) biterWrapperEl.insertBefore(wrapper, biterDataEl);
+              else v.appendChild(wrapper);
+            } else {
+              v.appendChild(wrapper);
+            }
           }
         }
       }catch(e){ console.debug('Could not load thumbnails for', path, e); }
@@ -513,43 +537,27 @@ window.loadAnimalsImages = async function(){
     try{
       const resp = await fetch(mp);
       if(resp && resp.ok){
-        try{
-          files = await resp.json();
-          manifestLoaded = true;
-          break;
-        }catch(parseErr){
-          lastError = `JSON parse error for ${mp}: ${parseErr.message}`;
-        }
+        try{ files = await resp.json(); manifestLoaded = true; break; }
+        catch(parseErr){ lastError = `JSON parse error for ${mp}: ${parseErr.message}`; }
       } else {
         lastError = `HTTP ${resp ? resp.status : 'no response'} ${resp ? resp.statusText : ''} for ${mp}`;
       }
-    }catch(e){
-      lastError = `Fetch error for ${mp}: ${e.message}`;
-    }
+    }catch(e){ lastError = `Fetch error for ${mp}: ${e.message}`; }
   }
 
   if(!manifestLoaded || !files || !files.length){
     console.warn('could not load animals manifest or manifest empty', lastError);
-    const fallbackFiles = [];
-    files = fallbackFiles;
+    files = [];
   }
 
-  // Ensure we have an array. Some manifests were saved as a single JSON string
-  // (e.g. "images/animals/foo.png") which parses to a string. Coerce that
-  // into a single-element array so downstream `files.filter` calls succeed.
+  // Coerce non-array manifests into arrays
   if(!Array.isArray(files)){
-    if(typeof files === 'string'){
-      files = [files];
-    } else if(files && typeof files === 'object'){
+    if(typeof files === 'string') files = [files];
+    else if(files && typeof files === 'object'){
       if(Array.isArray(files.files)) files = files.files;
       else if(Array.isArray(files.paths)) files = files.paths;
-      else {
-        // Attempt to extract string values
-        try{ files = Object.values(files).flat().filter(v=>typeof v === 'string'); }catch(e){ files = []; }
-      }
-    } else {
-      files = [];
-    }
+      else { try{ files = Object.values(files).flat().filter(v=>typeof v === 'string'); }catch(e){ files = []; } }
+    } else files = [];
   }
 
   const topLevelPattern = /^images\/animals\/[^\/]+\.(jpg|jpeg|png)$/i;
@@ -569,13 +577,8 @@ window.loadAnimalsImages = async function(){
       if(remaining.length <= 30){ lines.push(remaining); break; }
       const segment = remaining.slice(0,30);
       const lastSpace = segment.lastIndexOf(' ');
-      if(lastSpace > 0){
-        lines.push(remaining.slice(0,lastSpace));
-        remaining = remaining.slice(lastSpace+1);
-      } else {
-        lines.push(remaining.slice(0,29) + '-');
-        remaining = remaining.slice(29);
-      }
+      if(lastSpace > 0){ lines.push(remaining.slice(0,lastSpace)); remaining = remaining.slice(lastSpace+1); }
+      else { lines.push(remaining.slice(0,29) + '-'); remaining = remaining.slice(29); }
     }
     return lines.join('\n');
   }
@@ -598,31 +601,17 @@ window.loadAnimalsImages = async function(){
         a.href = '#';
         a.className = 'animal-thumb-link';
         a.dataset.src = src;
-        a.addEventListener('click', (ev)=>{
-          ev.preventDefault();
-          window.showAnimalImage && window.showAnimalImage(p);
-        });
+        a.addEventListener('click', (ev)=>{ ev.preventDefault(); window.showAnimalImage && window.showAnimalImage(p); });
         const img = document.createElement('img');
-        img.src = src;
-        img.alt = p.split('/').pop();
-        img.style.maxWidth = '100%';
-        img.style.height = '120px';
-        img.style.objectFit = 'cover';
-        a.appendChild(img);
-        tdImg.appendChild(a);
+        img.src = src; img.alt = p.split('/').pop(); img.style.maxWidth = '100%'; img.style.height = '120px'; img.style.objectFit = 'cover';
+        a.appendChild(img); tdImg.appendChild(a);
         const processed = processName(p);
         const lines = processed.split('\n');
-        lines.forEach((ln)=>{
-          const span = document.createElement('div');
-          span.textContent = ln;
-          tdName.appendChild(span);
-        });
+        lines.forEach((ln)=>{ const span = document.createElement('div'); span.textContent = ln; tdName.appendChild(span); });
       }
-      trImg.appendChild(tdImg);
-      trName.appendChild(tdName);
+      trImg.appendChild(tdImg); trName.appendChild(tdName);
     }
-    tbody.appendChild(trImg);
-    tbody.appendChild(trName);
+    tbody.appendChild(trImg); tbody.appendChild(trName);
   }
   table.appendChild(tbody);
   grid.innerHTML = '';
@@ -734,7 +723,8 @@ window.showAnimalImage = function(path){
     (async function(){
       try{
         const dir = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
-        const clsLower = (entry && entry.class)? entry.class.toString().toLowerCase() : 'animals';
+        const dirParts = dir.split('/').filter(p=>p.length>0);
+        const clsLower = dirParts.length >= 2 ? dirParts[1].toLowerCase() : 'animals';
         const manifestPaths = [
           `images/${clsLower}/manifest.json`,
           `./images/${clsLower}/manifest.json`,
@@ -746,7 +736,14 @@ window.showAnimalImage = function(path){
         }
         if(Array.isArray(files) && files.length){
           const dirLower = dir.toLowerCase();
-          const thumbFiles = files.filter(p => p.toLowerCase().startsWith(dirLower + '/thumbnails/'));
+          let thumbFiles = files.filter(p => p.toLowerCase().startsWith(dirLower + '/thumbnails/'));
+          // If not found, try using the base filename as the subdirectory name
+          // e.g. `images/animals/German_Shepherd/thumbnails/...` for
+          // `images/animals/German_Shepherd.png` top-level image.
+          if(!thumbFiles.length && typeof baseRaw === 'string'){
+            const altPrefix = `images/${clsLower}/${baseRaw.toLowerCase()}/thumbnails/`;
+            thumbFiles = files.filter(p => p.toLowerCase().startsWith(altPrefix));
+          }
           let thumbs = thumbFiles;
           if(!thumbs.length){
             const imgs = files.filter(p => p.toLowerCase().startsWith(dirLower + '/') && !p.toLowerCase().includes('/thumbnails/'));
@@ -759,10 +756,22 @@ window.showAnimalImage = function(path){
               const card = document.createElement('div'); card.className = 'detail-thumb-card';
               const imgEl = document.createElement('img'); imgEl.src = encodeURI(t); imgEl.alt = t.split('/').pop(); imgEl.loading='lazy';
               imgEl.addEventListener('error', ()=>{ card.style.display='none'; });
-              imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(t)); });
+              // compute parent (big) image path by replacing the thumbnails segment
+              const bigPath = (typeof t === 'string') ? t.replace(/\/thumbnails\//i, '/') : t;
+              imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(bigPath)); });
               card.appendChild(imgEl); grid.appendChild(card);
             }
-            wrapper.appendChild(grid); v.appendChild(wrapper);
+            wrapper.appendChild(grid);
+            // insert thumbnails before the textual biter-data so they appear between
+            // the featured image and the descriptive text (same behavior as bugs)
+            const biterWrapperEl = v.querySelector('.biter-wrapper');
+            if(biterWrapperEl){
+              const biterDataEl = biterWrapperEl.querySelector('.biter-data');
+              if(biterDataEl) biterWrapperEl.insertBefore(wrapper, biterDataEl);
+              else v.appendChild(wrapper);
+            } else {
+              v.appendChild(wrapper);
+            }
           }
         }
       }catch(e){ console.debug('Could not load thumbnails for', path, e); }
@@ -1053,6 +1062,39 @@ window.showPlantImage = function(path){
     }
 
     v.innerHTML = headerHtml + imageHtml + `<div class="biter-wrapper"><div class="biter-data">${contentHtml}</div></div>`;
+    // load thumbnails for this plant directory similar to other views
+    (async function(){
+      try{
+        const dir = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
+        const dirParts = dir.split('/').filter(p=>p.length>0);
+        const clsLower = dirParts.length >= 2 ? dirParts[1].toLowerCase() : 'plants';
+        const manifestPaths = [
+          `images/${clsLower}/manifest.json`,
+          `./images/${clsLower}/manifest.json`,
+          `/images/${clsLower}/manifest.json`
+        ];
+        let files = [];
+        for(const mp of manifestPaths){
+          try{ const r = await fetch(mp, {cache:'no-store'}); if(r && r.ok){ let raw = await r.json(); if(!Array.isArray(raw)){ if(typeof raw === 'string') raw = [raw]; else if(raw && typeof raw === 'object'){ if(Array.isArray(raw.files)) raw = raw.files; else if(Array.isArray(raw.paths)) raw = raw.paths; else { try{ raw = Object.values(raw).flat().filter(v=>typeof v === 'string'); }catch(e){ raw = []; } } } else raw = []; } files = raw; break; } }catch(e){}
+        }
+        if(Array.isArray(files) && files.length){
+          const subdirName = dirParts.length >= 3 ? dirParts[2].toLowerCase() : (typeof baseRaw === 'string' ? baseRaw.toLowerCase() : null);
+          const thumbFiles = files.filter(p => { const parts = p.split('/'); return parts.length >= 3 && parts[2] && subdirName && parts[2].toLowerCase() === subdirName && parts.includes('thumbnails'); });
+          let thumbs = thumbFiles;
+          if(!thumbs.length){ const imgs = files.filter(p => { const parts = p.split('/'); return parts.length >= 3 && parts[2] && subdirName && parts[2].toLowerCase() === subdirName && !parts.includes('thumbnails'); }); thumbs = imgs.map(p => { const parts = p.split('/'); const filename = parts.pop(); const base = parts.slice(0,3).join('/'); return `${base}/thumbnails/${filename}`; }); }
+          if(thumbs.length){ const wrapper = document.createElement('div'); wrapper.className='detail-thumbs-wrapper'; const grid = document.createElement('div'); grid.className='detail-thumbs'; for(const t of thumbs){ const card = document.createElement('div'); card.className='detail-thumb-card'; const imgEl = document.createElement('img'); imgEl.src = encodeURI(t); imgEl.alt = t.split('/').pop(); imgEl.loading='lazy'; imgEl.addEventListener('error', ()=>{ card.style.display='none'; }); const bigPath = (typeof t === 'string') ? t.replace(/\/thumbnails\//i, '/') : t; imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(bigPath)); }); card.appendChild(imgEl); grid.appendChild(card); } wrapper.appendChild(grid); // insert thumbnails before the textual biter-data so they appear between the featured image and the descriptive text
+            const biterWrapperEl = v.querySelector('.biter-wrapper');
+            if(biterWrapperEl){
+              const biterDataEl = biterWrapperEl.querySelector('.biter-data');
+              if(biterDataEl) biterWrapperEl.insertBefore(wrapper, biterDataEl);
+              else v.appendChild(wrapper);
+            } else {
+              v.appendChild(wrapper);
+            }
+          }
+        }
+      }catch(e){ console.debug('Could not load thumbnails for', path, e); }
+    })();
     if(window.showView) window.showView('plant-image');
     else {
       const views = document.querySelectorAll('.view');

@@ -16,3 +16,4 @@ git push origin main
 # cd D:\GitPage
 # python -m http.server 8000
 # Open http://localhost:8000
+# stop by Ctrl+C

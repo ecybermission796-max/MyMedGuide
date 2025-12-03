@@ -95,12 +95,13 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
 .search-btn{background:transparent;border:0;padding:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
 .search-controls{width:100%;display:flex;justify-content:center;align-items:center;gap:8px}
 .search-controls select{width:220px;padding:8px;border-radius:8px;border:1px solid #ccc}
-.search-label{color:#fff;font-weight:600;margin-right:6px}
+.search-label{color:#000;font-weight:600;margin-right:6px}
 
 /* Search result grid */
 .search-grid{max-width:var(--max-width);margin:0 auto;padding:6px}
 .search-card{background:var(--card-bg);border-radius:8px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,0.06);}
-.search-card img{width:100%;height:140px;object-fit:cover;display:block}
+.search-card{background:var(--card-bg);border-radius:8px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,0.06);display:flex;flex-direction:column;align-items:center;padding-bottom:12px}
+.search-card img{width:100%;height:120px;max-height:140px;object-fit:contain;object-position:center center;display:block;background:#f6f6f6}
 .search-card .result-name{padding:8px;color:#222;font-weight:600}
 @media (max-width:900px){ .search-card{ width:45%; } }
 @media (max-width:600px){ .search-card{ width:90%; } }
@@ -126,7 +127,7 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 }
 .big-btn{background:linear-gradient(180deg,var(--accent),#234b7a);color:white;border:none;padding:18px;border-radius:12px;font-size:1rem;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.25);display: flex;align-items: center;justify-content: center}
 .small{padding:10px 14px;border-radius:8px;background:#eee;border:0}
-.view{display:none;padding:20px;padding-top:calc(var(--top-controls-height) + 8px)}
+.view{display:none;padding:20px;padding-top:calc(var(--top-controls-height) + 28px)}
 .view.active{display:block}
 .view-header{display:flex;align-items:center;justify-content:center;margin-bottom:12px}
 .view-header h2{margin:0;text-align:center}
@@ -198,12 +199,13 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 
 /* Thumbnails grid for detail views */
 .detail-thumbs-wrapper{max-width:var(--max-width);margin:10px auto;padding:8px;text-align:center}
-.detail-thumbs{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;justify-items:center;align-items:center}
-.detail-thumb-card{width:100%;max-width:120px}
+/* Use flexbox for the thumbnail row so the group is centered regardless of count */
+.detail-thumbs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.detail-thumb-card{flex:0 0 120px;width:120px;max-width:120px}
 .detail-thumb-card img{width:100%;height:80px;object-fit:cover;border-radius:6px;cursor:pointer;border:1px solid rgba(0,0,0,0.06)}
-@media (max-width:1200px){ .detail-thumbs{grid-template-columns:repeat(6,1fr)} }
-@media (max-width:900px){ .detail-thumbs{grid-template-columns:repeat(4,1fr)} .detail-thumb-card img{height:70px} }
-@media (max-width:600px){ .detail-thumbs{grid-template-columns:repeat(2,1fr)} .detail-thumb-card img{height:60px} }
+@media (max-width:1200px){ .detail-thumb-card{flex:0 0 110px;width:110px;max-width:110px} }
+@media (max-width:900px){ .detail-thumb-card{flex:0 0 90px;width:90px;max-width:90px} .detail-thumb-card img{height:70px} }
+@media (max-width:600px){ .detail-thumb-card{flex:0 0 46%;width:46%;max-width:46%} .detail-thumb-card img{height:60px} }
 
 /* Floating overlay */
 .floating-overlay{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:100000;padding:20px}
@@ -222,7 +224,9 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
   max-width: 900px;
   margin: 12px auto;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   background: transparent;
   padding: 0;
 }
@@ -231,10 +235,20 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 #plant-image .biter-data {
   width: 100%;
   max-width: 900px;
-  margin: 0 auto;
+  margin: 8px auto 0 auto;
   padding: 12px;
   box-sizing: border-box;
   background: transparent;
+  clear: both;
+}
+
+/* Ensure dynamically-inserted detail views are not overlapped by the top banner */
+#bug-image, #animal-image, #plant-image {
+  padding-top: calc(var(--top-controls-height) + 28px);
+}
+/* Search results need extra offset because cards sit higher visually; increase padding to avoid clipping */
+#search-results {
+  padding-top: calc(var(--top-controls-height) + 60px);
 }
 #bug-image .bug-desc, #animal-image .bug-desc, #plant-image .bug-desc{
   max-width:80%;
