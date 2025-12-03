@@ -1,1 +1,9 @@
-﻿"images/animals/German_Shepherd.png"
+﻿[
+	"images/animals/German_Shepherd.png",
+	"images/animals/German_Shepherd/dog.jpg",
+	"images/animals/German_Shepherd/bite.jpg",
+	"images/animals/German_Shepherd/bite_1.jpg",
+	"images/animals/German_Shepherd/thumbnails/dog.jpg",
+	"images/animals/German_Shepherd/thumbnails/bite.jpg",
+	"images/animals/German_Shepherd/thumbnails/bite_1.jpg"
+]

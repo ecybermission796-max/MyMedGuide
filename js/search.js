@@ -91,13 +91,14 @@
 
     items.forEach(it => {
       const card = document.createElement('div'); card.className = 'search-card'; card.style.width = '220px'; card.style.textAlign = 'center';
-      const a = document.createElement('a'); a.href = '#'; a.className = 'result-link';
-      a.addEventListener('click', (ev)=>{ ev.preventDefault();
-        // open a duplicate page and request the detail view via hash params
-        const params = new URLSearchParams({ action: 'detail', cls: it.class, kw: it.keyword, img: it.img || '' });
-        const url = window.location.pathname + '#' + params.toString();
-        window.open(url, '_blank');
-      });
+      const params = new URLSearchParams({ action: 'detail', cls: it.class, kw: it.keyword, img: it.img || '' });
+      const url = window.location.pathname + '#' + params.toString();
+      const a = document.createElement('a');
+      a.href = url;
+      a.className = 'result-link';
+      // force open in new tab like Ctrl+Click
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
       const img = document.createElement('img'); img.src = it.img ? encodeURI(it.img) : ''; img.alt = it.keyword; img.style.maxWidth = '100%'; img.style.height = '140px'; img.style.objectFit = 'cover'; img.style.display = 'block'; img.style.margin = '0 auto';
       // fallback: if encoded URL fails to load, try the raw path (some manifests may already be encoded)
       img.onerror = () => { if(it.img && img.src !== it.img) img.src = it.img; };
