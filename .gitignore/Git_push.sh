@@ -14,6 +14,14 @@ git push origin main
 
 
 # cd D:\GitPage
+# Open http://localhost:8000
+# stop by Ctrl+C
+
+# cd D:\GitPage
+# API key is now loaded from .env file automatically
+# No need to set $env:GOOGLE_VISION_API_KEY manually
+node manifest-generator-server.js
+#open in browser http://localhost:3001
 # python -m http.server 8000
 # Open http://localhost:8000
 # stop by Ctrl+C
