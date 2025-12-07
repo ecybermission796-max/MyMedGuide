@@ -1,0 +1,29 @@
+{
+  "name": "gitpage",
+  "version": "1.0.0",
+  "description": "",
+  "main": "manifest-generator-server.js",
+  "scripts": {
+    "start": "node manifest-generator-server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ecybermission796-max/MyMedGuide.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/ecybermission796-max/MyMedGuide/issues"
+  },
+  "homepage": "https://github.com/ecybermission796-max/MyMedGuide#readme",
+  "dependencies": {
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "node-fetch": "^3.3.2"
+  }
+}
