@@ -190,22 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const a = document.createElement('a'); 
       a.href = url; 
       a.className = 'result-link';
-      
-      // Handle click to trigger modal popup
-      a.addEventListener('click', (e) => {
-        e.preventDefault();
-        const cls = it.class.toLowerCase();
-        const imgPath = it.img || '';
-        
-        // Call the appropriate show function based on class
-        if(cls === 'bugs' && window.showBugImage) {
-          window.showBugImage(imgPath);
-        } else if(cls === 'animals' && window.showAnimalImage) {
-          window.showAnimalImage(imgPath);
-        } else if(cls === 'plants' && window.showPlantImage) {
-          window.showPlantImage(imgPath);
-        }
-      });
+      // Open in new tab like search results
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
       
       const img = document.createElement('img'); 
       img.src = it.img ? encodeURI(it.img) : ''; 
