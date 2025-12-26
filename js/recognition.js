@@ -36,37 +36,79 @@ document.addEventListener('DOMContentLoaded', () => {
     }catch(e){}
   });
 
-  // Submit button - send the uploaded image to local /api/recognize endpoint (background search)
+  // Submit button - perform local search using filename as keywords
   if(submitBtn){
     submitBtn.addEventListener('click', async () => {
       if(!window._uploadedFile){ showToast('Please upload an image first'); return; }
       
-      // Check if backend is configured
-      if(window.API_CONFIG && !window.API_CONFIG.IS_CONFIGURED){
-        showToast('Image recognition backend not configured yet. Please contact the site administrator.', 4000);
-        return;
-      }
+      // Extract keywords from filename
+      const file = window._uploadedFile;
+      const keywords = (file.name || '').replace(/\.[^.]+$/, '').replace(/[._\-]+/g,' ').trim();
       
+      if(!keywords){ showToast('Could not extract keywords from filename'); return; }
+      
+      showToast('Searching local index...');
       try{
-        const file = window._uploadedFile;
-        const b64 = await fileToBase64(file);
-        // strip prefix like data:image/png;base64,
-        const parts = b64.split(','); const payload = parts.length>1 ? parts[1] : parts[0];
-        const apiUrl = (window.API_CONFIG && window.API_CONFIG.BASE_URL) ? window.API_CONFIG.BASE_URL + '/api/recognize' : '/api/recognize';
-        const r = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image: payload }) });
-        if(!r.ok){ const txt = await r.text(); console.error('recognize failed', r.status, txt); showToast('Recognition failed'); return; }
-        const j = await r.json();
-        if(j.error){ showToast('Recognition error: '+j.error); return; }
-        // populate helper keywords with top candidates
-        if(recKeywords && j.candidates && j.candidates.length) recKeywords.value = j.candidates.slice(0,3).join(', ');
-        if(recHelper) recHelper.classList.remove('hidden');
-        // store results in localStorage and open a new tab to display them
-        const results = (j.matches && j.matches.length > 0) ? j.matches : [];
-        const fallback = (j.fallbackPages || []).slice(0,5);
-        localStorage.setItem('recognitionResults', JSON.stringify({ matches: results, fallback, candidates: j.candidates || [] }));
+        const res = await fetch('data/biterdata_index.json', {cache: 'no-store'});
+        if(!res.ok) throw new Error('Index load failed');
+        const index = await res.json();
+        const tokens = keywords.toLowerCase().split(/[,;\s]+/).map(s=>s.trim()).filter(Boolean);
+        
+        // score entries by number of matched tokens (keyword, Scientific_name, and Other_name)
+        const scored = [];
+        for(const key of Object.keys(index)){
+          const entry = index[key];
+          const name = (key||'').toLowerCase();
+          const sciName = (entry.Scientific_name||'').toLowerCase();
+          const otherName = (entry.Other_name||'').toLowerCase();
+          let matchCount = 0;
+          for(const t of tokens){
+            if(name.includes(t)) matchCount += 3; // stronger weight for name match
+            else if(sciName.includes(t)) matchCount += 2;
+            else if(otherName.includes(t)) matchCount += 2;
+          }
+          if(matchCount>0) scored.push({ key, class: entry.class, score: matchCount });
+        }
+        scored.sort((a,b)=>b.score - a.score);
+        const top = scored.slice(0,3);
+        
+        if(top.length === 0){
+          showToast('No local matches found');
+          return;
+        }
+        
+        // for each top result, try to find an image in class manifest
+        const items = [];
+        for(const it of top){
+          let imgPath = await findImageForKeyword(it.key, it.class);
+          // If not found in manifest, construct default path and test it
+          if(!imgPath){
+            const normalized = it.key.replace(/[(),']/g, '').replace(/[ \-]+/g, '_').toLowerCase();
+            const possiblePaths = [
+              `images/${it.class.toLowerCase()}/${normalized}.png`,
+              `images/${it.class.toLowerCase()}/${normalized}.jpg`
+            ];
+            // Test which one exists
+            for(const testPath of possiblePaths){
+              try{
+                const testResp = await fetch(testPath, {method: 'HEAD', cache: 'no-store'});
+                if(testResp && testResp.ok){
+                  imgPath = testPath;
+                  break;
+                }
+              }catch(e){/*ignore*/}
+            }
+            // Default to .png if neither works (will show error in browser)
+            if(!imgPath) imgPath = possiblePaths[0];
+          }
+          items.push({ keyword: it.key, class: it.class, img: imgPath });
+        }
+        
+        // Store results in localStorage and open a new tab to display them
+        localStorage.setItem('recognitionResults', JSON.stringify({ matches: items, fallback: [], candidates: [] }));
         // open new tab with results page
         window.open(window.location.pathname + '#recognition-results', '_blank');
-      }catch(e){ console.error(e); showToast('Recognition error'); }
+      }catch(e){ console.error(e); showToast('Local search failed'); }
     });
   }
 
