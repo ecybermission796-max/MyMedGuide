@@ -88,18 +88,18 @@ document.addEventListener('DOMContentLoaded', () => {
         if(!res.ok) throw new Error('Index load failed');
         const index = await res.json();
         const tokens = raw.toLowerCase().split(/[,;\s]+/).map(s=>s.trim()).filter(Boolean);
-        // score entries by number of matched tokens (keyword and OtherKeywords)
+        // score entries by number of matched tokens (keyword, Scientific_name, and Other_name)
         const scored = [];
         for(const key of Object.keys(index)){
           const entry = index[key];
           const name = (key||'').toLowerCase();
-          const others = (entry.OtherKeywords||[]).map(o=>o.toLowerCase());
+          const sciName = (entry.Scientific_name||'').toLowerCase();
+          const otherName = (entry.Other_name||'').toLowerCase();
           let matchCount = 0;
           for(const t of tokens){
             if(name.includes(t)) matchCount += 3; // stronger weight for name match
-            else {
-              for(const ok of others){ if(ok.includes(t)){ matchCount += 2; break; } }
-            }
+            else if(sciName.includes(t)) matchCount += 2;
+            else if(otherName.includes(t)) matchCount += 2;
           }
           if(matchCount>0) scored.push({ key, class: entry.class, score: matchCount });
         }
@@ -113,7 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // for each top result, try to find an image in class manifest
         const items = [];
         for(const it of top){
-          const imgPath = await findImageForKeyword(it.key, it.class);
+          let imgPath = await findImageForKeyword(it.key, it.class);
+          // If not found in manifest, construct default path
+          if(!imgPath){
+            const normalized = it.key.replace(/[(),']/g, '').replace(/[ \-]+/g, '_').toLowerCase();
+            imgPath = `images/${it.class.toLowerCase()}/${normalized}.png`;
+          }
           items.push({ keyword: it.key, class: it.class, img: imgPath });
         }
         renderLocalResults(items);
