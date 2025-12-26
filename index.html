@@ -97,7 +97,8 @@
       <div class="content">
         <div class="rec-controls">
           <p>Upload a photo to search for similar images or prepare for AI recognition integration.</p>
-          <input id="file-input" type="file" accept="image/*" />
+          <label for="file-input" class="file-upload-label">Choose Image</label>
+          <input id="file-input" type="file" accept="image/*" style="display:none;" />
         </div>
 
         <div class="rec-frame">
@@ -105,7 +106,7 @@
         </div>
 
         <div id="rec-actions" class="rec-actions">
-          <button id="search-similar" class="small">Search similar (placeholder)</button>
+          <button id="search-similar" class="small">Search Similar</button>
           <div id="rec-helper" class="rec-helper hidden">
             <p>Google Image search opened. Paste top candidate names (comma-separated) below or edit keywords and click <strong>Search local index</strong>.</p>
             <input id="rec-keywords" type="text" placeholder="e.g. spider, hourglass, red mark" aria-label="Recognition keywords" />
