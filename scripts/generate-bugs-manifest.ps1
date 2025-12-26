@@ -43,8 +43,9 @@ foreach ($dir in $keywordDirs) {
 # Convert to JSON
 $json = $manifest | ConvertTo-Json -Depth 3
 
-# Write to file
-$json | Out-File -FilePath $outFile -Encoding UTF8
+# Write to file without BOM
+$fullPath = (Resolve-Path $targetDir).Path + "\manifest.json"
+[System.IO.File]::WriteAllText($fullPath, $json)
 
 Write-Host "Generated manifest: $outFile"
 Write-Host "Total keywords: $($keywordDirs.Count)"
