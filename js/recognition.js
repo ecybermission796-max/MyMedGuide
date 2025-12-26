@@ -163,6 +163,9 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         v.innerHTML = `<header class="view-header"><h2>Recognition Results</h2></header><div class="placeholder">No local matches found.</div>`;
       }
+      // Make the results section visible
+      v.style.display = 'block';
+      v.scrollIntoView({ behavior: 'smooth', block: 'start' });
       return;
     }
     
@@ -212,6 +215,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     v.innerHTML = `<header class="view-header"><h2>Recognition Results - Local Matches</h2></header>`; 
     v.appendChild(container);
+    
+    // Make the results section visible and scroll to it
+    v.style.display = 'block';
+    v.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
 });
