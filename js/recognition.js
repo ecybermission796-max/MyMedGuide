@@ -59,6 +59,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const base64Data = await fileToBase64(file);
         const base64Image = base64Data.split(',')[1];
         
+        // Determine mime type
+        let mimeType = file.type;
+        if(!mimeType || !mimeType.startsWith('image/')){
+          // Fallback based on file extension
+          const ext = file.name.split('.').pop().toLowerCase();
+          if(ext === 'jpg' || ext === 'jpeg') mimeType = 'image/jpeg';
+          else if(ext === 'png') mimeType = 'image/png';
+          else if(ext === 'gif') mimeType = 'image/gif';
+          else if(ext === 'webp') mimeType = 'image/webp';
+          else mimeType = 'image/jpeg'; // default
+        }
+        
+        console.log('Sending to Gemini - mime type:', mimeType, 'file size:', base64Image.length);
+        
         // Call Google AI Gemini API
         const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GOOGLE_AI_API_KEY}`, {
           method: 'POST',
@@ -73,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 {
                   inline_data: {
-                    mime_type: file.type,
+                    mime_type: mimeType,
                     data: base64Image
                   }
                 }
@@ -83,7 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if(!response.ok){
-          throw new Error(`Google AI API error: ${response.status}`);
+          const errorText = await response.text();
+          console.error('Google AI error response:', errorText);
+          throw new Error(`Google AI API error: ${response.status} - ${errorText}`);
         }
 
         const result = await response.json();
@@ -96,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if(!aiText){
-          showStatus('Google AI returned no response');
+          showStatus('Google AI returned no response. Raw response: ' + JSON.stringify(result));
           showToast('No response from AI');
           return;
         }
@@ -111,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }catch(e){
         console.error('Google AI error:', e);
         showStatus('Error: ' + e.message);
-        showToast('AI recognition failed: ' + e.message, 4000);
+        showToast('AI recognition failed. Check console for details.', 4000);
       }
     });
   }
