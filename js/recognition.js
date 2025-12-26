@@ -41,18 +41,28 @@ document.addEventListener('DOMContentLoaded', () => {
     submitBtn.addEventListener('click', async () => {
       if(!window._uploadedFile){ showToast('Please upload an image first'); return; }
       
-      // Extract keywords from filename
+      // Extract keywords from filename OR use manually entered keywords
       const file = window._uploadedFile;
-      const keywords = (file.name || '').replace(/\.[^.]+$/, '').replace(/[._\-]+/g,' ').trim();
+      let keywords = '';
       
-      if(!keywords){ showToast('Could not extract keywords from filename'); return; }
+      // First try to use manually entered keywords from the input field
+      if(recKeywords && recKeywords.value && recKeywords.value.trim()){
+        keywords = recKeywords.value.trim();
+      } else {
+        // Fall back to filename
+        keywords = (file.name || '').replace(/\.[^.]+$/, '').replace(/[._\-]+/g,' ').trim();
+      }
       
+      if(!keywords){ showToast('Please enter keywords or use a descriptive filename'); return; }
+      
+      console.log('Recognition search - filename:', file.name, 'keywords:', keywords);
       showToast('Searching local index...');
       try{
         const res = await fetch('data/biterdata_index.json', {cache: 'no-store'});
         if(!res.ok) throw new Error('Index load failed');
         const index = await res.json();
         const tokens = keywords.toLowerCase().split(/[,;\s]+/).map(s=>s.trim()).filter(Boolean);
+        console.log('Recognition search - tokens:', tokens);
         
         // score entries by number of matched tokens (keyword, Scientific_name, and Other_name)
         const scored = [];
@@ -72,8 +82,9 @@ document.addEventListener('DOMContentLoaded', () => {
         scored.sort((a,b)=>b.score - a.score);
         const top = scored.slice(0,3);
         
+        console.log('Recognition search - scored results:', scored.length, 'top matches:', top);
         if(top.length === 0){
-          showToast('No local matches found');
+          showToast('No local matches found. Try editing the keywords field with descriptive terms.');
           return;
         }
         
