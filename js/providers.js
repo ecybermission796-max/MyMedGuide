@@ -75,14 +75,14 @@ window.initProviders = async function(){
   
   // Fast amenity-based search for initial load
   async function searchByAmenity(lat, lon, radiusMeters) {
-    const overpassQuery = `[out:json][timeout:10];
+    const overpassQuery = `[out:json][timeout:5];
       (
         node["amenity"="hospital"](around:${radiusMeters},${lat},${lon});
         way["amenity"="hospital"](around:${radiusMeters},${lat},${lon});
-        node["amenity"="clinic"]["healthcare"="clinic"](around:${radiusMeters},${lat},${lon});
-        way["amenity"="clinic"]["healthcare"="clinic"](around:${radiusMeters},${lat},${lon});
+        node["amenity"="clinic"](around:${radiusMeters},${lat},${lon});
+        way["amenity"="clinic"](around:${radiusMeters},${lat},${lon});
       );
-      out center;`;
+      out center;
     
     const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(overpassQuery);
     
@@ -99,7 +99,7 @@ window.initProviders = async function(){
   
   // Helper function to search by keyword (for supplementary searches)
   async function searchByKeyword(keyword, lat, lon, radiusMeters) {
-    const overpassQuery = `[out:json][timeout:10];
+    const overpassQuery = `[out:json][timeout:5];
       (
         node["name"~"${keyword}",i]["amenity"~"hospital|clinic"](around:${radiusMeters},${lat},${lon});
         way["name"~"${keyword}",i]["amenity"~"hospital|clinic"](around:${radiusMeters},${lat},${lon});
@@ -162,6 +162,68 @@ window.initProviders = async function(){
     }).filter(p => p !== null);
   }
   
+  // Display results and markers
+  function displayResults(providers) {
+    // Clear existing markers
+    markers.forEach(m => map.removeLayer(m));
+    markers = [];
+    
+    // Add numbered markers
+    providers.forEach((provider, index) => {
+      const number = index + 1;
+      const marker = L.marker([provider.lat, provider.lon], {
+        icon: createNumberedIcon(number)
+      }).addTo(map);
+      
+      const info = `
+        <div style="min-width:200px;">
+          <strong>${number}. ${provider.name}</strong><br>
+          <small>${provider.type}</small><br>
+          ${provider.address}<br>
+          ${provider.phone ? `Tel: ${provider.phone}<br>` : ''}
+          <em>${provider.distance.toFixed(2)} miles away</em>
+        </div>
+      `;
+      marker.bindPopup(info);
+      
+      // Scroll to corresponding result when marker is clicked
+      marker.on('click', () => {
+        const resultDiv = document.getElementById(`provider-${index}`);
+        if(resultDiv) {
+          resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          resultDiv.style.background = '#ffe0e0';
+          setTimeout(() => {
+            resultDiv.style.background = 'white';
+          }, 1500);
+        }
+      });
+      
+      markers.push(marker);
+    });
+    
+    // Display results list
+    let resultsHTML = `<div style="margin-bottom:10px; font-weight:bold; border-bottom: 2px solid #e74c3c; padding-bottom:5px;">Found ${providers.length} provider(s)</div>`;
+    providers.forEach((provider, index) => {
+      const number = index + 1;
+      resultsHTML += `
+        <div id="provider-${index}" style="margin-bottom:15px; padding:10px; background:white; border-radius:5px; border-left: 3px solid #e74c3c; cursor:pointer; transition: background 0.3s;" 
+             onclick="document.querySelectorAll('.leaflet-marker-icon')[${index}].click()">
+          <div style="display:flex; align-items:start;">
+            <div style="background:#e74c3c; color:white; border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-weight:bold; margin-right:10px; flex-shrink:0;">${number}</div>
+            <div style="flex:1;">
+              <strong>${provider.name}</strong><br>
+              <small style="color:#666;">${provider.type}</small><br>
+              <small>${provider.address}</small><br>
+              ${provider.phone ? `<small>📞 ${provider.phone}</small><br>` : ''}
+              <small style="color:#e74c3c; font-weight:bold;">📍 ${provider.distance.toFixed(2)} mi</small>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    resultsPanel.innerHTML = resultsHTML;
+  }
+  
   async function showMarkers(center, radiusMiles = 10){
     // Prevent concurrent requests
     if(isLoading) return;
@@ -177,14 +239,17 @@ window.initProviders = async function(){
     resultsPanel.innerHTML = '<div style="color:#666; text-align:center; padding:20px;">Loading providers...</div>';
     
     try {
-      let allProviders = [];
-      
       // Start with fast amenity-based search for hospitals and clinics
       const amenityElements = await searchByAmenity(lat, lon, radiusMeters);
-      const amenityProviders = processElements(amenityElements, lat, lon);
-      allProviders = amenityProviders;
+      let allProviders = processElements(amenityElements, lat, lon);
       
-      // If we don't have 20 results, supplement with keyword searches
+      // Display initial results immediately
+      if(allProviders.length > 0) {
+        allProviders.sort((a, b) => a.distance - b.distance);
+        displayResults(allProviders.slice(0, 20));
+      }
+      
+      // If we don't have 20 results, supplement with keyword searches in background
       if(allProviders.length < 20) {
         const searchOrder = [
           { keyword: 'emergency', type: 'Emergency Room' },
@@ -195,18 +260,29 @@ window.initProviders = async function(){
         for(const search of searchOrder) {
           if(allProviders.length >= 20) break;
           
-          const elements = await searchByKeyword(search.keyword, lat, lon, radiusMeters);
-          const providers = processElements(elements, lat, lon, search.type);
-          
-          // Add new providers (avoid duplicates by checking coordinates)
-          providers.forEach(p => {
-            const isDuplicate = allProviders.some(existing => 
-              Math.abs(existing.lat - p.lat) < 0.0001 && Math.abs(existing.lon - p.lon) < 0.0001
-            );
-            if(!isDuplicate) {
-              allProviders.push(p);
+          try {
+            const elements = await searchByKeyword(search.keyword, lat, lon, radiusMeters);
+            const providers = processElements(elements, lat, lon, search.type);
+            
+            // Add new providers (avoid duplicates)
+            providers.forEach(p => {
+              const isDuplicate = allProviders.some(existing => 
+                Math.abs(existing.lat - p.lat) < 0.0001 && Math.abs(existing.lon - p.lon) < 0.0001
+              );
+              if(!isDuplicate) {
+                allProviders.push(p);
+              }
+            });
+            
+            // Update display with new results
+            if(providers.length > 0) {
+              allProviders.sort((a, b) => a.distance - b.distance);
+              displayResults(allProviders.slice(0, 20));
             }
-          });
+          } catch(err) {
+            console.warn(`Keyword search for ${search.keyword} failed:`, err);
+            // Continue with other searches
+          }
         }
       }
       
@@ -216,68 +292,6 @@ window.initProviders = async function(){
         resultsPanel.innerHTML = '<div style="color:#666; text-align:center; padding:20px;">No providers found in this area</div>';
         return;
       }
-      
-      // Sort by distance and limit to top 20
-      allProviders.sort((a, b) => a.distance - b.distance);
-      allProviders = allProviders.slice(0, 20);
-      
-      currentProviders = allProviders;
-      
-      // Add numbered markers
-      allProviders.forEach((provider, index) => {
-        const number = index + 1;
-        const marker = L.marker([provider.lat, provider.lon], {
-          icon: createNumberedIcon(number)
-        }).addTo(map);
-        
-        const info = `
-          <div style="min-width:200px;">
-            <strong>${number}. ${provider.name}</strong><br>
-            <small>${provider.type}</small><br>
-            ${provider.address}<br>
-            ${provider.phone ? `Tel: ${provider.phone}<br>` : ''}
-            <em>${provider.distance.toFixed(2)} miles away</em>
-          </div>
-        `;
-        marker.bindPopup(info);
-        
-        // Scroll to corresponding result when marker is clicked
-        marker.on('click', () => {
-          const resultDiv = document.getElementById(`provider-${index}`);
-          if(resultDiv) {
-            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            // Highlight the result briefly
-            resultDiv.style.background = '#ffe0e0';
-            setTimeout(() => {
-              resultDiv.style.background = 'white';
-            }, 1500);
-          }
-        });
-        
-        markers.push(marker);
-      });
-      
-      // Display results list
-      let resultsHTML = `<div style="margin-bottom:10px; font-weight:bold; border-bottom: 2px solid #e74c3c; padding-bottom:5px;">Found ${allProviders.length} provider(s)</div>`;
-      allProviders.forEach((provider, index) => {
-        const number = index + 1;
-        resultsHTML += `
-          <div id="provider-${index}" style="margin-bottom:15px; padding:10px; background:white; border-radius:5px; border-left: 3px solid #e74c3c; cursor:pointer; transition: background 0.3s;" 
-               onclick="document.querySelectorAll('.leaflet-marker-icon')[${index}].click()">
-            <div style="display:flex; align-items:start;">
-              <div style="background:#e74c3c; color:white; border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-weight:bold; margin-right:10px; flex-shrink:0;">${number}</div>
-              <div style="flex:1;">
-                <strong>${provider.name}</strong><br>
-                <small style="color:#666;">${provider.type}</small><br>
-                <small>${provider.address}</small><br>
-                ${provider.phone ? `<small>📞 ${provider.phone}</small><br>` : ''}
-                <small style="color:#e74c3c; font-weight:bold;">📍 ${provider.distance.toFixed(2)} mi</small>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-      resultsPanel.innerHTML = resultsHTML;
       
     } catch(err) {
       isLoading = false;
