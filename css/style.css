@@ -101,8 +101,10 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
 /* Mobile responsive adjustments */
 @media (max-width: 768px) {
   .buttons {
-    top: 40px; /* moved up by half from 80px */
+    top: 40px; /* cut by half from 80px */
     gap: 3px;
+    flex-wrap: nowrap; /* keep in one row */
+    overflow-x: visible;
   }
   .img-btn img {
     height: 35px !important;
@@ -130,11 +132,13 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
 
 @media (max-width: 480px) {
   .buttons {
-    top: 35px; /* moved up proportionally */
+    top: 20px; /* cut by half from 40px */
     gap: 2px;
+    flex-wrap: nowrap; /* keep in one row */
+    overflow-x: visible;
   }
   .img-btn img {
-    height: 30px !important;
+    height: 28px !important;
   }
   .search-controls select {
     width: 110px;
@@ -148,7 +152,7 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
   }
   /* Top banner scales with button size - approximately half the combined width of 5 buttons */
   .top-banner {
-    width: calc(5 * 30px + 4 * 2px); /* 5 buttons at 30px + 4 gaps at 2px = 158px */
+    width: calc(5 * 28px + 4 * 2px); /* 5 buttons at 28px + 4 gaps at 2px = 148px */
     max-width: 50vw;
   }
 }
@@ -186,7 +190,6 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
   align-items: center;
   z-index: 99999; /* keep nav above all content */
   pointer-events: auto;
-  flex-wrap: wrap;
   max-width: 95vw;
   padding: 0 10px;
 }
@@ -229,7 +232,7 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 /* submit button positioned below the recognition frame */
 .rec-submit{
   display:block;
-  margin:20px auto;
+  margin:100px auto 20px auto;
   padding:12px 32px;
   border-radius:12px;
   background:#4876FF;
