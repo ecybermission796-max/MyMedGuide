@@ -5,10 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const submitBtn = document.getElementById('rec-submit');
   const recStatus = document.getElementById('rec-status');
 
-  // Backend API endpoint
-  const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-    ? 'http://localhost:3001'
-    : 'https://your-backend-server.com'; // Update with your deployed backend URL
+  // Use centralized backend URL from config.js
+  const BACKEND_URL = window.API_CONFIG ? window.API_CONFIG.BASE_URL : 'https://mymedguide.onrender.com';
 
   function showToast(msg, timeout=2500){
     const t = document.getElementById('toast'); 
