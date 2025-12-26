@@ -238,15 +238,9 @@ window.showBugImage = function(path){
   function filenameToKey(fname){
     let base = fname.split('/').pop();
     base = base.replace(/\.(jpg|jpeg|png)$/i,'');
-    // replace underscores, hyphens with spaces, trim and collapse spaces
-    base = base.replace(/[_\-]+/g, ' ').replace(/\s+/g,' ').trim();
-    // normalize diacritics and lower-case
-    try{
-      base = base.normalize('NFD').replace(/\p{Diacritic}/gu,'');
-    }catch(e){
-      // if Unicode property escapes not supported, fallback to simple replacement
-      base = base.replace(/[\u0300-\u036f]/g,'');
-    }
+    // Standardized normalization: 1) Remove parentheses, commas, and apostrophes, 2) Replace spaces/hyphens with underscores, 3) Lowercase
+    base = base.replace(/[(),']/g, '');
+    base = base.replace(/[ \-]+/g, '_');
     return base.toLowerCase();
   }
 
@@ -312,14 +306,11 @@ window.showBugImage = function(path){
       if(info && Array.isArray(info.sections)){
         for(const section of info.sections){
           contentHtml += `<div class="bug-section"><h3>${section.name}</h3>`;
-          for(const item of (section.items || [])){
-            const title = item.title || '';
-            const desc = (item.description || '').toString();
-            contentHtml += `<h4>${title}</h4>`;
-            const parts = desc.split(/\r?\n/).map(p=>p.trim()).filter(p=>p.length>0);
-            if(parts.length){
-              contentHtml += '<p class="bug-desc">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
-            }
+          // New structure: section has description directly, not items array
+          const desc = (section.description || '').toString();
+          const parts = desc.split(/\r?\n/).map(p=>p.trim()).filter(p=>p.length>0);
+          if(parts.length){
+            contentHtml += '<p class="bug-desc">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
           }
           contentHtml += `</div>`;
         }
@@ -331,13 +322,16 @@ window.showBugImage = function(path){
     // Compose final HTML with wrapper/background and limited text width; leave space for thumbnails
     v.innerHTML = headerHtml + imageHtml + `<div class="biter-wrapper"><div class="biter-data">${contentHtml}</div></div>`;
 
-    // after rendering content, attempt to load thumbnails for this directory
+    // after rendering content, attempt to load thumbnails from normalized keyword folder
     (async function(){
       try{
-        // compute directory for the provided path
-        const dir = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
-        const dirParts = dir.split('/').filter(p=>p.length>0);
-        const clsLower = dirParts.length >= 2 ? dirParts[1].toLowerCase() : 'bugs';
+        // Use normalized matched keyword name for thumbnail folder
+        // Apply same normalization as filenameToKey: remove (),' then replace spaces/hyphens with _ then lowercase
+        let normalizedKeyword = matchKey ? matchKey.replace(/[(),']/g, '').replace(/[ \-]+/g, '_').toLowerCase() : keyCandidate;
+        const clsLower = 'bugs';
+        const thumbnailPath = `images/${clsLower}/${normalizedKeyword}/thumbnails/`;
+        
+        // Try to load manifest to find all available images
         const manifestPaths = [
           `images/${clsLower}/manifest.json`,
           `./images/${clsLower}/manifest.json`,
@@ -363,53 +357,62 @@ window.showBugImage = function(path){
             }
           }catch(e){/*ignore*/}
         }
+        
+        // Find thumbnail files for this normalized keyword
+        let thumbs = [];
         if(Array.isArray(files) && files.length){
-          // derive subdirectory name from path, e.g. images/bugs/black_widow/...
-          const dirParts = dir.split('/').filter(p=>p.length>0);
-          // If image is top-level (no subdirectory), fall back to using the
-          // filename (without extension) as the subdirectory name because
-          // many images live in `images/<class>/<basename>/thumbnails/...`.
-          const subdirName = dirParts.length >= 3 ? dirParts[2].toLowerCase() : (typeof baseRaw === 'string' ? baseRaw.toLowerCase() : null);
-          // find thumbnails entries whose path includes the same subdir and 'thumbnails'
-          const thumbFiles = files.filter(p => {
-            const parts = p.split('/');
-            return parts.length >= 3 && parts[2] && subdirName && parts[2].toLowerCase() === subdirName && parts.includes('thumbnails');
-          });
-          let thumbs = thumbFiles;
-          if(!thumbs.length){
-            // fallback: find images in the same subdir and map to thumbnails path
-            const imgs = files.filter(p => { const parts = p.split('/'); return parts.length >= 3 && parts[2] && subdirName && parts[2].toLowerCase() === subdirName && !parts.includes('thumbnails'); });
-            thumbs = imgs.map(p => {
-              const parts = p.split('/'); const filename = parts.pop(); const base = parts.slice(0,3).join('/'); return `${base}/thumbnails/${filename}`;
-            });
-          }
-          // render thumbnails grid, hide broken images via onerror
-          if(thumbs.length){
-            const wrapper = document.createElement('div'); wrapper.className = 'detail-thumbs-wrapper';
-            const grid = document.createElement('div'); grid.className = 'detail-thumbs';
-            for(const t of thumbs){
-              const card = document.createElement('div'); card.className = 'detail-thumb-card';
-              const imgEl = document.createElement('img'); imgEl.src = encodeURI(t); imgEl.alt = t.split('/').pop(); imgEl.loading = 'lazy';
-              imgEl.addEventListener('error', ()=>{ card.style.display='none'; });
-              // clicking a thumbnail should open the corresponding parent (big) image
-              const bigPath = (typeof t === 'string') ? t.replace(/\/thumbnails\//i, '/') : t;
-              imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(bigPath)); });
-              card.appendChild(imgEl); grid.appendChild(card);
-            }
-            wrapper.appendChild(grid);
-            // insert thumbnails before the textual biter-data so they appear between
-            // the featured image and the descriptive text
-            const biterWrapperEl = v.querySelector('.biter-wrapper');
-            if(biterWrapperEl){
-              const biterDataEl = biterWrapperEl.querySelector('.biter-data');
-              if(biterDataEl) biterWrapperEl.insertBefore(wrapper, biterDataEl);
-              else v.appendChild(wrapper);
-            } else {
-              v.appendChild(wrapper);
-            }
+          thumbs = files.filter(p => p.toLowerCase().includes(`/${normalizedKeyword}/thumbnails/`));
+        }
+        
+        // If manifest doesn't have thumbnails, try to fetch them from the normalized keyword directory
+        if(!thumbs.length && matchKey){
+          console.debug('No thumbnails in manifest, trying to fetch from directory:', thumbnailPath);
+          // Try common thumbnail filenames based on the keyword
+          const possibleThumbs = [
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}.jpg`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}.png`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_2.jpg`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_2.png`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_3.jpg`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_3.png`
+          ];
+          // Test each possible thumbnail URL
+          for(const thumbPath of possibleThumbs){
+            try{
+              const testResp = await fetch(thumbPath, {method: 'HEAD', cache: 'no-store'});
+              if(testResp && testResp.ok){
+                thumbs.push(thumbPath);
+              }
+            }catch(e){/*ignore*/}
           }
         }
-      }catch(e){ console.debug('Could not load thumbnails for', path, e); }
+        
+        // render thumbnails grid, hide broken images via onerror
+        if(thumbs.length){
+          const wrapper = document.createElement('div'); wrapper.className = 'detail-thumbs-wrapper';
+          const grid = document.createElement('div'); grid.className = 'detail-thumbs';
+          for(const t of thumbs){
+            const card = document.createElement('div'); card.className = 'detail-thumb-card';
+            const imgEl = document.createElement('img'); imgEl.src = encodeURI(t); imgEl.alt = t.split('/').pop(); imgEl.loading = 'lazy';
+            imgEl.addEventListener('error', ()=>{ card.style.display='none'; });
+            // clicking a thumbnail should open the corresponding parent (big) image
+            const bigPath = (typeof t === 'string') ? t.replace(/\/thumbnails\//i, '/') : t;
+            imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(bigPath)); });
+            card.appendChild(imgEl); grid.appendChild(card);
+          }
+          wrapper.appendChild(grid);
+          // insert thumbnails before the textual biter-data so they appear between
+          // the featured image and the descriptive text
+          const biterWrapperEl = v.querySelector('.biter-wrapper');
+          if(biterWrapperEl){
+            const biterDataEl = biterWrapperEl.querySelector('.biter-data');
+            if(biterDataEl) biterWrapperEl.insertBefore(wrapper, biterDataEl);
+            else v.appendChild(wrapper);
+          } else {
+            v.appendChild(wrapper);
+          }
+        }
+      }catch(e){ console.debug('Could not load thumbnails for', keyCandidate, e); }
     })();
     // activate the view using the app's showView if available so navigation behaves consistently
     if(window.showView) window.showView('bug-image');
@@ -650,12 +653,9 @@ window.showAnimalImage = function(path){
   function filenameToKey(fname){
     let base = fname.split('/').pop();
     base = base.replace(/\.(jpg|jpeg|png)$/i,'');
-    base = base.replace(/[_\-]+/g, ' ').replace(/\s+/g,' ').trim();
-    try{
-      base = base.normalize('NFD').replace(/\p{Diacritic}/gu,'');
-    }catch(e){
-      base = base.replace(/[\u0300-\u036f]/g,'');
-    }
+    // Standardized normalization: 1) Remove parentheses, commas, and apostrophes, 2) Replace spaces/hyphens with underscores, 3) Lowercase
+    base = base.replace(/[(),']/g, '');
+    base = base.replace(/[ \-]+/g, '_');
     return base.toLowerCase();
   }
 
@@ -671,8 +671,9 @@ window.showAnimalImage = function(path){
     const normMap = {};
     keys.forEach(k => {
       const nk = (k || '').toString().trim();
-      let norm = nk.replace(/[_\-]+/g,' ').replace(/\s+/g,' ').trim();
-      try{ norm = norm.normalize('NFD').replace(/\p{Diacritic}/gu,''); }catch(e){ norm = norm.replace(/[\u0300-\u036f]/g,''); }
+      // Standardized normalization: 1) Remove parentheses, commas, and apostrophes, 2) Replace spaces/hyphens with underscores, 3) Lowercase
+      let norm = nk.replace(/[(),']/g, '');
+      norm = norm.replace(/[ \-]+/g, '_');
       norm = norm.toLowerCase();
       normMap[norm] = k;
     });
@@ -681,9 +682,10 @@ window.showAnimalImage = function(path){
     const baseRawLower = baseRaw.trim().toLowerCase();
     const candidates = [];
     candidates.push(baseRawLower);
-    candidates.push(baseRawLower.replace(/[_\-]+/g,' ').replace(/\s+/g,' ').trim());
+    // Standardized normalization for candidates
+    const normalizedCandidate = baseRawLower.replace(/[(),']/g, '').replace(/[ \-]+/g, '_');
+    candidates.push(normalizedCandidate);
     candidates.push(keyCandidate);
-    candidates.push(baseRawLower.replace(/\s+/g,''));
     candidates.push(baseRawLower.replace(/[^\w\s]/g,'').replace(/\s+/g,' ').trim());
     candidates.push(keyCandidate.replace(/[^\w\s]/g,'').replace(/\s+/g,' ').trim());
 
@@ -701,14 +703,11 @@ window.showAnimalImage = function(path){
       if(info && Array.isArray(info.sections)){
         for(const section of info.sections){
           contentHtml += `<div class="animal-section"><h3>${section.name}</h3>`;
-          for(const item of (section.items || [])){
-            const title = item.title || '';
-            const desc = (item.description || '').toString();
-            contentHtml += `<h4>${title}</h4>`;
-            const parts = desc.split(/\r?\n/).map(p=>p.trim()).filter(p=>p.length>0);
-            if(parts.length){
-              contentHtml += '<p class="bug-desc">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
-            }
+          // New structure: section has description directly, not items array
+          const desc = (section.description || '').toString();
+          const parts = desc.split(/\r?\n/).map(p=>p.trim()).filter(p=>p.length>0);
+          if(parts.length){
+            contentHtml += '<p class="bug-desc">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
           }
           contentHtml += `</div>`;
         }
@@ -719,12 +718,14 @@ window.showAnimalImage = function(path){
 
     v.innerHTML = headerHtml + imageHtml + `<div class="biter-wrapper"><div class="biter-data">${contentHtml}</div></div>`;
 
-    // load thumbnails for this animal directory (re-use bug behavior)
+    // load thumbnails for this animal using normalized keyword folder
     (async function(){
       try{
-        const dir = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
-        const dirParts = dir.split('/').filter(p=>p.length>0);
-        const clsLower = dirParts.length >= 2 ? dirParts[1].toLowerCase() : 'animals';
+        // Use normalized matched keyword name for thumbnail folder
+        // Apply same normalization as filenameToKey: remove (),' then replace spaces/hyphens with _ then lowercase
+        let normalizedKeyword = matchKey ? matchKey.replace(/[(),']/g, '').replace(/[ \-]+/g, '_').toLowerCase() : keyCandidate;
+        const clsLower = 'animals';
+        
         const manifestPaths = [
           `images/${clsLower}/manifest.json`,
           `./images/${clsLower}/manifest.json`,
@@ -732,49 +733,76 @@ window.showAnimalImage = function(path){
         ];
         let files = [];
         for(const mp of manifestPaths){
-          try{ const r = await fetch(mp, {cache:'no-store'}); if(r && r.ok){ files = await r.json(); break; } }catch(e){}
+          try{
+            const r = await fetch(mp, {cache:'no-store'});
+            if(r && r.ok){
+              let raw = await r.json();
+              if(!Array.isArray(raw)){
+                if(typeof raw === 'string') raw = [raw];
+                else if(raw && typeof raw === 'object'){
+                  if(Array.isArray(raw.files)) raw = raw.files;
+                  else if(Array.isArray(raw.paths)) raw = raw.paths;
+                  else { try{ raw = Object.values(raw).flat().filter(v=>typeof v === 'string'); }catch(e){ raw = []; } }
+                } else raw = [];
+              }
+              files = raw;
+              break;
+            }
+          }catch(e){/*ignore*/}
         }
+        
+        // Find thumbnail files for this normalized keyword
+        let thumbs = [];
         if(Array.isArray(files) && files.length){
-          const dirLower = dir.toLowerCase();
-          let thumbFiles = files.filter(p => p.toLowerCase().startsWith(dirLower + '/thumbnails/'));
-          // If not found, try using the base filename as the subdirectory name
-          // e.g. `images/animals/German_Shepherd/thumbnails/...` for
-          // `images/animals/German_Shepherd.png` top-level image.
-          if(!thumbFiles.length && typeof baseRaw === 'string'){
-            const altPrefix = `images/${clsLower}/${baseRaw.toLowerCase()}/thumbnails/`;
-            thumbFiles = files.filter(p => p.toLowerCase().startsWith(altPrefix));
-          }
-          let thumbs = thumbFiles;
-          if(!thumbs.length){
-            const imgs = files.filter(p => p.toLowerCase().startsWith(dirLower + '/') && !p.toLowerCase().includes('/thumbnails/'));
-            thumbs = imgs.map(p => `${dir}/thumbnails/${p.split('/').pop()}`);
-          }
-          if(thumbs.length){
-            const wrapper = document.createElement('div'); wrapper.className='detail-thumbs-wrapper';
-            const grid = document.createElement('div'); grid.className='detail-thumbs';
-            for(const t of thumbs){
-              const card = document.createElement('div'); card.className = 'detail-thumb-card';
-              const imgEl = document.createElement('img'); imgEl.src = encodeURI(t); imgEl.alt = t.split('/').pop(); imgEl.loading='lazy';
-              imgEl.addEventListener('error', ()=>{ card.style.display='none'; });
-              // compute parent (big) image path by replacing the thumbnails segment
-              const bigPath = (typeof t === 'string') ? t.replace(/\/thumbnails\//i, '/') : t;
-              imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(bigPath)); });
-              card.appendChild(imgEl); grid.appendChild(card);
-            }
-            wrapper.appendChild(grid);
-            // insert thumbnails before the textual biter-data so they appear between
-            // the featured image and the descriptive text (same behavior as bugs)
-            const biterWrapperEl = v.querySelector('.biter-wrapper');
-            if(biterWrapperEl){
-              const biterDataEl = biterWrapperEl.querySelector('.biter-data');
-              if(biterDataEl) biterWrapperEl.insertBefore(wrapper, biterDataEl);
-              else v.appendChild(wrapper);
-            } else {
-              v.appendChild(wrapper);
-            }
+          thumbs = files.filter(p => p.toLowerCase().includes(`/${normalizedKeyword}/thumbnails/`));
+        }
+        
+        // If manifest doesn't have thumbnails, try to fetch them from the normalized keyword directory
+        if(!thumbs.length && matchKey){
+          console.debug('No thumbnails in manifest, trying to fetch from directory for animals:', normalizedKeyword);
+          const possibleThumbs = [
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}.jpg`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}.png`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_2.jpg`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_2.png`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_3.jpg`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_3.png`
+          ];
+          for(const thumbPath of possibleThumbs){
+            try{
+              const testResp = await fetch(thumbPath, {method: 'HEAD', cache: 'no-store'});
+              if(testResp && testResp.ok){
+                thumbs.push(thumbPath);
+              }
+            }catch(e){/*ignore*/}
           }
         }
-      }catch(e){ console.debug('Could not load thumbnails for', path, e); }
+        
+        if(thumbs.length){
+          const wrapper = document.createElement('div'); wrapper.className='detail-thumbs-wrapper';
+          const grid = document.createElement('div'); grid.className='detail-thumbs';
+          for(const t of thumbs){
+            const card = document.createElement('div'); card.className = 'detail-thumb-card';
+            const imgEl = document.createElement('img'); imgEl.src = encodeURI(t); imgEl.alt = t.split('/').pop(); imgEl.loading='lazy';
+            imgEl.addEventListener('error', ()=>{ card.style.display='none'; });
+            // compute parent (big) image path by replacing the thumbnails segment
+            const bigPath = (typeof t === 'string') ? t.replace(/\/thumbnails\//i, '/') : t;
+            imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(bigPath)); });
+            card.appendChild(imgEl); grid.appendChild(card);
+          }
+          wrapper.appendChild(grid);
+          // insert thumbnails before the textual biter-data so they appear between
+          // the featured image and the descriptive text (same behavior as bugs)
+          const biterWrapperEl = v.querySelector('.biter-wrapper');
+          if(biterWrapperEl){
+            const biterDataEl = biterWrapperEl.querySelector('.biter-data');
+            if(biterDataEl) biterWrapperEl.insertBefore(wrapper, biterDataEl);
+            else v.appendChild(wrapper);
+          } else {
+            v.appendChild(wrapper);
+          }
+        }
+      }catch(e){ console.debug('Could not load thumbnails for', keyCandidate, e); }
     })();
     if(window.showView) window.showView('animal-image');
     else {
@@ -994,12 +1022,9 @@ window.showPlantImage = function(path){
   function filenameToKey(fname){
     let base = fname.split('/').pop();
     base = base.replace(/\.(jpg|jpeg|png)$/i,'');
-    base = base.replace(/[_\-]+/g, ' ').replace(/\s+/g,' ').trim();
-    try{
-      base = base.normalize('NFD').replace(/\p{Diacritic}/gu,'');
-    }catch(e){
-      base = base.replace(/[\u0300-\u036f]/g,'');
-    }
+    // Standardized normalization: 1) Remove parentheses, commas, and apostrophes, 2) Replace spaces/hyphens with underscores, 3) Lowercase
+    base = base.replace(/[(),']/g, '');
+    base = base.replace(/[ \-]+/g, '_');
     return base.toLowerCase();
   }
 
@@ -1015,8 +1040,9 @@ window.showPlantImage = function(path){
     const normMap = {};
     keys.forEach(k => {
       const nk = (k || '').toString().trim();
-      let norm = nk.replace(/[_\-]+/g,' ').replace(/\s+/g,' ').trim();
-      try{ norm = norm.normalize('NFD').replace(/\p{Diacritic}/gu,''); }catch(e){ norm = norm.replace(/[\u0300-\u036f]/g,''); }
+      // Standardized normalization: 1) Remove parentheses, commas, and apostrophes, 2) Replace spaces/hyphens with underscores, 3) Lowercase
+      let norm = nk.replace(/[(),']/g, '');
+      norm = norm.replace(/[ \-]+/g, '_');
       norm = norm.toLowerCase();
       normMap[norm] = k;
     });
@@ -1025,9 +1051,10 @@ window.showPlantImage = function(path){
     const baseRawLower = baseRaw.trim().toLowerCase();
     const candidates = [];
     candidates.push(baseRawLower);
-    candidates.push(baseRawLower.replace(/[_\-]+/g,' ').replace(/\s+/g,' ').trim());
+    // Standardized normalization for candidates
+    const normalizedCandidate = baseRawLower.replace(/[(),']/g, '').replace(/[ \-]+/g, '_');
+    candidates.push(normalizedCandidate);
     candidates.push(keyCandidate);
-    candidates.push(baseRawLower.replace(/\s+/g,''));
     candidates.push(baseRawLower.replace(/[^\w\s]/g,'').replace(/\s+/g,' ').trim());
     candidates.push(keyCandidate.replace(/[^\w\s]/g,'').replace(/\s+/g,' ').trim());
 
@@ -1045,14 +1072,11 @@ window.showPlantImage = function(path){
       if(info && Array.isArray(info.sections)){
         for(const section of info.sections){
           contentHtml += `<div class="plant-section"><h3>${section.name}</h3>`;
-          for(const item of (section.items || [])){
-            const title = item.title || '';
-            const desc = (item.description || '').toString();
-            contentHtml += `<h4>${title}</h4>`;
-            const parts = desc.split(/\r?\n/).map(p=>p.trim()).filter(p=>p.length>0);
-            if(parts.length){
-              contentHtml += '<p class="bug-desc">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
-            }
+          // New structure: section has description directly, not items array
+          const desc = (section.description || '').toString();
+          const parts = desc.split(/\r?\n/).map(p=>p.trim()).filter(p=>p.length>0);
+          if(parts.length){
+            contentHtml += '<p class="bug-desc">' + parts.map(p => escapeHtml(p)).join('<br><br>') + '</p>';
           }
           contentHtml += `</div>`;
         }
@@ -1062,12 +1086,14 @@ window.showPlantImage = function(path){
     }
 
     v.innerHTML = headerHtml + imageHtml + `<div class="biter-wrapper"><div class="biter-data">${contentHtml}</div></div>`;
-    // load thumbnails for this plant directory similar to other views
+    // load thumbnails for this plant using normalized keyword folder
     (async function(){
       try{
-        const dir = path.includes('/') ? path.substring(0, path.lastIndexOf('/')) : '';
-        const dirParts = dir.split('/').filter(p=>p.length>0);
-        const clsLower = dirParts.length >= 2 ? dirParts[1].toLowerCase() : 'plants';
+        // Use normalized matched keyword name for thumbnail folder
+        // Apply same normalization as filenameToKey: remove (),' then replace spaces/hyphens with _ then lowercase
+        let normalizedKeyword = matchKey ? matchKey.replace(/[(),']/g, '').replace(/[ \-]+/g, '_').toLowerCase() : keyCandidate;
+        const clsLower = 'plants';
+        
         const manifestPaths = [
           `images/${clsLower}/manifest.json`,
           `./images/${clsLower}/manifest.json`,
@@ -1077,23 +1103,45 @@ window.showPlantImage = function(path){
         for(const mp of manifestPaths){
           try{ const r = await fetch(mp, {cache:'no-store'}); if(r && r.ok){ let raw = await r.json(); if(!Array.isArray(raw)){ if(typeof raw === 'string') raw = [raw]; else if(raw && typeof raw === 'object'){ if(Array.isArray(raw.files)) raw = raw.files; else if(Array.isArray(raw.paths)) raw = raw.paths; else { try{ raw = Object.values(raw).flat().filter(v=>typeof v === 'string'); }catch(e){ raw = []; } } } else raw = []; } files = raw; break; } }catch(e){}
         }
+        
+        // Find thumbnail files for this normalized keyword
+        let thumbs = [];
         if(Array.isArray(files) && files.length){
-          const subdirName = dirParts.length >= 3 ? dirParts[2].toLowerCase() : (typeof baseRaw === 'string' ? baseRaw.toLowerCase() : null);
-          const thumbFiles = files.filter(p => { const parts = p.split('/'); return parts.length >= 3 && parts[2] && subdirName && parts[2].toLowerCase() === subdirName && parts.includes('thumbnails'); });
-          let thumbs = thumbFiles;
-          if(!thumbs.length){ const imgs = files.filter(p => { const parts = p.split('/'); return parts.length >= 3 && parts[2] && subdirName && parts[2].toLowerCase() === subdirName && !parts.includes('thumbnails'); }); thumbs = imgs.map(p => { const parts = p.split('/'); const filename = parts.pop(); const base = parts.slice(0,3).join('/'); return `${base}/thumbnails/${filename}`; }); }
-          if(thumbs.length){ const wrapper = document.createElement('div'); wrapper.className='detail-thumbs-wrapper'; const grid = document.createElement('div'); grid.className='detail-thumbs'; for(const t of thumbs){ const card = document.createElement('div'); card.className='detail-thumb-card'; const imgEl = document.createElement('img'); imgEl.src = encodeURI(t); imgEl.alt = t.split('/').pop(); imgEl.loading='lazy'; imgEl.addEventListener('error', ()=>{ card.style.display='none'; }); const bigPath = (typeof t === 'string') ? t.replace(/\/thumbnails\//i, '/') : t; imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(bigPath)); }); card.appendChild(imgEl); grid.appendChild(card); } wrapper.appendChild(grid); // insert thumbnails before the textual biter-data so they appear between the featured image and the descriptive text
-            const biterWrapperEl = v.querySelector('.biter-wrapper');
-            if(biterWrapperEl){
-              const biterDataEl = biterWrapperEl.querySelector('.biter-data');
-              if(biterDataEl) biterWrapperEl.insertBefore(wrapper, biterDataEl);
-              else v.appendChild(wrapper);
-            } else {
-              v.appendChild(wrapper);
-            }
+          thumbs = files.filter(p => p.toLowerCase().includes(`/${normalizedKeyword}/thumbnails/`));
+        }
+        
+        // If manifest doesn't have thumbnails, try to fetch them from the normalized keyword directory
+        if(!thumbs.length && matchKey){
+          console.debug('No thumbnails in manifest, trying to fetch from directory for plants:', normalizedKeyword);
+          const possibleThumbs = [
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}.jpg`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}.png`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_2.jpg`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_2.png`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_3.jpg`,
+            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_3.png`
+          ];
+          for(const thumbPath of possibleThumbs){
+            try{
+              const testResp = await fetch(thumbPath, {method: 'HEAD', cache: 'no-store'});
+              if(testResp && testResp.ok){
+                thumbs.push(thumbPath);
+              }
+            }catch(e){/*ignore*/}
           }
         }
-      }catch(e){ console.debug('Could not load thumbnails for', path, e); }
+        
+        if(thumbs.length){ const wrapper = document.createElement('div'); wrapper.className='detail-thumbs-wrapper'; const grid = document.createElement('div'); grid.className='detail-thumbs'; for(const t of thumbs){ const card = document.createElement('div'); card.className='detail-thumb-card'; const imgEl = document.createElement('img'); imgEl.src = encodeURI(t); imgEl.alt = t.split('/').pop(); imgEl.loading='lazy'; imgEl.addEventListener('error', ()=>{ card.style.display='none'; }); const bigPath = (typeof t === 'string') ? t.replace(/\/thumbnails\//i, '/') : t; imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(bigPath)); }); card.appendChild(imgEl); grid.appendChild(card); } wrapper.appendChild(grid); // insert thumbnails before the textual biter-data so they appear between the featured image and the descriptive text
+          const biterWrapperEl = v.querySelector('.biter-wrapper');
+          if(biterWrapperEl){
+            const biterDataEl = biterWrapperEl.querySelector('.biter-data');
+            if(biterDataEl) biterWrapperEl.insertBefore(wrapper, biterDataEl);
+            else v.appendChild(wrapper);
+          } else {
+            v.appendChild(wrapper);
+          }
+        }
+      }catch(e){ console.debug('Could not load thumbnails for', keyCandidate, e); }
     })();
     if(window.showView) window.showView('plant-image');
     else {

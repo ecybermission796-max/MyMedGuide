@@ -1,66 +1,1765 @@
 ﻿{
-    "poison hemlock":  {
-                           "class":  "Plants",
-                           "OtherKeywords":  [
-                                                 "triangular",
-                                                 "lacy",
-                                                 "fern like",
-                                                 "grayish-brown",
-                                                 "smooth",
-                                                 "hollow stem",
-                                                 "purple spot",
-                                                 "coma",
-                                                 "low blood pressure"
-                                             ]
-                       },
-    "human botfly":  {
-                         "class":  "Bugs",
-                         "OtherKeywords":  [
-                                               "chunky",
-                                               "bee-like",
-                                               "yellow",
-                                               "blue abdomen",
-                                               "pain",
-                                               "ichy",
-                                               "swell",
-                                               "larva"
-                                           ]
-                     },
-    "black widow":  {
-                        "class":  "Bugs",
-                        "OtherKeywords":  [
-                                              "black",
-                                              "dark brown",
-                                              "spider",
-                                              "hourglass",
-                                              "red mark",
-                                              "venemous",
-                                              "swell",
-                                              "numbness",
-                                              "muscle ache"
+    "Southwestern Speckled Rattlesnake":  {
+                                              "Other_name":  "",
+                                              "Scientific_name":  "Crotalus mitchellii pyrrhus",
+                                              "Category":  "Snake",
+                                              "class":  "Animals",
+                                              "state":  [
+                                                            "Arizona",
+                                                            "California",
+                                                            "Nevada",
+                                                            "Utah"
+                                                        ]
+                                          },
+    "Dog Flea":  {
+                     "Other_name":  "",
+                     "Scientific_name":  "",
+                     "Category":  "Fleas",
+                     "class":  "Bugs",
+                     "state":  [
+
+                               ]
+                 },
+    "Indian Red Scorpion":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "",
+                                "Category":  "Scorpion",
+                                "class":  "Bugs",
+                                "state":  [
+
                                           ]
+                            },
+    "Texas Coral Snake":  {
+                              "Other_name":  "",
+                              "Scientific_name":  "Micrurus tener",
+                              "Category":  "Snake",
+                              "class":  "Animals",
+                              "state":  [
+                                            "Arkansas",
+                                            "Louisiana",
+                                            "Texas"
+                                        ]
+                          },
+    "Midget Faded Rattlesnake":  {
+                                     "Other_name":  "",
+                                     "Scientific_name":  "Crotalus oreganus concolor",
+                                     "Category":  "Snake",
+                                     "class":  "Animals",
+                                     "state":  [
+                                                   "Colorado",
+                                                   "Utah",
+                                                   "Wyoming"
+                                               ]
+                                 },
+    "Oleander":  {
+                     "Other_name":  "",
+                     "Scientific_name":  "Nerium oleander",
+                     "Category":  "Plants",
+                     "class":  "Plants",
+                     "state":  [
+                                   "California",
+                                   "Florida"
+                               ]
+                 },
+    "Fireweed":  {
+                     "Other_name":  "",
+                     "Scientific_name":  "Kochia scoparia Schrad",
+                     "Category":  "Plants",
+                     "class":  "Plants",
+                     "state":  [
+
+                               ]
+                 },
+    "Cuckoo bees":  {
+                        "Other_name":  "",
+                        "Scientific_name":  "",
+                        "Category":  "Bees",
+                        "class":  "Bugs",
+                        "state":  [
+
+                                  ]
                     },
-    "German Shepherd":  {
-                            "class":  "Animals",
-                            "OtherKeywords":  [
-                                                  "dog",
-                                                  "black",
-                                                  "big dog",
-                                                  "black back",
-                                                  "big ear",
-                                                  "large ear",
-                                                  "rabies",
-                                                  "tentanus"
-                                              ]
-                        },
-    "bed bug":  {
-                    "class":  "Bugs",
-                    "OtherKeywords":  [
-                                          "tiny",
-                                          "reddish",
-                                          "brown",
-                                          "bed",
-                                          "itch"
+    "Hobo Spider":  {
+                        "Other_name":  "Aggressive House Spider",
+                        "Scientific_name":  "Tegenaria agrestis",
+                        "Category":  "Spider",
+                        "class":  "Bugs",
+                        "state":  [
+                                      "Alaska",
+                                      "Idaho",
+                                      "Montana",
+                                      "Oregon",
+                                      "Utah",
+                                      "Washington",
+                                      "Wyoming"
+                                  ]
+                    },
+    "Solitary Bees":  {
+                          "Other_name":  "",
+                          "Scientific_name":  "",
+                          "Category":  "Bees",
+                          "class":  "Bugs",
+                          "state":  [
+
+                                    ]
+                      },
+    "Yellow Fat Tailed Scorpion":  {
+                                       "Other_name":  "",
+                                       "Scientific_name":  "",
+                                       "Category":  "Scorpion",
+                                       "class":  "Bugs",
+                                       "state":  [
+
+                                                 ]
+                                   },
+    "Larkspur":  {
+                     "Other_name":  "",
+                     "Scientific_name":  "Delphinium tricorne Michx",
+                     "Category":  "Plants",
+                     "class":  "Plants",
+                     "state":  [
+                                   "Illinois"
+                               ]
+                 },
+    "Geography Cone":  {
+                           "Other_name":  "",
+                           "Scientific_name":  "",
+                           "Category":  "Snail",
+                           "class":  "Animals",
+                           "state":  [
+
+                                     ]
+                       },
+    "Arizona Recluse":  {
+                            "Other_name":  "",
+                            "Scientific_name":  "Loxosceles arizonica",
+                            "Category":  "Spider",
+                            "class":  "Bugs",
+                            "state":  [
+                                          "Arizona",
+                                          "California",
+                                          "New Mexico",
+                                          "Texas"
                                       ]
-                }
+                        },
+    "Paper wasp":  {
+                       "Other_name":  "",
+                       "Scientific_name":  "",
+                       "Category":  "Bees",
+                       "class":  "Bugs",
+                       "state":  [
+
+                                 ]
+                   },
+    "Eastern Diamondback Rattlesnake":  {
+                                            "Other_name":  "",
+                                            "Scientific_name":  "Crotalus adamanteus",
+                                            "Category":  "Snake",
+                                            "class":  "Animals",
+                                            "state":  [
+                                                          "Alabama",
+                                                          "Florida",
+                                                          "Georgia",
+                                                          "Louisiana",
+                                                          "Mississippi",
+                                                          "North Carolina",
+                                                          "South Carolina"
+                                                      ]
+                                        },
+    "Horsetails":  {
+                       "Other_name":  "",
+                       "Scientific_name":  "Equisetum arvense",
+                       "Category":  "Plants",
+                       "class":  "Plants",
+                       "state":  [
+
+                                 ]
+                   },
+    "Poke":  {
+                 "Other_name":  "Pokeberry,Pokeweed",
+                 "Scientific_name":  "Phytolacca americana",
+                 "Category":  "Plants",
+                 "class":  "Plants",
+                 "state":  [
+                               "Florida",
+                               "Illinois",
+                               "Nebraska"
+                           ]
+             },
+    "Hopi Rattlesnake":  {
+                             "Other_name":  "",
+                             "Scientific_name":  "Crotalus viridis nuntius",
+                             "Category":  "Snake",
+                             "class":  "Animals",
+                             "state":  [
+                                           "Arizona"
+                                       ]
+                         },
+    "Arizona Coral Snake":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "Micruroides euryxanthus euryxanthus",
+                                "Category":  "Snake",
+                                "class":  "Animals",
+                                "state":  [
+                                              "Arizona",
+                                              "New Mexico"
+                                          ]
+                            },
+    "Asian Tiger mosquito":  {
+                                 "Other_name":  "",
+                                 "Scientific_name":  "",
+                                 "Category":  "Mosquitos",
+                                 "class":  "Bugs",
+                                 "state":  [
+
+                                           ]
+                             },
+    "St John\u0027s Wort":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "Hypericum perforatum",
+                                "Category":  "Plants",
+                                "class":  "Plants",
+                                "state":  [
+
+                                          ]
+                            },
+    "Snakeroot, White":  {
+                             "Other_name":  "Eupatorium urticaefolium",
+                             "Scientific_name":  "Eupatorium rugosum Hout",
+                             "Category":  "Plants",
+                             "class":  "Plants",
+                             "state":  [
+
+                                       ]
+                         },
+    "Rhododendron":  {
+                         "Other_name":  "Azalea",
+                         "Scientific_name":  "Rhododendron",
+                         "Category":  "Plants",
+                         "class":  "Plants",
+                         "state":  [
+                                       "California",
+                                       "Georgia",
+                                       "Illinois",
+                                       "New York",
+                                       "Virginia",
+                                       "West Virginia"
+                                   ]
+                     },
+    "Russell\u0027s Recluse":  {
+                                   "Other_name":  "",
+                                   "Scientific_name":  "Loxosceles russelli",
+                                   "Category":  "Spider",
+                                   "class":  "Bugs",
+                                   "state":  [
+                                                 "California"
+                                             ]
+                               },
+    "Wild Onion":  {
+                       "Other_name":  "",
+                       "Scientific_name":  "Allium",
+                       "Category":  "Plants",
+                       "class":  "Plants",
+                       "state":  [
+                                     "Illinois"
+                                 ]
+                   },
+    "Poison Ivy":  {
+                       "Other_name":  "Rhus toxicodendron L,Rhus radicans L",
+                       "Scientific_name":  "Toxicodendron radicans Kuntze",
+                       "Category":  "Plants",
+                       "class":  "Plants",
+                       "state":  [
+
+                                 ]
+                   },
+    "Inland Taipan":  {
+                          "Other_name":  "",
+                          "Scientific_name":  "",
+                          "Category":  "Snake",
+                          "class":  "Animals",
+                          "state":  [
+
+                                    ]
+                      },
+    "Panamint Speckled Rattlesnake":  {
+                                          "Other_name":  "",
+                                          "Scientific_name":  "Crotalus mitchellii stephensi",
+                                          "Category":  "Snake",
+                                          "class":  "Animals",
+                                          "state":  [
+                                                        "California",
+                                                        "Nevada"
+                                                    ]
+                                      },
+    "Mottled Rock Rattlesnake":  {
+                                     "Other_name":  "",
+                                     "Scientific_name":  "Crotalus lepidus lepidus",
+                                     "Category":  "Snake",
+                                     "class":  "Animals",
+                                     "state":  [
+                                                   "New Mexico",
+                                                   "Texas"
+                                               ]
+                                 },
+    "Elderberry":  {
+                       "Other_name":  "",
+                       "Scientific_name":  "Sambucus canadensis",
+                       "Category":  "Plants",
+                       "class":  "Plants",
+                       "state":  [
+
+                                 ]
+                   },
+    "Bloodroot":  {
+                      "Other_name":  "Red Puccoon",
+                      "Scientific_name":  "Sanguinaria canadensis",
+                      "Category":  "Plants",
+                      "class":  "Plants",
+                      "state":  [
+                                    "Georgia",
+                                    "Illinois",
+                                    "Louisiana",
+                                    "Mississippi"
+                                ]
+                  },
+    "Eastern Coral Snake":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "Micrurus fulvius",
+                                "Category":  "Snake",
+                                "class":  "Animals",
+                                "state":  [
+                                              "Alabama",
+                                              "Florida",
+                                              "Georgia",
+                                              "Louisiana",
+                                              "Mississippi",
+                                              "North Carolina",
+                                              "South Carolina"
+                                          ]
+                            },
+    "Tulip":  {
+                  "Other_name":  "",
+                  "Scientific_name":  "Tulipa",
+                  "Category":  "Plants",
+                  "class":  "Plants",
+                  "state":  [
+                                "California"
+                            ]
+              },
+    "Mojave Desert Sidewinder":  {
+                                     "Other_name":  "",
+                                     "Scientific_name":  "Crotalus cerastes cerastes",
+                                     "Category":  "Snake",
+                                     "class":  "Animals",
+                                     "state":  [
+                                                   "Arizona",
+                                                   "California",
+                                                   "Nevada",
+                                                   "Utah"
+                                               ]
+                                 },
+    "Florida Cottonmouth":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "Agkistrodon piscivorus conanti",
+                                "Category":  "Snake",
+                                "class":  "Animals",
+                                "state":  [
+                                              "Alabama",
+                                              "Florida",
+                                              "Georgia",
+                                              "South Carolina"
+                                          ]
+                            },
+    "Japanense Yew":  {
+                          "Other_name":  "",
+                          "Scientific_name":  "Taxus cuspidata Sieb \u0026 Zucc",
+                          "Category":  "Plants",
+                          "class":  "Plants",
+                          "state":  [
+
+                                    ]
+                      },
+    "Lupine":  {
+                   "Other_name":  "",
+                   "Scientific_name":  "Lupinus",
+                   "Category":  "Plants",
+                   "class":  "Plants",
+                   "state":  [
+                                 "Illinois",
+                                 "Texas",
+                                 "Washington"
+                             ]
+               },
+    "Hyacinth":  {
+                     "Other_name":  "Hyacinth blossoms",
+                     "Scientific_name":  "Hyacinth orientalis, Hyacinth blossoms",
+                     "Category":  "Plants",
+                     "class":  "Plants",
+                     "state":  [
+
+                               ]
+                 },
+    "Southern Copperhead":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "Agkistrodon contortrix contortrix",
+                                "Category":  "Snake",
+                                "class":  "Animals",
+                                "state":  [
+                                              "Alabama",
+                                              "Arkansas",
+                                              "Florida",
+                                              "Georgia",
+                                              "Illinois",
+                                              "Kentucky",
+                                              "Louisiana",
+                                              "Mississippi",
+                                              "Missouri",
+                                              "North Carolina",
+                                              "Oklahoma",
+                                              "South Carolina",
+                                              "Tennessee",
+                                              "Texas"
+                                          ]
+                            },
+    "Wolf Spider":  {
+                        "Other_name":  "",
+                        "Scientific_name":  "",
+                        "Category":  "Spider",
+                        "class":  "Bugs",
+                        "state":  [
+
+                                  ]
+                    },
+    "Brown Recluse":  {
+                          "Other_name":  "",
+                          "Scientific_name":  "Loxosceles reclusa",
+                          "Category":  "Spider",
+                          "class":  "Bugs",
+                          "state":  [
+                                        "Alabama",
+                                        "Arkansas",
+                                        "Georgia",
+                                        "Illinois",
+                                        "Indiana",
+                                        "Iowa",
+                                        "Kansas",
+                                        "Kentucky",
+                                        "Louisiana",
+                                        "Mississippi",
+                                        "Missouri",
+                                        "Nebraska",
+                                        "Ohio",
+                                        "Oklahoma",
+                                        "South Carolina",
+                                        "Tennessee",
+                                        "Texas"
+                                    ]
+                      },
+    "Poison Hemlock":  {
+                           "Other_name":  "",
+                           "Scientific_name":  "Conium maculatum",
+                           "Category":  "Plants",
+                           "class":  "Plants",
+                           "state":  [
+                                         "Illinois"
+                                     ]
+                       },
+    "Animas Ridgenose Rattlesnake":  {
+                                         "Other_name":  "",
+                                         "Scientific_name":  "Crotalus willardi obscurus",
+                                         "Category":  "Snake",
+                                         "class":  "Animals",
+                                         "state":  [
+                                                       "Arizona",
+                                                       "New Mexico"
+                                                   ]
+                                     },
+    "Jimsonweed":  {
+                       "Other_name":  "Jamestown Weed,Thorn Apple,Devil\u0027s Trumpet,Mad Apple,Stink Weed",
+                       "Scientific_name":  "Datura stramonium",
+                       "Category":  "Plants",
+                       "class":  "Plants",
+                       "state":  [
+                                     "Florida",
+                                     "Illinois",
+                                     "Texas"
+                                 ]
+                   },
+    "Crown of Thorns":  {
+                            "Other_name":  "",
+                            "Scientific_name":  "Euphorbia milii",
+                            "Category":  "Plants",
+                            "class":  "Plants",
+                            "state":  [
+                                          "Florida",
+                                          "Illinois"
+                                      ]
+                        },
+    "Castor Bean":  {
+                        "Other_name":  "",
+                        "Scientific_name":  "Ricinus communis",
+                        "Category":  "Plants",
+                        "class":  "Plants",
+                        "state":  [
+                                      "California",
+                                      "Illinois",
+                                      "Kansas",
+                                      "Missouri",
+                                      "Oklahoma",
+                                      "Oregon"
+                                  ]
+                    },
+    "Colorado Desert Sidewinder":  {
+                                       "Other_name":  "",
+                                       "Scientific_name":  "Crotalus cerastes laterorepens",
+                                       "Category":  "Snake",
+                                       "class":  "Animals",
+                                       "state":  [
+                                                     "Arizona",
+                                                     "California"
+                                                 ]
+                                   },
+    "Ergot":  {
+                  "Other_name":  "",
+                  "Scientific_name":  "Claviceps purpurea",
+                  "Category":  "Plants",
+                  "class":  "Plants",
+                  "state":  [
+                                "Illinois"
+                            ]
+              },
+    "German Shepherd":  {
+                            "Other_name":  "",
+                            "Scientific_name":  "",
+                            "Category":  "Dogs",
+                            "class":  "Animals",
+                            "state":  [
+
+                                      ]
+                        },
+    "Southern Pacific Rattlesnake":  {
+                                         "Other_name":  "",
+                                         "Scientific_name":  "Crotalus oreganus helleri",
+                                         "Category":  "Snake",
+                                         "class":  "Animals",
+                                         "state":  [
+                                                       "California"
+                                                   ]
+                                     },
+    "Osage Copperhead":  {
+                             "Other_name":  "",
+                             "Scientific_name":  "Agkistrodon contortrix phaeogaster",
+                             "Category":  "Snake",
+                             "class":  "Animals",
+                             "state":  [
+                                           "Illinois",
+                                           "Iowa",
+                                           "Kansas",
+                                           "Missouri",
+                                           "Nebraska",
+                                           "Oklahoma"
+                                       ]
+                         },
+    "Hornet":  {
+                   "Other_name":  "",
+                   "Scientific_name":  "",
+                   "Category":  "Bees",
+                   "class":  "Bugs",
+                   "state":  [
+
+                             ]
+               },
+    "Nightshade, Solanum":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "Solanum",
+                                "Category":  "Plants",
+                                "class":  "Plants",
+                                "state":  [
+                                              "Arizona",
+                                              "Colorado",
+                                              "Florida",
+                                              "Illinois",
+                                              "Kansas",
+                                              "Maine",
+                                              "Minnesota",
+                                              "Missouri",
+                                              "Nebraska",
+                                              "New Mexico",
+                                              "Oklahoma",
+                                              "South Dakota",
+                                              "Texas"
+                                          ]
+                            },
+    "Yellow Bellied Sea Snake":  {
+                                     "Other_name":  "",
+                                     "Scientific_name":  "",
+                                     "Category":  "Snake",
+                                     "class":  "Animals",
+                                     "state":  [
+                                                   "Hawaii"
+                                               ]
+                                 },
+    "Water Hemlock":  {
+                          "Other_name":  "",
+                          "Scientific_name":  "Cicuta maculata",
+                          "Category":  "Plants",
+                          "class":  "Plants",
+                          "state":  [
+                                        "Illinois"
+                                    ]
+                      },
+    "Aedes mosquito":  {
+                           "Other_name":  "",
+                           "Scientific_name":  "",
+                           "Category":  "Mosquitos",
+                           "class":  "Bugs",
+                           "state":  [
+
+                                     ]
+                       },
+    "Desert Recluse":  {
+                           "Other_name":  "",
+                           "Scientific_name":  "Loxosceles deserta",
+                           "Category":  "Spider",
+                           "class":  "Bugs",
+                           "state":  [
+                                         "Arizona",
+                                         "California",
+                                         "Nevada",
+                                         "New Mexico",
+                                         "Utah"
+                                     ]
+                       },
+    "Horse Nettle":  {
+                         "Other_name":  "Bull Nettle",
+                         "Scientific_name":  "Solanum carolinense",
+                         "Category":  "Plants",
+                         "class":  "Plants",
+                         "state":  [
+                                       "Illinois"
+                                   ]
+                     },
+    "Reticulated Gila Monster":  {
+                                     "Other_name":  "",
+                                     "Scientific_name":  "Heloderma suspectum suspectum",
+                                     "Category":  "Lizard",
+                                     "class":  "Animals",
+                                     "state":  [
+                                                   "All"
+                                               ]
+                                 },
+    "Black Mamba":  {
+                        "Other_name":  "",
+                        "Scientific_name":  "",
+                        "Category":  "Snake",
+                        "class":  "Animals",
+                        "state":  [
+
+                                  ]
+                    },
+    "Deadly Nightshade":  {
+                              "Other_name":  "",
+                              "Scientific_name":  "",
+                              "Category":  "Plants",
+                              "class":  "Plants",
+                              "state":  [
+
+                                        ]
+                          },
+    "Prairie Rattlesnake":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "Crotalus viridis viridis",
+                                "Category":  "Snake",
+                                "class":  "Animals",
+                                "state":  [
+                                              "Arizona",
+                                              "Colorado",
+                                              "Idaho",
+                                              "Kansas",
+                                              "Montana",
+                                              "Nebraska",
+                                              "New Mexico",
+                                              "North Dakota",
+                                              "Oklahoma",
+                                              "South Dakota",
+                                              "Texas",
+                                              "Utah",
+                                              "Wyoming"
+                                          ]
+                            },
+    "Western Diamondback Rattlesnake":  {
+                                            "Other_name":  "",
+                                            "Scientific_name":  "Crotalus atrox",
+                                            "Category":  "Snake",
+                                            "class":  "Animals",
+                                            "state":  [
+                                                          "Arizona",
+                                                          "Arkansas",
+                                                          "California",
+                                                          "New Mexico",
+                                                          "Oklahoma",
+                                                          "Texas"
+                                                      ]
+                                        },
+    "Northern Black Widow":  {
+                                 "Other_name":  "",
+                                 "Scientific_name":  "Latrodectus variolus",
+                                 "Category":  "Spider",
+                                 "class":  "Bugs",
+                                 "state":  [
+                                               "Alabama",
+                                               "Arkansas",
+                                               "Connecticut",
+                                               "Delaware",
+                                               "Florida",
+                                               "Georgia",
+                                               "Idaho",
+                                               "Illinois",
+                                               "Indiana",
+                                               "Iowa",
+                                               "Kansas",
+                                               "Kentucky",
+                                               "Louisiana",
+                                               "Maryland",
+                                               "Massachusetts",
+                                               "Michigan",
+                                               "Minnesota",
+                                               "Mississippi",
+                                               "Missouri",
+                                               "Montana",
+                                               "New Hampshire",
+                                               "New Jersey",
+                                               "New York",
+                                               "North Carolina",
+                                               "Ohio",
+                                               "Pennsylvania",
+                                               "Rhode Island",
+                                               "South Carolina",
+                                               "Tennessee",
+                                               "Texas",
+                                               "Vermont",
+                                               "Virginia",
+                                               "West Virginia",
+                                               "Wisconsin"
+                                           ]
+                             },
+    "Timber Rattlesnake":  {
+                               "Other_name":  "",
+                               "Scientific_name":  "Crotalus horridus",
+                               "Category":  "Snake",
+                               "class":  "Animals",
+                               "state":  [
+                                             "Alabama",
+                                             "Arkansas",
+                                             "Connecticut",
+                                             "Florida",
+                                             "Georgia",
+                                             "Illinois",
+                                             "Indiana",
+                                             "Iowa",
+                                             "Kansas",
+                                             "Kentucky",
+                                             "Louisiana",
+                                             "Maine",
+                                             "Maryland",
+                                             "Massachusetts",
+                                             "Minnesota",
+                                             "Mississippi",
+                                             "Missouri",
+                                             "Nebraska",
+                                             "New Hampshire",
+                                             "New Jersey",
+                                             "New York",
+                                             "North Carolina",
+                                             "Ohio",
+                                             "Oklahoma",
+                                             "Pennsylvania",
+                                             "South Carolina",
+                                             "Tennessee",
+                                             "Texas",
+                                             "Vermont",
+                                             "Virginia",
+                                             "West Virginia",
+                                             "Wisconsin"
+                                         ]
+                           },
+    "Dutchman\u0027s Breeches \u0026 Squirrel Corn":  {
+                                                          "Other_name":  "",
+                                                          "Scientific_name":  "Dicentra cucullaria Bernh \u0026 Dicentra canadensis (Goldie) Walp",
+                                                          "Category":  "Plants",
+                                                          "class":  "Plants",
+                                                          "state":  [
+                                                                        "Alabama",
+                                                                        "Kansas",
+                                                                        "Nebraska",
+                                                                        "New York"
+                                                                    ]
+                                                      },
+    "Grand Canyon Recluse":  {
+                                 "Other_name":  "",
+                                 "Scientific_name":  "Loxosceles kaiba",
+                                 "Category":  "Spider",
+                                 "class":  "Bugs",
+                                 "state":  [
+                                               "Arizona"
+                                           ]
+                             },
+    "Lone Star Tick":  {
+                           "Other_name":  "",
+                           "Scientific_name":  "",
+                           "Category":  "Ticks",
+                           "class":  "Bugs",
+                           "state":  [
+
+                                     ]
+                       },
+    "Rottweilers":  {
+                        "Other_name":  "",
+                        "Scientific_name":  "",
+                        "Category":  "Dogs",
+                        "class":  "Animals",
+                        "state":  [
+
+                                  ]
+                    },
+    "Bird flea":  {
+                      "Other_name":  "",
+                      "Scientific_name":  "",
+                      "Category":  "Fleas",
+                      "class":  "Bugs",
+                      "state":  [
+
+                                ]
+                  },
+    "Jack in the Pulpit":  {
+                               "Other_name":  "",
+                               "Scientific_name":  "Arisaema spp.",
+                               "Category":  "Plants",
+                               "class":  "Plants",
+                               "state":  [
+                                             "Illinois"
+                                         ]
+                           },
+    "Short tail Stingray":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "",
+                                "Category":  "Stingray",
+                                "class":  "Animals",
+                                "state":  [
+
+                                          ]
+                            },
+    "Mayapple":  {
+                     "Other_name":  "",
+                     "Scientific_name":  "Podophyllum peltatum",
+                     "Category":  "Plants",
+                     "class":  "Plants",
+                     "state":  [
+                                   "Georgia",
+                                   "Illinois",
+                                   "Kansas",
+                                   "New York",
+                                   "Oklahoma"
+                               ]
+                 },
+    "Ground Ivy":  {
+                       "Other_name":  "",
+                       "Scientific_name":  "Glechoma hederacea",
+                       "Category":  "Plants",
+                       "class":  "Plants",
+                       "state":  [
+                                     "Illinois"
+                                 ]
+                   },
+    "Lantana":  {
+                    "Other_name":  "",
+                    "Scientific_name":  "Lantana camara",
+                    "Category":  "Plants",
+                    "class":  "Plants",
+                    "state":  [
+                                  "California",
+                                  "Florida"
+                              ]
+                },
+    "King Cobra":  {
+                       "Other_name":  "",
+                       "Scientific_name":  "",
+                       "Category":  "Snake",
+                       "class":  "Animals",
+                       "state":  [
+
+                                 ]
+                   },
+    "Great Basin Rattlesnake":  {
+                                    "Other_name":  "",
+                                    "Scientific_name":  "Crotalus oreganus lutosus",
+                                    "Category":  "Snake",
+                                    "class":  "Animals",
+                                    "state":  [
+                                                  "Arizona",
+                                                  "California",
+                                                  "Idaho",
+                                                  "Nevada",
+                                                  "Oregon",
+                                                  "Utah"
+                                              ]
+                                },
+    "Red Widow":  {
+                      "Other_name":  "",
+                      "Scientific_name":  "Latrodectus bishopi",
+                      "Category":  "Spider",
+                      "class":  "Bugs",
+                      "state":  [
+                                    "Florida"
+                                ]
+                  },
+    "Hydrangea":  {
+                      "Other_name":  "Pink Hydrangea blossom",
+                      "Scientific_name":  "Hydrangea spp.",
+                      "Category":  "Plants",
+                      "class":  "Plants",
+                      "state":  [
+                                    "Georgia",
+                                    "Illinois",
+                                    "Kansas",
+                                    "New York",
+                                    "Oklahoma"
+                                ]
+                  },
+    "Honey Bees":  {
+                       "Other_name":  "",
+                       "Scientific_name":  "",
+                       "Category":  "Bees",
+                       "class":  "Bugs",
+                       "state":  [
+
+                                 ]
+                   },
+    "Mojave Rattlesnake":  {
+                               "Other_name":  "",
+                               "Scientific_name":  "Crotalus scutulatus",
+                               "Category":  "Snake",
+                               "class":  "Animals",
+                               "state":  [
+                                             "Arizona",
+                                             "California",
+                                             "Nevada",
+                                             "New Mexico",
+                                             "Texas",
+                                             "Utah"
+                                         ]
+                           },
+    "Chilean Recluse":  {
+                            "Other_name":  "",
+                            "Scientific_name":  "Loxosceles laeta",
+                            "Category":  "Spider",
+                            "class":  "Bugs",
+                            "state":  [
+                                          "California"
+                                      ]
+                        },
+    "Cockleburs":  {
+                       "Other_name":  "",
+                       "Scientific_name":  "Xanthium strumarium",
+                       "Category":  "Plants",
+                       "class":  "Plants",
+                       "state":  [
+                                     "Illinois"
+                                 ]
+                   },
+    "Stripebacked Scorpion":  {
+                                  "Other_name":  "",
+                                  "Scientific_name":  "Centruroides vittatus",
+                                  "Category":  "Scorpion",
+                                  "class":  "Bugs",
+                                  "state":  [
+                                                "All"
+                                            ]
+                              },
+    "Carolina Pygmy Rattlesnake":  {
+                                       "Other_name":  "",
+                                       "Scientific_name":  "Sistrurus miliarius miliarius",
+                                       "Category":  "Snake",
+                                       "class":  "Animals",
+                                       "state":  [
+                                                     "Alabama",
+                                                     "Georgia",
+                                                     "North Carolina",
+                                                     "South Carolina"
+                                                 ]
+                                   },
+    "bed bug":  {
+                    "Other_name":  "",
+                    "Scientific_name":  "",
+                    "Category":  "Other Bugs",
+                    "class":  "Bugs",
+                    "state":  [
+
+                              ]
+                },
+    "Textile Cone":  {
+                         "Other_name":  "",
+                         "Scientific_name":  "",
+                         "Category":  "Snail",
+                         "class":  "Animals",
+                         "state":  [
+
+                                   ]
+                     },
+    "Dogbanes":  {
+                     "Other_name":  "",
+                     "Scientific_name":  "Apocynum cannabinum and other species",
+                     "Category":  "Plants",
+                     "class":  "Plants",
+                     "state":  [
+
+                               ]
+                 },
+    "Ohio Buckeye":  {
+                         "Other_name":  "Horse Chestnut",
+                         "Scientific_name":  "Aesculus glabra Willd",
+                         "Category":  "Plants",
+                         "class":  "Plants",
+                         "state":  [
+                                       "Illinois"
+                                   ]
+                     },
+    "Red Diamond Rattlesnake":  {
+                                    "Other_name":  "",
+                                    "Scientific_name":  "Crotalus exsul",
+                                    "Category":  "Snake",
+                                    "class":  "Animals",
+                                    "state":  [
+                                                  "California"
+                                              ]
+                                },
+    "Western Cottonmouth":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "Agkistrodon piscivorus leucostoma",
+                                "Category":  "Snake",
+                                "class":  "Animals",
+                                "state":  [
+                                              "Alabama",
+                                              "Arkansas",
+                                              "Georgia",
+                                              "Illinois",
+                                              "Indiana",
+                                              "Kentucky",
+                                              "Louisiana",
+                                              "Mississippi",
+                                              "Missouri",
+                                              "Oklahoma",
+                                              "Tennessee",
+                                              "Texas"
+                                          ]
+                            },
+    "Cat flea":  {
+                     "Other_name":  "",
+                     "Scientific_name":  "",
+                     "Category":  "Fleas",
+                     "class":  "Bugs",
+                     "state":  [
+
+                               ]
+                 },
+    "Arizona Black Rattlesnake":  {
+                                      "Other_name":  "",
+                                      "Scientific_name":  "Crotalus oreganus cerberus",
+                                      "Category":  "Snake",
+                                      "class":  "Animals",
+                                      "state":  [
+                                                    "Arizona",
+                                                    "New Mexico"
+                                                ]
+                                  },
+    "Big Bend Recluse":  {
+                             "Other_name":  "",
+                             "Scientific_name":  "Loxosceles blanda",
+                             "Category":  "Spider",
+                             "class":  "Bugs",
+                             "state":  [
+                                           "New Mexico",
+                                           "Texas"
+                                       ]
+                         },
+    "Giant Freshwater Stingray":  {
+                                      "Other_name":  "",
+                                      "Scientific_name":  "",
+                                      "Category":  "Stingray",
+                                      "class":  "Animals",
+                                      "state":  [
+
+                                                ]
+                                  },
+    "Pit Bull":  {
+                     "Other_name":  "",
+                     "Scientific_name":  "",
+                     "Category":  "Dogs",
+                     "class":  "Animals",
+                     "state":  [
+
+                               ]
+                 },
+    "Maple, Red":  {
+                       "Other_name":  "",
+                       "Scientific_name":  "Acer rubrum",
+                       "Category":  "Plants",
+                       "class":  "Plants",
+                       "state":  [
+                                     "Florida",
+                                     "Texas"
+                                 ]
+                   },
+    "Dusky Pygmy Rattlesnake":  {
+                                    "Other_name":  "",
+                                    "Scientific_name":  "Sistrurus miliarius barbouri",
+                                    "Category":  "Snake",
+                                    "class":  "Animals",
+                                    "state":  [
+                                                  "Alabama",
+                                                  "Florida",
+                                                  "Georgia",
+                                                  "Mississippi",
+                                                  "South Carolina"
+                                              ]
+                                },
+    "Bumblebee":  {
+                      "Other_name":  "",
+                      "Scientific_name":  "",
+                      "Category":  "Bees",
+                      "class":  "Bugs",
+                      "state":  [
+
+                                ]
+                  },
+    "Rhubarb":  {
+                    "Other_name":  "",
+                    "Scientific_name":  "Rheum rhaponticum",
+                    "Category":  "Plants",
+                    "class":  "Plants",
+                    "state":  [
+
+                              ]
+                },
+    "Lily of the Valley":  {
+                               "Other_name":  "",
+                               "Scientific_name":  "Convallaria majalis",
+                               "Category":  "Plants",
+                               "class":  "Plants",
+                               "state":  [
+
+                                         ]
+                           },
+    "DeathStalker":  {
+                         "Other_name":  "",
+                         "Scientific_name":  "",
+                         "Category":  "Scorpion",
+                         "class":  "Bugs",
+                         "state":  [
+
+                                   ]
+                     },
+    "Deer Tick":  {
+                      "Other_name":  "",
+                      "Scientific_name":  "",
+                      "Category":  "Ticks",
+                      "class":  "Bugs",
+                      "state":  [
+
+                                ]
+                  },
+    "Ixodoidea":  {
+                      "Other_name":  "",
+                      "Scientific_name":  "",
+                      "Category":  "Ticks",
+                      "class":  "Bugs",
+                      "state":  [
+
+                                ]
+                  },
+    "Grand Canyon Rattlesnake":  {
+                                     "Other_name":  "",
+                                     "Scientific_name":  "Crotalus oreganus abyssus",
+                                     "Category":  "Snake",
+                                     "class":  "Animals",
+                                     "state":  [
+                                                   "Arizona"
+                                               ]
+                                 },
+    "Cellar spider":  {
+                          "Other_name":  "",
+                          "Scientific_name":  "",
+                          "Category":  "Spider",
+                          "class":  "Bugs",
+                          "state":  [
+
+                                    ]
+                      },
+    "Hemp":  {
+                 "Other_name":  "",
+                 "Scientific_name":  "Cannabis sativa",
+                 "Category":  "Plants",
+                 "class":  "Plants",
+                 "state":  [
+
+                           ]
+             },
+    "Broad Banded Copperhead":  {
+                                    "Other_name":  "",
+                                    "Scientific_name":  "Agkistrodon contortrix laticinctus",
+                                    "Category":  "Snake",
+                                    "class":  "Animals",
+                                    "state":  [
+                                                  "Kansas",
+                                                  "Oklahoma",
+                                                  "Texas"
+                                              ]
+                                },
+    "Arizona Ridgenose Rattlesnake":  {
+                                          "Other_name":  "",
+                                          "Scientific_name":  "Crotalus willardi willardi",
+                                          "Category":  "Snake",
+                                          "class":  "Animals",
+                                          "state":  [
+                                                        "Arizona"
+                                                    ]
+                                      },
+    "Tarantulas":  {
+                       "Other_name":  "",
+                       "Scientific_name":  "",
+                       "Category":  "Spider",
+                       "class":  "Bugs",
+                       "state":  [
+
+                                 ]
+                   },
+    "Foxglove":  {
+                     "Other_name":  "",
+                     "Scientific_name":  "Digitalis purpurea",
+                     "Category":  "Plants",
+                     "class":  "Plants",
+                     "state":  [
+
+                               ]
+                 },
+    "Arizona Bark Scorpion":  {
+                                  "Other_name":  "",
+                                  "Scientific_name":  "Centruroides exilicauda",
+                                  "Category":  "Scorpion",
+                                  "class":  "Bugs",
+                                  "state":  [
+                                                "All"
+                                            ]
+                              },
+    "Banded Gila Monster":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "Heloderma suspectum cinctum",
+                                "Category":  "Lizard",
+                                "class":  "Animals",
+                                "state":  [
+                                              "All"
+                                          ]
+                            },
+    "Eastern Massasauga":  {
+                               "Other_name":  "",
+                               "Scientific_name":  "Sistrurus catenatus catenatus",
+                               "Category":  "Snake",
+                               "class":  "Animals",
+                               "state":  [
+                                             "Illinois",
+                                             "Indiana",
+                                             "Iowa",
+                                             "Michigan",
+                                             "Missouri",
+                                             "New York",
+                                             "Ohio",
+                                             "Pennsylvania",
+                                             "Wisconsin"
+                                         ]
+                           },
+    "Bouncing Bet":  {
+                         "Other_name":  "",
+                         "Scientific_name":  "Saponaria officinalis",
+                         "Category":  "Plants",
+                         "class":  "Plants",
+                         "state":  [
+                                       "Illinois"
+                                   ]
+                     },
+    "Brown Widow":  {
+                        "Other_name":  "",
+                        "Scientific_name":  "Latrodectus geometricus",
+                        "Category":  "Spider",
+                        "class":  "Bugs",
+                        "state":  [
+                                      "Alabama",
+                                      "Arizona",
+                                      "Arkansas",
+                                      "California",
+                                      "Florida",
+                                      "Georgia",
+                                      "Hawaii",
+                                      "Louisiana",
+                                      "Mississippi",
+                                      "Missouri",
+                                      "Nevada",
+                                      "New Mexico",
+                                      "North Carolina",
+                                      "Oklahoma",
+                                      "South Carolina",
+                                      "Texas"
+                                  ]
+                    },
+    "Nuttalliella":  {
+                         "Other_name":  "",
+                         "Scientific_name":  "",
+                         "Category":  "Ticks",
+                         "class":  "Bugs",
+                         "state":  [
+
+                                   ]
+                     },
+    "Western Massasauga":  {
+                               "Other_name":  "",
+                               "Scientific_name":  "Sistrurus catenatus tergeminus",
+                               "Category":  "Snake",
+                               "class":  "Animals",
+                               "state":  [
+                                             "Colorado",
+                                             "Iowa",
+                                             "Kansas",
+                                             "Missouri",
+                                             "Nebraska",
+                                             "Oklahoma",
+                                             "Texas"
+                                         ]
+                           },
+    "Blister Beetle":  {
+                           "Other_name":  "",
+                           "Scientific_name":  "",
+                           "Category":  "Other Bugs",
+                           "class":  "Bugs",
+                           "state":  [
+
+                                     ]
+                       },
+    "Alfalfa":  {
+                    "Other_name":  "",
+                    "Scientific_name":  "Medicago sativa",
+                    "Category":  "Plants",
+                    "class":  "Plants",
+                    "state":  [
+                                  "Alabama",
+                                  "Colorado",
+                                  "Illinois",
+                                  "New Mexico",
+                                  "Tennessee"
+                              ]
+                },
+    "Centipede":  {
+                      "Other_name":  "",
+                      "Scientific_name":  "",
+                      "Category":  "Other Bugs",
+                      "class":  "Bugs",
+                      "state":  [
+
+                                ]
+                  },
+    "Milkweed, Common":  {
+                             "Other_name":  "",
+                             "Scientific_name":  "Asclepias syriaca",
+                             "Category":  "Plants",
+                             "class":  "Plants",
+                             "state":  [
+
+                                       ]
+                         },
+    "Apache Recluse":  {
+                           "Other_name":  "",
+                           "Scientific_name":  "Loxosceles apachea",
+                           "Category":  "Spider",
+                           "class":  "Bugs",
+                           "state":  [
+                                         "Arizona",
+                                         "New Mexico",
+                                         "Texas"
+                                     ]
+                       },
+    "Texas Recluse":  {
+                          "Other_name":  "",
+                          "Scientific_name":  "Loxosceles devia",
+                          "Category":  "Spider",
+                          "class":  "Bugs",
+                          "state":  [
+                                        "Texas"
+                                    ]
+                      },
+    "Philodendron":  {
+                         "Other_name":  "",
+                         "Scientific_name":  "Philodendron",
+                         "Category":  "Plants",
+                         "class":  "Plants",
+                         "state":  [
+
+                                   ]
+                     },
+    "Kentucky Coffee Tree":  {
+                                 "Other_name":  "",
+                                 "Scientific_name":  "Gymnocladus dioica Koch",
+                                 "Category":  "Plants",
+                                 "class":  "Plants",
+                                 "state":  [
+                                               "Alabama",
+                                               "Kansas",
+                                               "Kentucky",
+                                               "Michigan",
+                                               "Ohio",
+                                               "Oklahoma",
+                                               "Tennessee"
+                                           ]
+                             },
+    "Sonoran Desert Sidewinder":  {
+                                      "Other_name":  "",
+                                      "Scientific_name":  "Crotalus cerastes cercobombus",
+                                      "Category":  "Snake",
+                                      "class":  "Animals",
+                                      "state":  [
+                                                    "Arizona"
+                                                ]
+                                  },
+    "Northern Pacific Rattlesnake":  {
+                                         "Other_name":  "",
+                                         "Scientific_name":  "Crotalus oreganus oreganus",
+                                         "Category":  "Snake",
+                                         "class":  "Animals",
+                                         "state":  [
+                                                       "California",
+                                                       "Idaho",
+                                                       "Oregon",
+                                                       "Washington"
+                                                   ]
+                                     },
+    "Baja Recluse":  {
+                         "Other_name":  "",
+                         "Scientific_name":  "Loxosceles palma",
+                         "Category":  "Spider",
+                         "class":  "Bugs",
+                         "state":  [
+                                       "California"
+                                   ]
+                     },
+    "Lamb\u0027s Quarters":  {
+                                 "Other_name":  "",
+                                 "Scientific_name":  "Chenopodium album",
+                                 "Category":  "Plants",
+                                 "class":  "Plants",
+                                 "state":  [
+
+                                           ]
+                             },
+    "Common house spider":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "",
+                                "Category":  "Spider",
+                                "class":  "Bugs",
+                                "state":  [
+
+                                          ]
+                            },
+    "Smooth Stingray":  {
+                            "Other_name":  "",
+                            "Scientific_name":  "",
+                            "Category":  "Stingray",
+                            "class":  "Animals",
+                            "state":  [
+
+                                      ]
+                        },
+    "Tucson Recluse":  {
+                           "Other_name":  "",
+                           "Scientific_name":  "Loxosceles sabina",
+                           "Category":  "Spider",
+                           "class":  "Bugs",
+                           "state":  [
+                                         "Arizona"
+                                     ]
+                       },
+    "Common house mosquito":  {
+                                  "Other_name":  "",
+                                  "Scientific_name":  "",
+                                  "Category":  "Mosquitos",
+                                  "class":  "Bugs",
+                                  "state":  [
+
+                                            ]
+                              },
+    "Trans Pecos Copperhead":  {
+                                   "Other_name":  "",
+                                   "Scientific_name":  "Agkistrodon contortrix pictigaster",
+                                   "Category":  "Snake",
+                                   "class":  "Animals",
+                                   "state":  [
+                                                 "Texas"
+                                             ]
+                               },
+    "Tulip Cone":  {
+                       "Other_name":  "",
+                       "Scientific_name":  "",
+                       "Category":  "Snail",
+                       "class":  "Animals",
+                       "state":  [
+
+                                 ]
+                   },
+    "Eastern Cottonmouth":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "Agkistrodon piscivorus piscivorus",
+                                "Category":  "Snake",
+                                "class":  "Animals",
+                                "state":  [
+                                              "Alabama",
+                                              "Florida",
+                                              "Georgia",
+                                              "Mississippi",
+                                              "North Carolina",
+                                              "South Carolina",
+                                              "Virginia"
+                                          ]
+                            },
+    "Western Black Widow":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "Latrodectus hesperus",
+                                "Category":  "Spider",
+                                "class":  "Bugs",
+                                "state":  [
+                                              "Arizona",
+                                              "California",
+                                              "Colorado",
+                                              "Hawaii",
+                                              "Idaho",
+                                              "Kansas",
+                                              "Montana",
+                                              "Nebraska",
+                                              "Nevada",
+                                              "New Mexico",
+                                              "North Dakota",
+                                              "Oklahoma",
+                                              "Oregon",
+                                              "South Dakota",
+                                              "Texas",
+                                              "Utah",
+                                              "Washington",
+                                              "Wyoming"
+                                          ]
+                            },
+    "Purple Mint":  {
+                        "Other_name":  "",
+                        "Scientific_name":  "Perilla frutescens",
+                        "Category":  "Plants",
+                        "class":  "Plants",
+                        "state":  [
+
+                                  ]
+                    },
+    "Daffodil":  {
+                     "Other_name":  "",
+                     "Scientific_name":  "Narcissus",
+                     "Category":  "Plants",
+                     "class":  "Plants",
+                     "state":  [
+
+                               ]
+                 },
+    "Northern Copperhead":  {
+                                "Other_name":  "",
+                                "Scientific_name":  "Agkistrodon contortrix mokasen",
+                                "Category":  "Snake",
+                                "class":  "Animals",
+                                "state":  [
+                                              "Alabama",
+                                              "Connecticut",
+                                              "Delaware",
+                                              "Georgia",
+                                              "Illinois",
+                                              "Indiana",
+                                              "Iowa",
+                                              "Kentucky",
+                                              "Maryland",
+                                              "Massachusetts",
+                                              "Mississippi",
+                                              "Missouri",
+                                              "New Jersey",
+                                              "New York",
+                                              "North Carolina",
+                                              "Ohio",
+                                              "Pennsylvania",
+                                              "South Carolina",
+                                              "Tennessee",
+                                              "Virginia",
+                                              "West Virginia"
+                                          ]
+                            },
+    "Pigweed":  {
+                    "Other_name":  "Carelessweed,Redroot,Red-rooted pigweed",
+                    "Scientific_name":  "Amaranthus retroflexus",
+                    "Category":  "Plants",
+                    "class":  "Plants",
+                    "state":  [
+
+                              ]
+                },
+    "Human Botfly":  {
+                         "Other_name":  "",
+                         "Scientific_name":  "",
+                         "Category":  "Other Bugs",
+                         "class":  "Bugs",
+                         "state":  [
+
+                                   ]
+                     },
+    "Martha\u0027s Recluse":  {
+                                  "Other_name":  "",
+                                  "Scientific_name":  "Loxosceles martha",
+                                  "Category":  "Spider",
+                                  "class":  "Bugs",
+                                  "state":  [
+                                                "California"
+                                            ]
+                              },
+    "Banded Rock Rattlesnake":  {
+                                    "Other_name":  "",
+                                    "Scientific_name":  "Crotalus lepidus klauberi",
+                                    "Category":  "Snake",
+                                    "class":  "Animals",
+                                    "state":  [
+                                                  "Arizona",
+                                                  "New Mexico",
+                                                  "Texas"
+                                              ]
+                                },
+    "Buttercup":  {
+                      "Other_name":  "",
+                      "Scientific_name":  "Ranunculus",
+                      "Category":  "Plants",
+                      "class":  "Plants",
+                      "state":  [
+                                    "Illinois"
+                                ]
+                  },
+    "Western Twin Spotted Rattlesnake":  {
+                                             "Other_name":  "",
+                                             "Scientific_name":  "Crotalus pricei pricei",
+                                             "Category":  "Snake",
+                                             "class":  "Animals",
+                                             "state":  [
+                                                           "Arizona"
+                                                       ]
+                                         },
+    "Desert Massasauga":  {
+                              "Other_name":  "",
+                              "Scientific_name":  "Sistrurus catenatus edwardsii",
+                              "Category":  "Snake",
+                              "class":  "Animals",
+                              "state":  [
+                                            "Arizona",
+                                            "Colorado",
+                                            "Kansas",
+                                            "New Mexico",
+                                            "Oklahoma",
+                                            "Texas"
+                                        ]
+                          },
+    "Northern Black tailed Rattlesnake":  {
+                                              "Other_name":  "",
+                                              "Scientific_name":  "Crotalus molossus molossus",
+                                              "Category":  "Snake",
+                                              "class":  "Animals",
+                                              "state":  [
+                                                            "Arizona",
+                                                            "New Mexico",
+                                                            "Texas"
+                                                        ]
+                                          },
+    "Southern Black Widow":  {
+                                 "Other_name":  "",
+                                 "Scientific_name":  "Latrodectus mactans",
+                                 "Category":  "Spider",
+                                 "class":  "Bugs",
+                                 "state":  [
+                                               "Alabama",
+                                               "Arkansas",
+                                               "Florida",
+                                               "Georgia",
+                                               "Hawaii",
+                                               "Kentucky",
+                                               "Louisiana",
+                                               "Maryland",
+                                               "Mississippi",
+                                               "Missouri",
+                                               "North Carolina",
+                                               "Ohio",
+                                               "Oklahoma",
+                                               "Pennsylvania",
+                                               "South Carolina",
+                                               "Tennessee",
+                                               "Texas",
+                                               "Virginia",
+                                               "West Virginia"
+                                           ]
+                             },
+    "Bracken Fern":  {
+                         "Other_name":  "Brake Fern",
+                         "Scientific_name":  "Pteridium aquilinum",
+                         "Category":  "Plants",
+                         "class":  "Plants",
+                         "state":  [
+                                       "Illinois"
+                                   ]
+                     },
+    "Killer bee":  {
+                       "Other_name":  "",
+                       "Scientific_name":  "",
+                       "Category":  "Bees",
+                       "class":  "Bugs",
+                       "state":  [
+
+                                 ]
+                   },
+    "Western Pygmy Rattlesnake":  {
+                                      "Other_name":  "",
+                                      "Scientific_name":  "Sistrurus miliarius streckeri",
+                                      "Category":  "Snake",
+                                      "class":  "Animals",
+                                      "state":  [
+                                                    "Alabama",
+                                                    "Arkansas",
+                                                    "Kentucky",
+                                                    "Louisiana",
+                                                    "Mississippi",
+                                                    "Missouri",
+                                                    "Oklahoma",
+                                                    "Tennessee",
+                                                    "Texas"
+                                                ]
+                                  },
+    "Mediterranean Recluse":  {
+                                  "Other_name":  "",
+                                  "Scientific_name":  "Loxosceles rufescens",
+                                  "Category":  "Spider",
+                                  "class":  "Bugs",
+                                  "state":  [
+                                                "Hawaii",
+                                                "Texas"
+                                            ]
+                              },
+    "Tiger Rattlesnake":  {
+                              "Other_name":  "",
+                              "Scientific_name":  "Crotalus tigris",
+                              "Category":  "Snake",
+                              "class":  "Animals",
+                              "state":  [
+                                            "Arizona"
+                                        ]
+                          }
 }

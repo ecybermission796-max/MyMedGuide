@@ -29,11 +29,10 @@ try {
 $biterKeys = @{}
 $biterdata.PSObject.Properties | ForEach-Object {
   $originalKey = $_.Name
-  # Normalize: lowercase, replace underscores/hyphens with spaces, trim
-  $normalizedKey = $originalKey -replace '[_\-]+', ' '
-  $normalizedKey = $normalizedKey.Trim().ToLower()
-  # Remove diacritics - simple replacements
-  $normalizedKey = $normalizedKey -replace '[éèêë]', 'e' -replace '[àâä]', 'a' -replace '[ïî]', 'i' -replace '[ôö]', 'o' -replace '[ûü]', 'u'
+  # Standardized normalization: 1) Remove parentheses, commas, and apostrophes, 2) Replace spaces/hyphens with underscores, 3) Lowercase
+  $normalizedKey = $originalKey -replace "[(),']",""
+  $normalizedKey = $normalizedKey -replace '[ \-]+','_'
+  $normalizedKey = $normalizedKey.ToLower()
   $biterKeys[$normalizedKey] = $originalKey
 }
 
@@ -69,9 +68,10 @@ function Check-ManifestType {
     $fileName = [System.IO.Path]::GetFileNameWithoutExtension([System.IO.Path]::GetFileName($imagePath))
     
     # Normalize filename the same way
-    $normalizedName = $fileName -replace '[_\-]+', ' '
-    $normalizedName = $normalizedName.Trim().ToLower()
-    $normalizedName = $normalizedName -replace '[éèêë]', 'e' -replace '[àâä]', 'a' -replace '[ïî]', 'i' -replace '[ôö]', 'o' -replace '[ûü]', 'u'
+    # Standardized normalization: 1) Remove parentheses, commas, and apostrophes, 2) Replace spaces/hyphens with underscores, 3) Lowercase
+    $normalizedName = $fileName -replace "[(),']",""
+    $normalizedName = $normalizedName -replace '[ \-]+','_'
+    $normalizedName = $normalizedName.ToLower()
     
     # Try to find a match
     $matchedKey = $null
@@ -86,37 +86,11 @@ function Check-ManifestType {
       }
     } else {
       $missingCount++
-      # Try some common variations
-      $variations = @(
-        ($normalizedName -replace ' ', ''),
-        ($normalizedName -replace ' ', '_'),
-        ($normalizedName -replace ' ', '-')
-      )
-      
-      $found = $false
-      foreach ($var in $variations) {
-        if ($BiterKeys.ContainsKey($var)) {
-          $matchedKey = $BiterKeys[$var]
-          $found = $true
-          break
-        }
-      }
-      
-      if ($found) {
-        $matchCount++
-        $results += @{
-          File     = $fileName
-          Match    = $matchedKey
-          Status   = 'FOUND (var)'
-          Color    = 'Yellow'
-        }
-      } else {
-        $results += @{
-          File     = $fileName
-          Match    = 'N/A'
-          Status   = 'MISSING'
-          Color    = 'Red'
-        }
+      $results += @{
+        File     = $fileName
+        Match    = 'N/A'
+        Status   = 'MISSING'
+        Color    = 'Red'
       }
     }
   }

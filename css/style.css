@@ -81,6 +81,7 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  overflow: visible;
 }
 
 .img-btn:hover img {

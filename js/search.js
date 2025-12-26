@@ -2,7 +2,14 @@
 (function(){
   'use strict';
 
-  function normalize(s){ return (s||'').toString().trim().toLowerCase(); }
+  function normalize(s){ 
+    if(!s) return '';
+    let result = s.toString().trim().toLowerCase();
+    // Apply same normalization as filenameToKey for consistency
+    result = result.replace(/[(),']/g, '');
+    result = result.replace(/[ \-]+/g, '_');
+    return result;
+  }
 
   // return true if two strings are within one edit (insert/delete/substitute)
   function withinOneEdit(a,b){
@@ -37,8 +44,9 @@
     function filenameToKey(fname){
       let base = fname.split('/').pop();
       base = base.replace(/\.(jpg|jpeg|png)$/i,'');
-      base = base.replace(/[_\-]+/g,' ').replace(/\s+/g,' ').trim();
-      try{ base = base.normalize('NFD').replace(/\p{Diacritic}/gu,''); }catch(e){ base = base.replace(/[\u0300-\u036f]/g,''); }
+      // Standardized normalization: 1) Remove parentheses, commas, and apostrophes, 2) Replace spaces/hyphens with underscores, 3) Lowercase
+      base = base.replace(/[(),']/g, '');
+      base = base.replace(/[ \-]+/g, '_');
       return base.toLowerCase();
     }
     for(const mp of manifestPaths){
@@ -114,18 +122,62 @@
   async function performSearch(){
     const q = document.getElementById('global-search-input').value || '';
     const scope = document.getElementById('search-scope').value || 'All';
+    const categoryFilter = document.getElementById('search-category') ? document.getElementById('search-category').value.trim() : '';
+    const stateFilter = document.getElementById('search-state') ? document.getElementById('search-state').value.trim() : '';
     const qnorm = normalize(q);
     if(!qnorm){ const t=document.getElementById('toast'); if(t){ t.textContent='Enter a search term'; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'),2000);} return; }
 
     let index = {};
     try{ const r = await fetch('data/biterdata_index.json'); if(!r.ok) throw new Error('HTTP '+r.status); index = await r.json(); }catch(e){ console.warn('Could not load biterdata_index.json:', e.message); const t=document.getElementById('toast'); if(t){ t.textContent='Search index not available'; t.classList.remove('hidden'); setTimeout(()=>t.classList.add('hidden'),3000);} return; }
 
-    // assemble candidate list filtered by scope
+    // Helper to split keywords by comma, semicolon, and, or
+    function splitKeywords(str){
+      if(!str) return [];
+      return (str.toString().split(/[,;]|\band\b|\bor\b/i))
+        .map(s => s.trim().toLowerCase())
+        .filter(s => s.length > 0);
+    }
+
+    // assemble candidate list filtered by scope, category, and state
     const candidates = [];
     for(const kw of Object.keys(index)){
       const entry = index[kw];
+      
+      // Filter by class (scope)
       if(scope !== 'All' && normalize(entry.class) !== normalize(scope)) continue;
-      candidates.push({ keyword: kw, class: entry.class, other: (entry.OtherKeywords||[]).map(x=>normalize(x)) });
+      
+      // Filter by category if specified
+      if(categoryFilter && normalize(entry.Category) !== normalize(categoryFilter)) continue;
+      
+      // Filter by state if specified
+      if(stateFilter){
+        const states = entry.state || [];
+        const stateMatched = states.some(s => normalize(s) === normalize(stateFilter));
+        if(!stateMatched) continue;
+      }
+      
+      // Collect all searchable keywords
+      const searchableKeywords = [];
+      
+      // Add Category
+      if(entry.Category) searchableKeywords.push(...splitKeywords(entry.Category));
+      
+      // Add state(s)
+      if(entry.state && Array.isArray(entry.state)){
+        entry.state.forEach(s => searchableKeywords.push(...splitKeywords(s)));
+      }
+      
+      // Add Scientific_name
+      if(entry.Scientific_name) searchableKeywords.push(...splitKeywords(entry.Scientific_name));
+      
+      // Add Other_name
+      if(entry.Other_name) searchableKeywords.push(...splitKeywords(entry.Other_name));
+      
+      candidates.push({ 
+        keyword: kw, 
+        class: entry.class, 
+        other: searchableKeywords 
+      });
     }
 
     // Scoring: exact keyword matches first; otherwise rank by number of token matches and closeness
@@ -214,7 +266,65 @@
     if(btn) btn.addEventListener('click', performSearch);
     const input = document.getElementById('global-search-input');
     if(input) input.addEventListener('keydown',(e)=>{ if(e.key==='Enter'){ e.preventDefault(); performSearch(); } });
+    
+    // Load and populate category/state options from index
+    loadFilterOptions();
   });
+
+  // Load available categories and states from biterdata_index.json
+  async function loadFilterOptions(){
+    try{
+      const r = await fetch('data/biterdata_index.json');
+      if(!r.ok) return;
+      const index = await r.json();
+      
+      const categories = new Set();
+      const states = new Set();
+      
+      for(const kw of Object.keys(index)){
+        const entry = index[kw];
+        if(entry.Category) categories.add(entry.Category.trim());
+        if(entry.state && Array.isArray(entry.state)){
+          entry.state.forEach(s => {
+            // Split by delimiters
+            const parts = s.toString().split(/[,;]|\band\b|\bor\b/i);
+            parts.forEach(p => {
+              const trimmed = p.trim();
+              if(trimmed) states.add(trimmed);
+            });
+          });
+        }
+      }
+      
+      // Populate category select dropdown
+      const categorySelect = document.getElementById('search-category');
+      if(categorySelect){
+        // Clear existing options except "All"
+        categorySelect.innerHTML = '<option value="" selected>All</option>';
+        Array.from(categories).sort().forEach(cat => {
+          const option = document.createElement('option');
+          option.value = cat;
+          option.textContent = cat;
+          categorySelect.appendChild(option);
+        });
+      }
+      
+      // Populate state select dropdown
+      const stateSelect = document.getElementById('search-state');
+      if(stateSelect){
+        // Clear existing options except "All"
+        stateSelect.innerHTML = '<option value="" selected>All</option>';
+        Array.from(states).sort().forEach(state => {
+          const option = document.createElement('option');
+          option.value = state;
+          option.textContent = state;
+          stateSelect.appendChild(option);
+        });
+      }
+    }catch(e){
+      console.warn('Could not load filter options:', e);
+    }
+  }
 
   window.performSearch = performSearch;
 })();
