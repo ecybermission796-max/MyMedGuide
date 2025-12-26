@@ -119,7 +119,8 @@ window.initProviders = async function(){
         // Filter out unwanted facility types
         const excludeKeywords = ['senior care', 'speech clinic', 'diagnostic', 'plastic surgery', 
                                  'cosmetic surgery', 'rehabilitation', 'integrative care', 
-                                 'assisted living', 'nursing home', 'speech therapy'];
+                                 'assisted living', 'nursing home', 'speech therapy', 'orthopaedic',
+                                 'orthopedic'];
         const shouldExclude = excludeKeywords.some(keyword => nameLower.includes(keyword));
         
         if(shouldExclude) return null; // Mark for filtering
@@ -153,6 +154,10 @@ window.initProviders = async function(){
       
       // Sort by distance
       providers.sort((a, b) => a.distance - b.distance);
+      
+      // Limit to top 20 results
+      providers = providers.slice(0, 20);
+      
       currentProviders = providers;
       
       // Add numbered markers
