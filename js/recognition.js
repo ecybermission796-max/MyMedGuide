@@ -108,16 +108,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
         console.log('AI identified:', aiText);
         
+        // Always hide status and show results
+        if(recStatus) recStatus.style.display = 'none';
+        
         if(matches.length === 0){
-          // No matches - display AI text with half screen width
-          if(recStatus) recStatus.style.display = 'none';
           showToast('No local matches found');
           renderLocalResults([], aiText);
         } else {
-          // Found matches - hide status and show results
-          if(recStatus) recStatus.style.display = 'none';
           showToast('Found ' + matches.length + ' local match(es)!');
-          renderLocalResults(matches, '');
+          // Pass AI text to show alongside local results
+          renderLocalResults(matches, aiText);
         }
         
         // Store results
@@ -215,7 +215,16 @@ document.addEventListener('DOMContentLoaded', () => {
       container.appendChild(card);
     });
     
-    v.innerHTML = `<header class="view-header"><h2>Recognition Results - Local Matches</h2></header>`; 
+    v.innerHTML = `<header class="view-header"><h2>Recognition Results - Local Matches</h2></header>`;
+    
+    // Show AI analysis above the results if available
+    if(aiText){
+      const aiBox = document.createElement('div');
+      aiBox.style.cssText = 'max-width: 800px; margin: 20px auto; padding: 20px; background: #f5f5f5; border-radius: 8px; line-height: 1.6;';
+      aiBox.innerHTML = '<strong>AI Analysis:</strong><br>' + aiText.replace(/\n/g, '<br>');
+      v.appendChild(aiBox);
+    }
+    
     v.appendChild(container);
     
     // Make the results section visible and scroll to it
