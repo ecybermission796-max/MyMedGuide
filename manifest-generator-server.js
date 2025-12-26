@@ -168,10 +168,23 @@ app.post('/api/recognize', async (req, res) => {
     const indexStr = indexRaw.replace(/^\uFEFF/, ''); // strip BOM
     const index = JSON.parse(indexStr);
 
-    // Extract tokens from AI response
-    const tokens = aiText.toLowerCase()
-      .replace(/[,;.\n\r()]/g, ' ')
-      .split(/\s+/)
+    // Extract species names from numbered list (e.g., "1. **Western Rattlesnake** (_Crotalus oreganus_)")
+    const speciesNames = [];
+    const lines = aiText.split('\n');
+    for(const line of lines){
+      // Match patterns like: "1. **Species Name** (_Scientific name_)" or "1. Species Name (Scientific name)"
+      const match = line.match(/^\d+\.\s+\*{0,2}([^*(_]+)\*{0,2}\s*(?:\([^)]*\))?/);
+      if(match){
+        const commonName = match[1].trim();
+        speciesNames.push(commonName);
+      }
+    }
+
+    console.log('[server] Extracted species names:', speciesNames);
+
+    // Create search tokens from extracted species names only
+    const tokens = speciesNames
+      .flatMap(name => name.toLowerCase().split(/\s+/))
       .map(s => s.trim())
       .filter(s => s.length > 2);
 
@@ -187,26 +200,31 @@ app.post('/api/recognize', async (req, res) => {
 
       let matchCount = 0;
 
-      // Check each token
-      for(const t of tokens){
-        if(name.includes(t)){
-          matchCount += 3;
-        } else if(sciName.includes(t)){
-          matchCount += 2;
-        } else if(otherName.includes(t)){
-          matchCount += 2;
+      // Check if any extracted species name matches this entry
+      for(const speciesName of speciesNames){
+        const lower = speciesName.toLowerCase();
+        
+        // Exact or substring match with extracted species names
+        if(name.includes(lower) || lower.includes(name)){
+          matchCount += 15;
+        }
+        if(sciName && (sciName.includes(lower) || lower.includes(sciName))){
+          matchCount += 12;
+        }
+        if(otherName && (otherName.includes(lower) || lower.includes(otherName))){
+          matchCount += 12;
         }
       }
 
-      // Check if full phrases match
-      if(name && aiText.toLowerCase().includes(name)){
-        matchCount += 10;
-      }
-      if(sciName && aiText.toLowerCase().includes(sciName)){
-        matchCount += 10;
-      }
-      if(otherName && aiText.toLowerCase().includes(otherName)){
-        matchCount += 10;
+      // Check each token for partial matches
+      for(const t of tokens){
+        if(name.includes(t)){
+          matchCount += 2;
+        } else if(sciName.includes(t)){
+          matchCount += 1;
+        } else if(otherName.includes(t)){
+          matchCount += 1;
+        }
       }
 
       if(matchCount > 0){
