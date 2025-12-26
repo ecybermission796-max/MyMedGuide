@@ -117,37 +117,75 @@ app.post('/api/recognize', async (req, res) => {
     
     console.log('[server] Calling Gemini API for image recognition...');
 
-    // Call Google AI Gemini API - use gemini-2.5-flash-lite
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${apiKey}`;
-    const geminiBody = {
-      contents: [{
-        parts: [
-          {
-            text: "What is shown in this picture? Return common name or scientific names. If similar to multiple animals/plants, return the top three possibilities."
-          },
-          {
-            inline_data: {
-              mime_type: mimeType || 'image/jpeg',
-              data: image
-            }
+    // Models to try in order (fallback when quota exceeded)
+    const models = [
+      'gemini-2.5-flash-lite',
+      'gemma-3-27b',
+      'gemma-3-12b',
+      'gemma-3-4b',
+      'gemma-3-2b',
+      'gemma-3-1b'
+    ];
+
+    let geminiJson = null;
+    let lastError = null;
+    
+    for(const model of models){
+      try{
+        console.log(`[server] Trying model: ${model}`);
+        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        const geminiBody = {
+          contents: [{
+            parts: [
+              {
+                text: "What is shown in this picture? Return common name or scientific names. If similar to multiple animals/plants, return the top three possibilities."
+              },
+              {
+                inline_data: {
+                  mime_type: mimeType || 'image/jpeg',
+                  data: image
+                }
+              }
+            ]
+          }]
+        };
+
+        const geminiRes = await fetch(geminiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(geminiBody)
+        });
+
+        if(!geminiRes.ok){
+          const errorText = await geminiRes.text();
+          console.error(`[gemini] ${model} API error:`, geminiRes.status, errorText);
+          
+          // Check if it's a quota error (429 or resource exhausted)
+          if(geminiRes.status === 429 || errorText.includes('RESOURCE_EXHAUSTED') || errorText.includes('quota')){
+            console.log(`[server] ${model} quota exceeded, trying next model...`);
+            lastError = `${model}: quota exceeded`;
+            continue; // Try next model
           }
-        ]
-      }]
-    };
+          
+          // Other errors - don't retry
+          return res.status(502).json({ error: 'Gemini API request failed', detail: errorText, status: geminiRes.status });
+        }
 
-    const geminiRes = await fetch(geminiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(geminiBody)
-    });
-
-    if(!geminiRes.ok){
-      const errorText = await geminiRes.text();
-      console.error('[gemini] API error:', geminiRes.status, errorText);
-      return res.status(502).json({ error: 'Gemini API request failed', detail: errorText, status: geminiRes.status });
+        geminiJson = await geminiRes.json();
+        console.log(`[gemini] ${model} success`);
+        break; // Success - exit loop
+        
+      }catch(e){
+        console.error(`[server] Error with ${model}:`, e.message);
+        lastError = `${model}: ${e.message}`;
+        continue; // Try next model
+      }
     }
 
-    const geminiJson = await geminiRes.json();
+    if(!geminiJson){
+      console.error('[server] All models failed');
+      return res.status(502).json({ error: 'All Gemini models failed or quota exceeded', detail: lastError });
+    }
     console.log('[gemini] Response:', JSON.stringify(geminiJson, null, 2));
 
     // Extract AI text response
