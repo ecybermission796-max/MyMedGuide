@@ -63,7 +63,65 @@ window.initProviders = async function(){
     });
   }
   
-  function showMarkers(center, radiusMiles = 10){
+  // Helper function to filter providers
+  function filterProvider(name, el) {
+    const nameLower = name.toLowerCase();
+    const excludeKeywords = ['senior care', 'speech clinic', 'diagnostic', 'plastic surgery', 
+                             'cosmetic surgery', 'rehabilitation', 'integrative care', 
+                             'assisted living', 'nursing home', 'speech therapy', 'orthopaedic',
+                             'orthopedic'];
+    return !excludeKeywords.some(keyword => nameLower.includes(keyword));
+  }
+  
+  // Helper function to search by keyword
+  async function searchByKeyword(keyword, lat, lon, radiusMeters) {
+    const overpassQuery = `[out:json][timeout:10];
+      (
+        node["name"~"${keyword}",i](around:${radiusMeters},${lat},${lon});
+        way["name"~"${keyword}",i](around:${radiusMeters},${lat},${lon});
+        node["amenity"~"hospital|clinic"]["name"~"${keyword}",i](around:${radiusMeters},${lat},${lon});
+        way["amenity"~"hospital|clinic"]["name"~"${keyword}",i](around:${radiusMeters},${lat},${lon});
+      );
+      out center;`;
+    
+    const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(overpassQuery);
+    
+    const r = await fetch(url);
+    if(!r.ok) {
+      if(r.status === 429) throw new Error('Too many requests. Please wait a moment.');
+      if(r.status === 504) throw new Error('Request timeout. Try zooming in for a smaller area.');
+      throw new Error(`API error: ${r.status}`);
+    }
+    
+    const data = await r.json();
+    return data.elements || [];
+  }
+  
+  // Process elements into provider objects
+  function processElements(elements, lat, lon, facilityType) {
+    return elements.map(el => {
+      const providerLat = el.lat || (el.center && el.center.lat);
+      const providerLon = el.lon || (el.center && el.center.lon);
+      const distance = calculateDistance(lat, lon, providerLat, providerLon);
+      const name = (el.tags && (el.tags.name || el.tags.official_name)) || 'Healthcare Facility';
+      
+      if(!filterProvider(name, el)) return null;
+      
+      return {
+        lat: providerLat,
+        lon: providerLon,
+        name: name,
+        type: facilityType,
+        address: el.tags && el.tags['addr:full'] || 
+                 (el.tags && `${el.tags['addr:housenumber'] || ''} ${el.tags['addr:street'] || ''} ${el.tags['addr:city'] || ''}`.trim()) || 
+                 'Address not available',
+        phone: el.tags && el.tags.phone || '',
+        distance: distance
+      };
+    }).filter(p => p !== null);
+  }
+  
+  async function showMarkers(center, radiusMiles = 10){
     // Prevent concurrent requests
     if(isLoading) return;
     isLoading = true;
@@ -75,93 +133,52 @@ window.initProviders = async function(){
     const [lat, lon] = center;
     const radiusMeters = radiusMiles * 1609.34; // Convert miles to meters
     
-    // Simplified query - just hospitals and clinics (more reliable)
-    const overpassQuery = `[out:json][timeout:25];
-      (
-        node["amenity"="hospital"](around:${radiusMeters},${lat},${lon});
-        node["amenity"="clinic"](around:${radiusMeters},${lat},${lon});
-        way["amenity"="hospital"](around:${radiusMeters},${lat},${lon});
-        way["amenity"="clinic"](around:${radiusMeters},${lat},${lon});
-      );
-      out center;`;
-      
-    const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(overpassQuery);
-    
     resultsPanel.innerHTML = '<div style="color:#666; text-align:center; padding:20px;">Loading providers...</div>';
     
-    fetch(url)
-      .then(r => {
-        if(!r.ok) {
-          if(r.status === 429) throw new Error('Too many requests. Please wait a moment.');
-          if(r.status === 504) throw new Error('Request timeout. Try zooming in for a smaller area.');
-          throw new Error(`API error: ${r.status}`);
-        }
-        return r.json();
-      })
-      .then(data=>{
+    try {
+      let allProviders = [];
+      
+      // Sequential search strategy - search for specific facility types in order
+      const searchOrder = [
+        { keyword: 'emergency', type: 'Emergency Room' },
+        { keyword: 'hospital', type: 'Hospital' },
+        { keyword: 'medical center', type: 'Medical Center' },
+        { keyword: 'urgent care', type: 'Urgent Care' },
+        { keyword: 'ambulatory', type: 'Ambulatory Care' }
+      ];
+      
+      for(const search of searchOrder) {
+        if(allProviders.length >= 20) break; // Stop if we have enough results
+        
+        const elements = await searchByKeyword(search.keyword, lat, lon, radiusMeters);
+        const providers = processElements(elements, lat, lon, search.type);
+        
+        // Add new providers (avoid duplicates by checking coordinates)
+        providers.forEach(p => {
+          const isDuplicate = allProviders.some(existing => 
+            Math.abs(existing.lat - p.lat) < 0.0001 && Math.abs(existing.lon - p.lon) < 0.0001
+          );
+          if(!isDuplicate) {
+            allProviders.push(p);
+          }
+        });
+      }
+      
       isLoading = false;
-      if(!data.elements || data.elements.length===0){
+      
+      if(allProviders.length === 0) {
         resultsPanel.innerHTML = '<div style="color:#666; text-align:center; padding:20px;">No providers found in this area</div>';
         return;
       }
       
-      // Process and calculate distances
-      let providers = data.elements.map(el => {
-        const providerLat = el.lat || (el.center && el.center.lat);
-        const providerLon = el.lon || (el.center && el.center.lon);
-        const distance = calculateDistance(lat, lon, providerLat, providerLon);
-        
-        // Determine facility type from name or tags
-        let facilityType = 'Healthcare Facility';
-        const name = (el.tags && (el.tags.name || el.tags.official_name)) || 'Healthcare Facility';
-        const nameLower = name.toLowerCase();
-        
-        // Filter out unwanted facility types
-        const excludeKeywords = ['senior care', 'speech clinic', 'diagnostic', 'plastic surgery', 
-                                 'cosmetic surgery', 'rehabilitation', 'integrative care', 
-                                 'assisted living', 'nursing home', 'speech therapy', 'orthopaedic',
-                                 'orthopedic'];
-        const shouldExclude = excludeKeywords.some(keyword => nameLower.includes(keyword));
-        
-        if(shouldExclude) return null; // Mark for filtering
-        
-        if(el.tags && el.tags.amenity === 'hospital' || nameLower.includes('hospital')) {
-          facilityType = 'Hospital';
-        } else if(nameLower.includes('urgent care')) {
-          facilityType = 'Urgent Care';
-        } else if(nameLower.includes('emergency')) {
-          facilityType = 'Emergency Room';
-        } else if(nameLower.includes('medical center')) {
-          facilityType = 'Medical Center';
-        } else if(nameLower.includes('ambulatory')) {
-          facilityType = 'Ambulatory Care';
-        } else if(el.tags && el.tags.amenity === 'clinic') {
-          facilityType = 'Clinic';
-        }
-        
-        return {
-          lat: providerLat,
-          lon: providerLon,
-          name: name,
-          type: facilityType,
-          address: el.tags && el.tags['addr:full'] || 
-                   (el.tags && `${el.tags['addr:housenumber'] || ''} ${el.tags['addr:street'] || ''} ${el.tags['addr:city'] || ''}`.trim()) || 
-                   'Address not available',
-          phone: el.tags && el.tags.phone || '',
-          distance: distance
-        };
-      }).filter(p => p !== null); // Remove excluded facilities
+      // Sort by distance and limit to top 20
+      allProviders.sort((a, b) => a.distance - b.distance);
+      allProviders = allProviders.slice(0, 20);
       
-      // Sort by distance
-      providers.sort((a, b) => a.distance - b.distance);
-      
-      // Limit to top 20 results
-      providers = providers.slice(0, 20);
-      
-      currentProviders = providers;
+      currentProviders = allProviders;
       
       // Add numbered markers
-      providers.forEach((provider, index) => {
+      allProviders.forEach((provider, index) => {
         const number = index + 1;
         const marker = L.marker([provider.lat, provider.lon], {
           icon: createNumberedIcon(number)
@@ -195,8 +212,8 @@ window.initProviders = async function(){
       });
       
       // Display results list
-      let resultsHTML = `<div style="margin-bottom:10px; font-weight:bold; border-bottom: 2px solid #e74c3c; padding-bottom:5px;">Found ${providers.length} provider(s)</div>`;
-      providers.forEach((provider, index) => {
+      let resultsHTML = `<div style="margin-bottom:10px; font-weight:bold; border-bottom: 2px solid #e74c3c; padding-bottom:5px;">Found ${allProviders.length} provider(s)</div>`;
+      allProviders.forEach((provider, index) => {
         const number = index + 1;
         resultsHTML += `
           <div id="provider-${index}" style="margin-bottom:15px; padding:10px; background:white; border-radius:5px; border-left: 3px solid #e74c3c; cursor:pointer; transition: background 0.3s;" 
@@ -216,7 +233,7 @@ window.initProviders = async function(){
       });
       resultsPanel.innerHTML = resultsHTML;
       
-    }).catch(err => {
+    } catch(err) {
       isLoading = false;
       console.error(err);
       resultsPanel.innerHTML = `<div style="color:#d32f2f; padding:20px; background:white; border-radius:5px; text-align:center;">
@@ -224,7 +241,7 @@ window.initProviders = async function(){
         <small>${err.message}</small><br>
         <small style="color:#666;">Try zooming in or waiting a moment before moving the map again.</small>
       </div>`;
-    });
+    }
   }
   
   // Update results when map moves or zooms (with debouncing)
