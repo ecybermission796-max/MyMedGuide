@@ -73,14 +73,14 @@ window.initProviders = async function(){
     return !excludeKeywords.some(keyword => nameLower.includes(keyword));
   }
   
-  // Fast amenity-based search for initial load
-  async function searchByAmenity(lat, lon, radiusMeters) {
+  // Fast amenity-based search using map bounds
+  async function searchByAmenity(south, west, north, east) {
     const overpassQuery = `[out:json][timeout:5];
       (
-        node["amenity"="hospital"](around:${radiusMeters},${lat},${lon});
-        way["amenity"="hospital"](around:${radiusMeters},${lat},${lon});
-        node["amenity"="clinic"](around:${radiusMeters},${lat},${lon});
-        way["amenity"="clinic"](around:${radiusMeters},${lat},${lon});
+        node["amenity"="hospital"](${south},${west},${north},${east});
+        way["amenity"="hospital"](${south},${west},${north},${east});
+        node["amenity"="clinic"](${south},${west},${north},${east});
+        way["amenity"="clinic"](${south},${west},${north},${east});
       );
       out center;`;
     
@@ -237,7 +237,7 @@ window.initProviders = async function(){
     resultsPanel.innerHTML = resultsHTML;
   }
   
-  async function showMarkers(center, radiusMiles = 10){
+  async function showMarkers(){
     // Prevent concurrent requests
     if(isLoading) return;
     isLoading = true;
@@ -246,17 +246,27 @@ window.initProviders = async function(){
     markers.forEach(m => map.removeLayer(m));
     markers = [];
     
-    const [lat, lon] = center;
-    const radiusMeters = radiusMiles * 1609.34; // Convert miles to meters
+    // Get current map bounds
+    const bounds = map.getBounds();
+    const south = bounds.getSouth();
+    const west = bounds.getWest();
+    const north = bounds.getNorth();
+    const east = bounds.getEast();
+    const center = map.getCenter();
     
     resultsPanel.innerHTML = '<div style="color:#666; text-align:center; padding:20px;">Loading providers...</div>';
     
     try {
-      // Start with fast amenity-based search for hospitals and clinics
-      const amenityElements = await searchByAmenity(lat, lon, radiusMeters);
-      let allProviders = processElements(amenityElements, lat, lon);
+      // Search using map bounds
+      const amenityElements = await searchByAmenity(south, west, north, east);
+      let allProviders = processElements(amenityElements, center.lat, center.lng);
       
-      // Sort and limit to top 20
+      // Filter to only providers visible in current map bounds
+      allProviders = allProviders.filter(p => 
+        p.lat >= south && p.lat <= north && p.lon >= west && p.lon <= east
+      );
+      
+      // Sort by distance and limit to top 20
       allProviders.sort((a, b) => a.distance - b.distance);
       allProviders = allProviders.slice(0, 20);
       
@@ -288,15 +298,7 @@ window.initProviders = async function(){
     
     // Wait 2 seconds after user stops moving/zooming before making request
     debounceTimer = setTimeout(() => {
-      const center = map.getCenter();
-      const zoom = map.getZoom();
-      // Adjust radius based on zoom level (more zoom = smaller radius)
-      let radius = 5; // default 5 miles
-      if(zoom > 13) radius = 3;
-      if(zoom > 15) radius = 1.5;
-      if(zoom < 11) radius = 10;
-      
-      showMarkers([center.lat, center.lng], radius);
+      showMarkers();
     }, 2000); // 2 second debounce
   }
   
