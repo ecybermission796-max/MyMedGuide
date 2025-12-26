@@ -18,11 +18,18 @@
    - **Build Command**: `npm install`
    - **Start Command**: `node manifest-generator-server.js`
    - **Environment Variables**: 
-     - Key: `GOOGLE_VISION_API_KEY`
-     - Value: (paste your API key)
+     - Key: `GEMINI_API_KEY`
+     - Value: `AIzaSyCp3Syx3XdUn_0SXMJtsY8gcm4EKKUFDaA`
 5. Click "Create Web Service"
 6. Wait for deploy to complete (~2 min)
 7. **Copy the URL** (e.g., `https://mymedguide-api.onrender.com`)
+
+**If already deployed, update environment variable:**
+1. Go to your service on Render.com dashboard
+2. Click "Environment" tab
+3. Delete old `GOOGLE_VISION_API_KEY` if exists
+4. Add new variable: `GEMINI_API_KEY` = `AIzaSyCp3Syx3XdUn_0SXMJtsY8gcm4EKKUFDaA`
+5. Click "Manual Deploy" → "Deploy latest commit"
 
 ### Option B: Railway.app
 1. Go to https://railway.app
