@@ -164,6 +164,9 @@ window.initProviders = async function(){
   
   // Display results and markers
   function displayResults(providers) {
+    // Update current providers
+    currentProviders = providers;
+    
     // Clear existing markers
     markers.forEach(m => map.removeLayer(m));
     markers = [];
