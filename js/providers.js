@@ -38,6 +38,8 @@ window.initProviders = async function(){
 
   let markers = [];
   let currentProviders = [];
+  let debounceTimer = null;
+  let isLoading = false;
   
   // Calculate distance in miles between two lat/lon points
   function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -62,6 +64,10 @@ window.initProviders = async function(){
   }
   
   function showMarkers(center, radiusMiles = 10){
+    // Prevent concurrent requests
+    if(isLoading) return;
+    isLoading = true;
+    
     // Clear existing markers
     markers.forEach(m => map.removeLayer(m));
     markers = [];
@@ -69,16 +75,13 @@ window.initProviders = async function(){
     const [lat, lon] = center;
     const radiusMeters = radiusMiles * 1609.34; // Convert miles to meters
     
-    // Search for specific facility types
-    const overpassQuery = `[out:json][timeout:25];
+    // Simplified query - just hospitals and clinics (more reliable)
+    const overpassQuery = `[out:json][timeout:15];
       (
         node["amenity"="hospital"](around:${radiusMeters},${lat},${lon});
-        node["amenity"="clinic"]["name"~"medical center",i](around:${radiusMeters},${lat},${lon});
-        node["healthcare"="clinic"]["name"~"urgent care",i](around:${radiusMeters},${lat},${lon});
-        node["amenity"="clinic"]["emergency"="yes"](around:${radiusMeters},${lat},${lon});
-        node["healthcare"="clinic"]["speciality"~"emergency|ambulatory",i](around:${radiusMeters},${lat},${lon});
+        node["amenity"="clinic"](around:${radiusMeters},${lat},${lon});
         way["amenity"="hospital"](around:${radiusMeters},${lat},${lon});
-        way["amenity"="clinic"]["name"~"medical center|urgent care",i](around:${radiusMeters},${lat},${lon});
+        way["amenity"="clinic"](around:${radiusMeters},${lat},${lon});
       );
       out center;`;
       
@@ -86,7 +89,17 @@ window.initProviders = async function(){
     
     resultsPanel.innerHTML = '<div style="color:#666; text-align:center; padding:20px;">Loading providers...</div>';
     
-    fetch(url).then(r=>r.json()).then(data=>{
+    fetch(url)
+      .then(r => {
+        if(!r.ok) {
+          if(r.status === 429) throw new Error('Too many requests. Please wait a moment.');
+          if(r.status === 504) throw new Error('Request timeout. Try zooming in for a smaller area.');
+          throw new Error(`API error: ${r.status}`);
+        }
+        return r.json();
+      })
+      .then(data=>{
+      isLoading = false;
       if(!data.elements || data.elements.length===0){
         resultsPanel.innerHTML = '<div style="color:#666; text-align:center; padding:20px;">No providers found in this area</div>';
         return;
@@ -98,11 +111,30 @@ window.initProviders = async function(){
         const providerLon = el.lon || (el.center && el.center.lon);
         const distance = calculateDistance(lat, lon, providerLat, providerLon);
         
+        // Determine facility type from name or tags
+        let facilityType = 'Healthcare Facility';
+        const name = (el.tags && (el.tags.name || el.tags.official_name)) || 'Healthcare Facility';
+        const nameLower = name.toLowerCase();
+        
+        if(el.tags && el.tags.amenity === 'hospital' || nameLower.includes('hospital')) {
+          facilityType = 'Hospital';
+        } else if(nameLower.includes('urgent care')) {
+          facilityType = 'Urgent Care';
+        } else if(nameLower.includes('emergency')) {
+          facilityType = 'Emergency Room';
+        } else if(nameLower.includes('medical center')) {
+          facilityType = 'Medical Center';
+        } else if(nameLower.includes('ambulatory')) {
+          facilityType = 'Ambulatory Care';
+        } else if(el.tags && el.tags.amenity === 'clinic') {
+          facilityType = 'Clinic';
+        }
+        
         return {
           lat: providerLat,
           lon: providerLon,
-          name: (el.tags && (el.tags.name || el.tags.official_name)) || 'Healthcare Facility',
-          type: el.tags && (el.tags.amenity || el.tags.healthcare) || 'clinic',
+          name: name,
+          type: facilityType,
           address: el.tags && el.tags['addr:full'] || 
                    (el.tags && `${el.tags['addr:housenumber'] || ''} ${el.tags['addr:street'] || ''} ${el.tags['addr:city'] || ''}`.trim()) || 
                    'Address not available',
@@ -158,22 +190,33 @@ window.initProviders = async function(){
       resultsPanel.innerHTML = resultsHTML;
       
     }).catch(err => {
+      isLoading = false;
       console.error(err);
-      resultsPanel.innerHTML = '<div style="color:#d32f2f; text-align:center; padding:20px;">Error loading provider data</div>';
+      resultsPanel.innerHTML = `<div style="color:#d32f2f; padding:20px; background:white; border-radius:5px; text-align:center;">
+        <strong>Error loading providers</strong><br>
+        <small>${err.message}</small><br>
+        <small style="color:#666;">Try zooming in or waiting a moment before moving the map again.</small>
+      </div>`;
     });
   }
   
-  // Update results when map moves or zooms
+  // Update results when map moves or zooms (with debouncing)
   function updateResults() {
-    const center = map.getCenter();
-    const zoom = map.getZoom();
-    // Adjust radius based on zoom level (more zoom = smaller radius)
-    let radius = 10; // default 10 miles
-    if(zoom > 13) radius = 5;
-    if(zoom > 15) radius = 2;
-    if(zoom < 11) radius = 20;
+    // Clear existing timer
+    if(debounceTimer) clearTimeout(debounceTimer);
     
-    showMarkers([center.lat, center.lng], radius);
+    // Wait 1 second after user stops moving/zooming before making request
+    debounceTimer = setTimeout(() => {
+      const center = map.getCenter();
+      const zoom = map.getZoom();
+      // Adjust radius based on zoom level (more zoom = smaller radius)
+      let radius = 10; // default 10 miles
+      if(zoom > 13) radius = 5;
+      if(zoom > 15) radius = 2;
+      if(zoom < 11) radius = 20;
+      
+      showMarkers([center.lat, center.lng], radius);
+    }, 1000); // 1 second debounce
   }
   
   // Add event listeners for map interaction
