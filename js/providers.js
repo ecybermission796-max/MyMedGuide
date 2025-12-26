@@ -252,6 +252,9 @@ window.initProviders = async function(){
         displayResults(allProviders.slice(0, 20));
       }
       
+      // Release the loading lock so pan movements can trigger new searches
+      isLoading = false;
+      
       // If we don't have 20 results, supplement with keyword searches in background
       if(allProviders.length < 20) {
         const searchOrder = [
@@ -288,8 +291,6 @@ window.initProviders = async function(){
           }
         }
       }
-      
-      isLoading = false;
       
       if(allProviders.length === 0) {
         resultsPanel.innerHTML = '<div style="color:#666; text-align:center; padding:20px;">No providers found in this area</div>';
