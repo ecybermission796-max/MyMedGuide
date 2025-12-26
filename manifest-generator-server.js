@@ -120,9 +120,8 @@ app.post('/api/recognize', async (req, res) => {
     // Models to try in order (fallback when quota exceeded)
     const models = [
       'gemini-2.5-flash-lite',
-      'gemini-1.5-flash',
-      'gemini-1.5-flash-8b',
-      'gemini-1.0-pro'
+      'gemini-2.5-flash-exp',
+      'gemini-2.5-flash'
     ];
 
     let geminiJson = null;
