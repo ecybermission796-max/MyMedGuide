@@ -263,7 +263,7 @@
   // wire UI
   document.addEventListener('DOMContentLoaded', ()=>{
     const btn = document.getElementById('search-submit');
-    if(btn) btn.addEventListener('click', performSearch);
+    if(btn) btn.addEventListener('click', (e)=>{ e.preventDefault(); performSearch(); });
     const input = document.getElementById('global-search-input');
     if(input) input.addEventListener('keydown',(e)=>{ if(e.key==='Enter'){ e.preventDefault(); performSearch(); } });
     
