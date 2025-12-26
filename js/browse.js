@@ -85,29 +85,25 @@ window.loadBugsImages = async function(){
   // fallback: if manifest couldn't be fetched, use a built-in list so the page still works
   if(!manifestLoaded || !files || !files.length){
     console.warn('could not load manifest or manifest empty', lastError);
-    // Only include top-level images directly under images/bugs/ (no subfolders)
-    const fallbackFiles = [
-      'images/bugs/bed_bug.png',
-      'images/bugs/black_widow.png',
-      'images/bugs/Blister Beetle.png',
-      'images/bugs/bumble bee.png',
-      'images/bugs/bumble_bee.jpg',
-      'images/bugs/centipede.png',
-      'images/bugs/Chigger_Trombiculidae.png',
-      'images/bugs/flea.png',
-      'images/bugs/human_botfly.png',
-      'images/bugs/mosquito.png',
-      'images/bugs/Nuttallilella.png',
-      'images/bugs/Trantuala.png',
-      'images/bugs/wasp.png',
-      'images/bugs/wheel bug.png'
-    ];
-    files = fallbackFiles;
+    files = [];
   }
 
-  // Filter out any files that are not directly in images/bugs/ (no subfolders)
-  const topLevelPattern = /^images\/bugs\/[^\/]+\.(jpg|jpeg|png)$/i;
-  files = files.filter(p => topLevelPattern.test(p));
+  // Extract thumbnails from manifest structure {keyword: {thumbnails: [...]}}
+  if(!Array.isArray(files)){
+    if(typeof files === 'object'){
+      try{
+        files = Object.values(files)
+          .map(v => v && v.thumbnails && v.thumbnails[0])
+          .filter(v => typeof v === 'string');
+      }catch(e){ files = []; }
+    } else {
+      files = [];
+    }
+  }
+
+  // Filter for valid image extensions
+  const imagePattern = /\.(jpg|jpeg|png)$/i;
+  files = files.filter(p => typeof p === 'string' && imagePattern.test(p));
 
   // Remove duplicates while preserving order
   files = files.filter((v, i, a) => a.indexOf(v) === i);
