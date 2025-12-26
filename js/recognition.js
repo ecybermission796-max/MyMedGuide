@@ -139,6 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
           items.push({ keyword: it.key, class: it.class, img: imgPath });
         }
         renderLocalResults(items);
+        // Also store in localStorage so results can be opened in new tab
+        localStorage.setItem('recognitionResults', JSON.stringify({ matches: items, fallback: [], candidates: [] }));
       }catch(e){ console.error(e); showToast('Local search failed'); }
     });
   }
