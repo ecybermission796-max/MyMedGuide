@@ -137,10 +137,7 @@ window.initProviders = async function(){
       // Calculate address
       const address = el.tags && el.tags['addr:full'] || 
                      (el.tags && `${el.tags['addr:housenumber'] || ''} ${el.tags['addr:street'] || ''} ${el.tags['addr:city'] || ''}`.trim()) || 
-                     null;
-      
-      // Skip if no address
-      if(!address) return null;
+                     'Address not available';
       
       // Determine facility type
       let facilityType = defaultType || 'Healthcare Facility';
@@ -260,11 +257,6 @@ window.initProviders = async function(){
       // Search using map bounds
       const amenityElements = await searchByAmenity(south, west, north, east);
       let allProviders = processElements(amenityElements, center.lat, center.lng);
-      
-      // Filter to only providers visible in current map bounds
-      allProviders = allProviders.filter(p => 
-        p.lat >= south && p.lat <= north && p.lon >= west && p.lon <= east
-      );
       
       // Sort by distance and limit to top 20
       allProviders.sort((a, b) => a.distance - b.distance);
