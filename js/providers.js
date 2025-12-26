@@ -217,7 +217,7 @@ window.initProviders = async function(){
       const number = index + 1;
       resultsHTML += `
         <div id="provider-${index}" style="margin-bottom:15px; padding:10px; background:white; border-radius:5px; border-left: 3px solid #e74c3c; cursor:pointer; transition: background 0.3s;" 
-             onclick="document.querySelectorAll('.leaflet-marker-icon')[${index}].click()">
+             onclick="event.stopPropagation(); highlightMarker(${index});">
           <div style="display:flex; align-items:start;">
             <div style="background:#e74c3c; color:white; border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-weight:bold; margin-right:10px; flex-shrink:0;">${number}</div>
             <div style="flex:1;">
@@ -232,6 +232,27 @@ window.initProviders = async function(){
       `;
     });
     resultsPanel.innerHTML = resultsHTML;
+  }
+  
+  // Highlight marker by changing its color temporarily
+  function highlightMarker(index) {
+    if(!markers[index]) return;
+    
+    const marker = markers[index];
+    const number = index + 1;
+    
+    // Change to yellow highlight
+    marker.setIcon(L.divIcon({
+      className: 'numbered-marker',
+      html: `<div style="background: #ffc107; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">${number}</div>`,
+      iconSize: [30, 30],
+      iconAnchor: [15, 15]
+    }));
+    
+    // Reset to red after 1.5 seconds
+    setTimeout(() => {
+      marker.setIcon(createNumberedIcon(number));
+    }, 1500);
   }
   
   async function showMarkers(){
@@ -258,9 +279,9 @@ window.initProviders = async function(){
       const amenityElements = await searchByAmenity(south, west, north, east);
       let allProviders = processElements(amenityElements, center.lat, center.lng);
       
-      // Sort by distance and limit to top 20
+      // Sort by distance and limit to top 10
       allProviders.sort((a, b) => a.distance - b.distance);
-      allProviders = allProviders.slice(0, 20);
+      allProviders = allProviders.slice(0, 10);
       
       // Display results
       if(allProviders.length > 0) {
@@ -288,10 +309,10 @@ window.initProviders = async function(){
     // Clear existing timer
     if(debounceTimer) clearTimeout(debounceTimer);
     
-    // Wait 2 seconds after user stops moving/zooming before making request
+    // Wait 1 second after user stops moving/zooming before making request
     debounceTimer = setTimeout(() => {
       showMarkers();
-    }, 2000); // 2 second debounce
+    }, 1000); // 1 second debounce
   }
   
   // Add event listeners for map interaction
