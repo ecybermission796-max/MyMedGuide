@@ -1,52 +1,496 @@
-﻿[
-    "images/plants/alfalfa.png",
-    "images/plants/bloodroot.png",
-    "images/plants/bouncing_bet.png",
-    "images/plants/bracken_fern.png",
-    "images/plants/buttercup.png",
-    "images/plants/castor_bean.png",
-    "images/plants/cockleburs.png",
-    "images/plants/crown_of_thorns.png",
-    "images/plants/daffodil.png",
-    "images/plants/deadly_nightshade.png",
-    "images/plants/dogbanes.png",
-    "images/plants/dutchmans_breeches_\u0026_squirrel_corn.png",
-    "images/plants/elderberry.png",
-    "images/plants/ergot.png",
-    "images/plants/fireweed.png",
-    "images/plants/foxglove.png",
-    "images/plants/ground_ivy.png",
-    "images/plants/hemp.png",
-    "images/plants/horse_nettle.png",
-    "images/plants/horsetails.png",
-    "images/plants/hyacinth.png",
-    "images/plants/hydrangea.png",
-    "images/plants/jack_in_the_pulpit.png",
-    "images/plants/japanense_yew.png",
-    "images/plants/jimsonweed.png",
-    "images/plants/kentucky_coffee_tree.png",
-    "images/plants/lambs_quarters.png",
-    "images/plants/lantana.png",
-    "images/plants/larkspur.png",
-    "images/plants/lily_of_the_valley.png",
-    "images/plants/lupine.png",
-    "images/plants/maple_red.png",
-    "images/plants/mayapple.png",
-    "images/plants/milkweed_common.png",
-    "images/plants/nightshade_solanum.png",
-    "images/plants/ohio_buckeye.png",
-    "images/plants/oleander.png",
-    "images/plants/philodendron.png",
-    "images/plants/pigweed.png",
-    "images/plants/poison_hemlock.png",
-    "images/plants/poison_ivy.png",
-    "images/plants/poke.png",
-    "images/plants/purple_mint.png",
-    "images/plants/rhododendron.png",
-    "images/plants/rhubarb.png",
-    "images/plants/snakeroot_white.png",
-    "images/plants/st_johns_wort.png",
-    "images/plants/tulip.png",
-    "images/plants/water_hemlock.png",
-    "images/plants/wild_onion.png"
-]
+﻿{
+    "deadly_nightshade":  {
+                              "images":  [
+                                             "images/plants/deadly_nightshade/deadly_nightshade.jpg",
+                                             "images/plants/deadly_nightshade/deadly_nightshade.png"
+                                         ],
+                              "thumbnails":  [
+                                                 "images/plants/deadly_nightshade/thumbnails/deadly_nightshade.jpg",
+                                                 "images/plants/deadly_nightshade/thumbnails/deadly_nightshade.png"
+                                             ]
+                          },
+    "bracken_fern":  {
+                         "images":  [
+                                        "images/plants/bracken_fern/bracken_fern_or_brake_fern.jpg"
+                                    ],
+                         "thumbnails":  [
+                                            "images/plants/bracken_fern/thumbnails/bracken_fern_or_brake_fern.jpg"
+                                        ]
+                     },
+    "cockleburs":  {
+                       "images":  [
+                                      "images/plants/cockleburs/cockleburs.jpg"
+                                  ],
+                       "thumbnails":  [
+                                          "images/plants/cockleburs/thumbnails/cockleburs.jpg"
+                                      ]
+                   },
+    "hemp":  {
+                 "images":  [
+                                "images/plants/hemp/hemp.jpg"
+                            ],
+                 "thumbnails":  [
+                                    "images/plants/hemp/thumbnails/hemp.jpg"
+                                ]
+             },
+    "tulip":  {
+                  "images":  [
+                                 "images/plants/tulip/tulip.jpg"
+                             ],
+                  "thumbnails":  [
+                                     "images/plants/tulip/thumbnails/tulip.jpg"
+                                 ]
+              },
+    "ground_ivy":  {
+                       "images":  [
+                                      "images/plants/ground_ivy/ground_ivy.jpg"
+                                  ],
+                       "thumbnails":  [
+                                          "images/plants/ground_ivy/thumbnails/ground_ivy.jpg"
+                                      ]
+                   },
+    "rhododendron":  {
+                         "images":  [
+                                        "images/plants/rhododendron/rhododendron.jpg",
+                                        "images/plants/rhododendron/rhododendron.png",
+                                        "images/plants/rhododendron/rhododendron_2.jpg"
+                                    ],
+                         "thumbnails":  [
+                                            "images/plants/rhododendron/thumbnails/rhododendron.jpg",
+                                            "images/plants/rhododendron/thumbnails/rhododendron.png",
+                                            "images/plants/rhododendron/thumbnails/rhododendron_2.jpg"
+                                        ]
+                     },
+    "elderberry":  {
+                       "images":  [
+                                      "images/plants/elderberry/elderberry.jpg"
+                                  ],
+                       "thumbnails":  [
+                                          "images/plants/elderberry/thumbnails/elderberry.jpg"
+                                      ]
+                   },
+    "buttercup":  {
+                      "images":  [
+                                     "images/plants/buttercup/buttercup.jpg"
+                                 ],
+                      "thumbnails":  [
+                                         "images/plants/buttercup/thumbnails/buttercup.jpg"
+                                     ]
+                  },
+    "maple_red":  {
+                      "images":  [
+                                     "images/plants/maple_red/maple_red.jpg"
+                                 ],
+                      "thumbnails":  [
+                                         "images/plants/maple_red/thumbnails/maple_red.jpg"
+                                     ]
+                  },
+    "ergot":  {
+                  "images":  [
+                                 "images/plants/ergot/ergot.jpg"
+                             ],
+                  "thumbnails":  [
+                                     "images/plants/ergot/thumbnails/ergot.jpg"
+                                 ]
+              },
+    "bloodroot":  {
+                      "images":  [
+                                     "images/plants/bloodroot/bloodroot.jpg"
+                                 ],
+                      "thumbnails":  [
+                                         "images/plants/bloodroot/thumbnails/bloodroot.jpg"
+                                     ]
+                  },
+    "horsetails":  {
+                       "images":  [
+                                      "images/plants/horsetails/horsetails.jpg"
+                                  ],
+                       "thumbnails":  [
+                                          "images/plants/horsetails/thumbnails/horsetails.jpg"
+                                      ]
+                   },
+    "st_johns_wort":  {
+                          "images":  [
+                                         "images/plants/st_johns_wort/st_johns_wort.jpg"
+                                     ],
+                          "thumbnails":  [
+                                             "images/plants/st_johns_wort/thumbnails/st_johns_wort.jpg"
+                                         ]
+                      },
+    "lantana":  {
+                    "images":  [
+                                   "images/plants/lantana/lantana.jpg"
+                               ],
+                    "thumbnails":  [
+                                       "images/plants/lantana/thumbnails/lantana.jpg"
+                                   ]
+                },
+    "lily_of_the_valley":  {
+                               "images":  [
+                                              "images/plants/lily_of_the_valley/lily_of_the_valley.jpg"
+                                          ],
+                               "thumbnails":  [
+                                                  "images/plants/lily_of_the_valley/thumbnails/lily_of_the_valley.jpg"
+                                              ]
+                           },
+    "water_hemlock":  {
+                          "images":  [
+                                         "images/plants/water_hemlock/water_hemlock.jpg"
+                                     ],
+                          "thumbnails":  [
+                                             "images/plants/water_hemlock/thumbnails/water_hemlock.jpg"
+                                         ]
+                      },
+    "japanense_yew":  {
+                          "images":  [
+                                         "images/plants/japanense_yew/japanense_yew.jpg"
+                                     ],
+                          "thumbnails":  [
+                                             "images/plants/japanense_yew/thumbnails/japanense_yew.jpg"
+                                         ]
+                      },
+    "oleander":  {
+                     "images":  [
+                                    "images/plants/oleander/oleander.jpg"
+                                ],
+                     "thumbnails":  [
+                                        "images/plants/oleander/thumbnails/oleander.jpg"
+                                    ]
+                 },
+    "kentucky_coffee_tree":  {
+                                 "images":  [
+                                                "images/plants/kentucky_coffee_tree/kentucky_coffee_tree.jpg"
+                                            ],
+                                 "thumbnails":  [
+                                                    "images/plants/kentucky_coffee_tree/thumbnails/kentucky_coffee_tree.jpg"
+                                                ]
+                             },
+    "hydrangea":  {
+                      "images":  [
+                                     "images/plants/hydrangea/hydrangea.jpg"
+                                 ],
+                      "thumbnails":  [
+                                         "images/plants/hydrangea/thumbnails/hydrangea.jpg"
+                                     ]
+                  },
+    "pigweed":  {
+                    "images":  [
+                                   "images/plants/pigweed/pigweed.jpg"
+                               ],
+                    "thumbnails":  [
+                                       "images/plants/pigweed/thumbnails/pigweed.jpg"
+                                   ]
+                },
+    "larkspur":  {
+                     "images":  [
+                                    "images/plants/larkspur/larkspur.jpg"
+                                ],
+                     "thumbnails":  [
+                                        "images/plants/larkspur/thumbnails/larkspur.jpg"
+                                    ]
+                 },
+    "rhubarb":  {
+                    "images":  [
+                                   "images/plants/rhubarb/rhubarb.jpg"
+                               ],
+                    "thumbnails":  [
+                                       "images/plants/rhubarb/thumbnails/rhubarb.jpg"
+                                   ]
+                },
+    "horse_nettle":  {
+                         "images":  [
+                                        "images/plants/horse_nettle/horse_nettle.jpg",
+                                        "images/plants/horse_nettle/horse_nettle1.jpg",
+                                        "images/plants/horse_nettle/horse_nettle2.jpeg"
+                                    ],
+                         "thumbnails":  [
+                                            "images/plants/horse_nettle/thumbnails/horse_nettle.jpg",
+                                            "images/plants/horse_nettle/thumbnails/horse_nettle1.jpg",
+                                            "images/plants/horse_nettle/thumbnails/horse_nettle2.jpeg"
+                                        ]
+                     },
+    "castor_bean":  {
+                        "images":  [
+                                       "images/plants/castor_bean/castor_bean.jpg",
+                                       "images/plants/castor_bean/castor_bean.png"
+                                   ],
+                        "thumbnails":  [
+                                           "images/plants/castor_bean/thumbnails/castor_bean.jpg",
+                                           "images/plants/castor_bean/thumbnails/castor_bean.png"
+                                       ]
+                    },
+    "poison_hemlock":  {
+                           "images":  [
+                                          "images/plants/poison_hemlock/poison_hemlock.jpg",
+                                          "images/plants/poison_hemlock/poison_hemlock.png",
+                                          "images/plants/poison_hemlock/poison_hemlock_1.jpg",
+                                          "images/plants/poison_hemlock/poison_hemlock_2.jpg",
+                                          "images/plants/poison_hemlock/poison_hemlock_3.jpg",
+                                          "images/plants/poison_hemlock/poison_hemlock_4.jpg",
+                                          "images/plants/poison_hemlock/poison_hemlock_5.jpg",
+                                          "images/plants/poison_hemlock/poison_hemlock_6.jpg"
+                                      ],
+                           "thumbnails":  [
+                                              "images/plants/poison_hemlock/thumbnails/poison_hemlock.jpg",
+                                              "images/plants/poison_hemlock/thumbnails/poison_hemlock.png",
+                                              "images/plants/poison_hemlock/thumbnails/poison_hemlock_1.jpg",
+                                              "images/plants/poison_hemlock/thumbnails/poison_hemlock_2.jpg",
+                                              "images/plants/poison_hemlock/thumbnails/poison_hemlock_3.jpg",
+                                              "images/plants/poison_hemlock/thumbnails/poison_hemlock_4.jpg",
+                                              "images/plants/poison_hemlock/thumbnails/poison_hemlock_5.jpg",
+                                              "images/plants/poison_hemlock/thumbnails/poison_hemlock_6.jpg"
+                                          ]
+                       },
+    "lupine":  {
+                   "images":  [
+                                  "images/plants/lupine/lupine.jpg"
+                              ],
+                   "thumbnails":  [
+                                      "images/plants/lupine/thumbnails/lupine.jpg"
+                                  ]
+               },
+    "alfalfa":  {
+                    "images":  [
+                                   "images/plants/alfalfa/alfalfa.jpg"
+                               ],
+                    "thumbnails":  [
+                                       "images/plants/alfalfa/thumbnails/alfalfa.jpg"
+                                   ]
+                },
+    "milkweed_common":  {
+                            "images":  [
+                                           "images/plants/milkweed_common/milkweed_common1.jpg",
+                                           "images/plants/milkweed_common/milkweed_common2.jpg"
+                                       ],
+                            "thumbnails":  [
+                                               "images/plants/milkweed_common/thumbnails/milkweed_common1.jpg",
+                                               "images/plants/milkweed_common/thumbnails/milkweed_common2.jpg"
+                                           ]
+                        },
+    "snakeroot_white":  {
+                            "images":  [
+                                           "images/plants/snakeroot_white/snakeroot_white.jpg",
+                                           "images/plants/snakeroot_white/snakeroot_white1.jpg"
+                                       ],
+                            "thumbnails":  [
+                                               "images/plants/snakeroot_white/thumbnails/snakeroot_white.jpg",
+                                               "images/plants/snakeroot_white/thumbnails/snakeroot_white1.jpg"
+                                           ]
+                        },
+    "logos":  [
+                  "images/plants/alfalfa.png",
+                  "images/plants/bloodroot.png",
+                  "images/plants/bouncing_bet.png",
+                  "images/plants/bracken_fern.png",
+                  "images/plants/buttercup.png",
+                  "images/plants/castor_bean.png",
+                  "images/plants/cockleburs.png",
+                  "images/plants/crown_of_thorns.png",
+                  "images/plants/daffodil.png",
+                  "images/plants/deadly_nightshade.png",
+                  "images/plants/dogbanes.png",
+                  "images/plants/dutchmans_breeches_\u0026_squirrel_corn.png",
+                  "images/plants/elderberry.png",
+                  "images/plants/ergot.png",
+                  "images/plants/fireweed.png",
+                  "images/plants/foxglove.png",
+                  "images/plants/ground_ivy.png",
+                  "images/plants/hemp.png",
+                  "images/plants/horse_nettle.png",
+                  "images/plants/horsetails.png",
+                  "images/plants/hyacinth.png",
+                  "images/plants/hydrangea.png",
+                  "images/plants/jack_in_the_pulpit.png",
+                  "images/plants/japanense_yew.png",
+                  "images/plants/jimsonweed.png",
+                  "images/plants/kentucky_coffee_tree.png",
+                  "images/plants/lambs_quarters.png",
+                  "images/plants/lantana.png",
+                  "images/plants/larkspur.png",
+                  "images/plants/lily_of_the_valley.png",
+                  "images/plants/lupine.png",
+                  "images/plants/maple_red.png",
+                  "images/plants/mayapple.png",
+                  "images/plants/milkweed_common.png",
+                  "images/plants/nightshade_solanum.png",
+                  "images/plants/ohio_buckeye.png",
+                  "images/plants/oleander.png",
+                  "images/plants/philodendron.png",
+                  "images/plants/pigweed.png",
+                  "images/plants/poison_hemlock.png",
+                  "images/plants/poison_ivy.png",
+                  "images/plants/poke.png",
+                  "images/plants/purple_mint.png",
+                  "images/plants/rhododendron.png",
+                  "images/plants/rhubarb.png",
+                  "images/plants/snakeroot_white.png",
+                  "images/plants/st_johns_wort.png",
+                  "images/plants/tulip.png",
+                  "images/plants/water_hemlock.png",
+                  "images/plants/wild_onion.png"
+              ],
+    "ohio_buckeye":  {
+                         "images":  [
+
+                                    ],
+                         "thumbnails":  [
+
+                                        ]
+                     },
+    "mayapple":  {
+                     "images":  [
+                                    "images/plants/mayapple/mayapple.jpg"
+                                ],
+                     "thumbnails":  [
+                                        "images/plants/mayapple/thumbnails/mayapple.jpg"
+                                    ]
+                 },
+    "poison_ivy":  {
+                       "images":  [
+                                      "images/plants/poison_ivy/poison_ivy.jpg"
+                                  ],
+                       "thumbnails":  [
+                                          "images/plants/poison_ivy/thumbnails/poison_ivy.jpg"
+                                      ]
+                   },
+    "daffodil":  {
+                     "images":  [
+                                    "images/plants/daffodil/daffodil.jpg"
+                                ],
+                     "thumbnails":  [
+                                        "images/plants/daffodil/thumbnails/daffodil.jpg"
+                                    ]
+                 },
+    "fireweed":  {
+                     "images":  [
+                                    "images/plants/fireweed/fireweed.jpg"
+                                ],
+                     "thumbnails":  [
+                                        "images/plants/fireweed/thumbnails/fireweed.jpg"
+                                    ]
+                 },
+    "purple_mint":  {
+                        "images":  [
+                                       "images/plants/purple_mint/purple_mint.jpg"
+                                   ],
+                        "thumbnails":  [
+                                           "images/plants/purple_mint/thumbnails/purple_mint.jpg"
+                                       ]
+                    },
+    "dutchmans_breeches_\u0026_squirrel_corn":  {
+                                                    "images":  [
+                                                                   "images/plants/dutchmans_breeches_\u0026_squirrel_corn/dutchmans_breeches_\u0026_squirrel_corn_.jpg"
+                                                               ],
+                                                    "thumbnails":  [
+                                                                       "images/plants/dutchmans_breeches_\u0026_squirrel_corn/thumbnails/dutchmans_breeches_\u0026_squirrel_corn_.jpg"
+                                                                   ]
+                                                },
+    "bouncing_bet":  {
+                         "images":  [
+                                        "images/plants/bouncing_bet/bouncing_bet.jpg"
+                                    ],
+                         "thumbnails":  [
+                                            "images/plants/bouncing_bet/thumbnails/bouncing_bet.jpg"
+                                        ]
+                     },
+    "jimsonweed":  {
+                       "images":  [
+                                      "images/plants/jimsonweed/jimsonweed.jpg"
+                                  ],
+                       "thumbnails":  [
+                                          "images/plants/jimsonweed/thumbnails/jimsonweed.jpg"
+                                      ]
+                   },
+    "dogbanes":  {
+                     "images":  [
+                                    "images/plants/dogbanes/dogbanes.jpg"
+                                ],
+                     "thumbnails":  [
+                                        "images/plants/dogbanes/thumbnails/dogbanes.jpg"
+                                    ]
+                 },
+    "poke":  {
+                 "images":  [
+                                "images/plants/poke/poke.jpg"
+                            ],
+                 "thumbnails":  [
+                                    "images/plants/poke/thumbnails/poke.jpg"
+                                ]
+             },
+    "wild_onion":  {
+                       "images":  [
+                                      "images/plants/wild_onion/wild_onion.jpg"
+                                  ],
+                       "thumbnails":  [
+                                          "images/plants/wild_onion/thumbnails/wild_onion.jpg"
+                                      ]
+                   },
+    "hyacinth":  {
+                     "images":  [
+                                    "images/plants/hyacinth/hyacinth.jpg"
+                                ],
+                     "thumbnails":  [
+                                        "images/plants/hyacinth/thumbnails/hyacinth.jpg"
+                                    ]
+                 },
+    "foxglove":  {
+                     "images":  [
+                                    "images/plants/foxglove/foxglove.jpg",
+                                    "images/plants/foxglove/foxglove.png",
+                                    "images/plants/foxglove/foxglove2.jpg"
+                                ],
+                     "thumbnails":  [
+                                        "images/plants/foxglove/thumbnails/foxglove.jpg",
+                                        "images/plants/foxglove/thumbnails/foxglove.png",
+                                        "images/plants/foxglove/thumbnails/foxglove2.jpg"
+                                    ]
+                 },
+    "nightshade_solanum":  {
+                               "images":  [
+                                              "images/plants/nightshade_solanum/nightshade_solanum.jpg",
+                                              "images/plants/nightshade_solanum/nightshade_solanum_1.jpg",
+                                              "images/plants/nightshade_solanum/nightshade_solanum_2.jpg"
+                                          ],
+                               "thumbnails":  [
+                                                  "images/plants/nightshade_solanum/thumbnails/nightshade_solanum.jpg",
+                                                  "images/plants/nightshade_solanum/thumbnails/nightshade_solanum_1.jpg",
+                                                  "images/plants/nightshade_solanum/thumbnails/nightshade_solanum_2.jpg"
+                                              ]
+                           },
+    "lambs_quarters":  {
+                           "images":  [
+                                          "images/plants/lambs_quarters/lambs_quarters.jpg"
+                                      ],
+                           "thumbnails":  [
+                                              "images/plants/lambs_quarters/thumbnails/lambs_quarters.jpg"
+                                          ]
+                       },
+    "philodendron":  {
+                         "images":  [
+                                        "images/plants/philodendron/philodendron.jpg"
+                                    ],
+                         "thumbnails":  [
+                                            "images/plants/philodendron/thumbnails/philodendron.jpg"
+                                        ]
+                     },
+    "jack_in_the_pulpit":  {
+                               "images":  [
+                                              "images/plants/jack_in_the_pulpit/jack_in_the_pulpit.jpg",
+                                              "images/plants/jack_in_the_pulpit/jack_in_the_pulpit1.jpg",
+                                              "images/plants/jack_in_the_pulpit/jack_in_the_pulpit2.jpg"
+                                          ],
+                               "thumbnails":  [
+                                                  "images/plants/jack_in_the_pulpit/thumbnails/jack_in_the_pulpit.jpg",
+                                                  "images/plants/jack_in_the_pulpit/thumbnails/jack_in_the_pulpit1.jpg",
+                                                  "images/plants/jack_in_the_pulpit/thumbnails/jack_in_the_pulpit2.jpg"
+                                              ]
+                           },
+    "crown_of_thorns":  {
+                            "images":  [
+                                           "images/plants/crown_of_thorns/crown_of_thorns.jpg"
+                                       ],
+                            "thumbnails":  [
+                                               "images/plants/crown_of_thorns/thumbnails/crown_of_thorns.jpg"
+                                           ]
+                        }
+}

@@ -331,60 +331,19 @@ window.showBugImage = function(path){
         const clsLower = 'bugs';
         const thumbnailPath = `images/${clsLower}/${normalizedKeyword}/thumbnails/`;
         
-        // Try to load manifest to find all available images
-        const manifestPaths = [
-          `images/${clsLower}/manifest.json`,
-          `./images/${clsLower}/manifest.json`,
-          `/images/${clsLower}/manifest.json`
-        ];
-        let files = [];
-        for(const mp of manifestPaths){
-          try{
-            const r = await fetch(mp, {cache:'no-store'});
-            if(r && r.ok){
-              let raw = await r.json();
-              // coerce non-array manifest formats into an array
-              if(!Array.isArray(raw)){
-                if(typeof raw === 'string') raw = [raw];
-                else if(raw && typeof raw === 'object'){
-                  if(Array.isArray(raw.files)) raw = raw.files;
-                  else if(Array.isArray(raw.paths)) raw = raw.paths;
-                  else { try{ raw = Object.values(raw).flat().filter(v=>typeof v === 'string'); }catch(e){ raw = []; } }
-                } else raw = [];
-              }
-              files = raw;
-              break;
-            }
-          }catch(e){/*ignore*/}
-        }
-        
-        // Find thumbnail files for this normalized keyword
+        // Load manifest to get all images and thumbnails for this keyword
         let thumbs = [];
-        if(Array.isArray(files) && files.length){
-          thumbs = files.filter(p => p.toLowerCase().includes(`/${normalizedKeyword}/thumbnails/`));
-        }
-        
-        // If manifest doesn't have thumbnails, try to fetch them from the normalized keyword directory
-        if(!thumbs.length && matchKey){
-          console.debug('No thumbnails in manifest, trying to fetch from directory:', thumbnailPath);
-          // Try common thumbnail filenames based on the keyword
-          const possibleThumbs = [
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}.jpg`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}.png`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_2.jpg`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_2.png`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_3.jpg`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_3.png`
-          ];
-          // Test each possible thumbnail URL
-          for(const thumbPath of possibleThumbs){
-            try{
-              const testResp = await fetch(thumbPath, {method: 'HEAD', cache: 'no-store'});
-              if(testResp && testResp.ok){
-                thumbs.push(thumbPath);
-              }
-            }catch(e){/*ignore*/}
+        try{
+          const manifestResp = await fetch(`images/${clsLower}/manifest.json`, {cache:'no-store'});
+          if(manifestResp && manifestResp.ok){
+            const manifest = await manifestResp.json();
+            // New manifest structure: {keyword: {images: [...], thumbnails: [...]}}
+            if(manifest && manifest[normalizedKeyword]){
+              thumbs = manifest[normalizedKeyword].thumbnails || [];
+            }
           }
+        }catch(e){
+          console.debug('Could not load manifest for bugs:', e);
         }
         
         // render thumbnails grid, hide broken images via onerror
@@ -731,51 +690,19 @@ window.showAnimalImage = function(path){
           `./images/${clsLower}/manifest.json`,
           `/images/${clsLower}/manifest.json`
         ];
-        let files = [];
+        let thumbs = [];
         for(const mp of manifestPaths){
           try{
             const r = await fetch(mp, {cache:'no-store'});
             if(r && r.ok){
-              let raw = await r.json();
-              if(!Array.isArray(raw)){
-                if(typeof raw === 'string') raw = [raw];
-                else if(raw && typeof raw === 'object'){
-                  if(Array.isArray(raw.files)) raw = raw.files;
-                  else if(Array.isArray(raw.paths)) raw = raw.paths;
-                  else { try{ raw = Object.values(raw).flat().filter(v=>typeof v === 'string'); }catch(e){ raw = []; } }
-                } else raw = [];
+              let manifest = await r.json();
+              // New manifest structure: {keyword: {images: [...], thumbnails: [...]}}
+              if(manifest && manifest[normalizedKeyword]){
+                thumbs = manifest[normalizedKeyword].thumbnails || [];
               }
-              files = raw;
               break;
             }
           }catch(e){/*ignore*/}
-        }
-        
-        // Find thumbnail files for this normalized keyword
-        let thumbs = [];
-        if(Array.isArray(files) && files.length){
-          thumbs = files.filter(p => p.toLowerCase().includes(`/${normalizedKeyword}/thumbnails/`));
-        }
-        
-        // If manifest doesn't have thumbnails, try to fetch them from the normalized keyword directory
-        if(!thumbs.length && matchKey){
-          console.debug('No thumbnails in manifest, trying to fetch from directory for animals:', normalizedKeyword);
-          const possibleThumbs = [
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}.jpg`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}.png`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_2.jpg`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_2.png`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_3.jpg`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_3.png`
-          ];
-          for(const thumbPath of possibleThumbs){
-            try{
-              const testResp = await fetch(thumbPath, {method: 'HEAD', cache: 'no-store'});
-              if(testResp && testResp.ok){
-                thumbs.push(thumbPath);
-              }
-            }catch(e){/*ignore*/}
-          }
         }
         
         if(thumbs.length){
@@ -1099,36 +1026,10 @@ window.showPlantImage = function(path){
           `./images/${clsLower}/manifest.json`,
           `/images/${clsLower}/manifest.json`
         ];
-        let files = [];
-        for(const mp of manifestPaths){
-          try{ const r = await fetch(mp, {cache:'no-store'}); if(r && r.ok){ let raw = await r.json(); if(!Array.isArray(raw)){ if(typeof raw === 'string') raw = [raw]; else if(raw && typeof raw === 'object'){ if(Array.isArray(raw.files)) raw = raw.files; else if(Array.isArray(raw.paths)) raw = raw.paths; else { try{ raw = Object.values(raw).flat().filter(v=>typeof v === 'string'); }catch(e){ raw = []; } } } else raw = []; } files = raw; break; } }catch(e){}
-        }
-        
-        // Find thumbnail files for this normalized keyword
         let thumbs = [];
-        if(Array.isArray(files) && files.length){
-          thumbs = files.filter(p => p.toLowerCase().includes(`/${normalizedKeyword}/thumbnails/`));
-        }
-        
-        // If manifest doesn't have thumbnails, try to fetch them from the normalized keyword directory
-        if(!thumbs.length && matchKey){
-          console.debug('No thumbnails in manifest, trying to fetch from directory for plants:', normalizedKeyword);
-          const possibleThumbs = [
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}.jpg`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}.png`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_2.jpg`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_2.png`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_3.jpg`,
-            `images/${clsLower}/${normalizedKeyword}/thumbnails/${normalizedKeyword}_3.png`
-          ];
-          for(const thumbPath of possibleThumbs){
-            try{
-              const testResp = await fetch(thumbPath, {method: 'HEAD', cache: 'no-store'});
-              if(testResp && testResp.ok){
-                thumbs.push(thumbPath);
-              }
-            }catch(e){/*ignore*/}
-          }
+        for(const mp of manifestPaths){
+          try{ const r = await fetch(mp, {cache:'no-store'}); if(r && r.ok){ let manifest = await r.json(); // New manifest structure: {keyword: {images: [...], thumbnails: [...]}}
+            if(manifest && manifest[normalizedKeyword]){ thumbs = manifest[normalizedKeyword].thumbnails || []; } break; } }catch(e){}
         }
         
         if(thumbs.length){ const wrapper = document.createElement('div'); wrapper.className='detail-thumbs-wrapper'; const grid = document.createElement('div'); grid.className='detail-thumbs'; for(const t of thumbs){ const card = document.createElement('div'); card.className='detail-thumb-card'; const imgEl = document.createElement('img'); imgEl.src = encodeURI(t); imgEl.alt = t.split('/').pop(); imgEl.loading='lazy'; imgEl.addEventListener('error', ()=>{ card.style.display='none'; }); const bigPath = (typeof t === 'string') ? t.replace(/\/thumbnails\//i, '/') : t; imgEl.addEventListener('click', (ev)=>{ ev.preventDefault(); showFloatingImage(encodeURI(bigPath)); }); card.appendChild(imgEl); grid.appendChild(card); } wrapper.appendChild(grid); // insert thumbnails before the textual biter-data so they appear between the featured image and the descriptive text

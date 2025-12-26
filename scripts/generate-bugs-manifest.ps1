@@ -1,4 +1,5 @@
-# Generate images/bugs/manifest.json listing top-level image files (jpg, jpeg, png)
+# Generate images/bugs/manifest.json listing all image files
+# Includes both top-level logos and images from keyword subfolders
 # Run this from the repository root in PowerShell.
 
 $targetDir = ".\images\bugs"
@@ -9,14 +10,43 @@ if(-not (Test-Path $targetDir)){
   exit 1
 }
 
-# Get files directly in images/bugs (no subdirectories), prioritizing .png files
-$files = Get-ChildItem -Path $targetDir -File | Where-Object { $_.Extension -match '(?i)^(\.png)$' } | ForEach-Object { "images/bugs/$($_.Name)" }
+$manifest = @{}
 
-if($files.Count -eq 0){
-  Write-Host "No image files found in $targetDir"
-} else {
-  # Ensure we always produce a JSON array even when only one file is present
-  $json = @($files) | ConvertTo-Json -Depth 1
-  $json | Out-File -FilePath $outFile -Encoding UTF8
-  Write-Host "Wrote $($files.Count) entries to $outFile"
+# Get top-level logo files (.png only)
+$logoFiles = Get-ChildItem -Path $targetDir -File | Where-Object { $_.Extension -match '(?i)^(\.png)$' } | ForEach-Object { "images/bugs/$($_.Name)" } | Sort-Object
+$manifest["logos"] = @($logoFiles)
+
+# Get all keyword subdirectories
+$keywordDirs = Get-ChildItem -Path $targetDir -Directory
+
+foreach ($dir in $keywordDirs) {
+  $keyword = $dir.Name
+  $keywordPath = $dir.FullName
+  
+  # Get all images in the keyword folder (jpg, jpeg, png)
+  $images = Get-ChildItem -Path $keywordPath -File | Where-Object { $_.Extension -match '(?i)^\.(jpg|jpeg|png)$' } | ForEach-Object { "images/bugs/$keyword/$($_.Name)" } | Sort-Object
+  
+  # Get all thumbnails if the thumbnails subfolder exists
+  $thumbnailsPath = Join-Path $keywordPath "thumbnails"
+  $thumbnails = @()
+  if (Test-Path $thumbnailsPath -PathType Container) {
+    $thumbnails = Get-ChildItem -Path $thumbnailsPath -File | Where-Object { $_.Extension -match '(?i)^\.(jpg|jpeg|png)$' } | ForEach-Object { "images/bugs/$keyword/thumbnails/$($_.Name)" } | Sort-Object
+  }
+  
+  # Add to manifest
+  $manifest[$keyword] = @{
+    images = @($images)
+    thumbnails = @($thumbnails)
+  }
 }
+
+# Convert to JSON
+$json = $manifest | ConvertTo-Json -Depth 3
+
+# Write to file
+$json | Out-File -FilePath $outFile -Encoding UTF8
+
+Write-Host "Generated manifest: $outFile"
+Write-Host "Total keywords: $($keywordDirs.Count)"
+Write-Host "Total logos: $($logoFiles.Count)"
+exit 0
