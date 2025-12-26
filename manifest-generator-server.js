@@ -107,8 +107,13 @@ app.post('/api/recognize', async (req, res) => {
     const { image, mimeType } = req.body || {};
     if(!image) return res.status(400).json({ error: 'Missing image (base64) in request body' });
 
-    // Gemini API key - stored securely on server
-    const apiKey = process.env.GEMINI_API_KEY || 'AIzaSyCp3Syx3XdUn_0SXMJtsY8gcm4EKKUFDaA';
+    // Gemini API key - stored securely on server (use environment variable in production)
+    const apiKey = process.env.GEMINI_API_KEY;
+    
+    if(!apiKey){
+      console.error('[server] GEMINI_API_KEY not set in environment');
+      return res.status(501).json({ error: 'Server API key not configured' });
+    }
     
     console.log('[server] Calling Gemini API for image recognition...');
 
