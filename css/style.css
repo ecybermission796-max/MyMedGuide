@@ -157,20 +157,6 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
   }
 }
 
-/* File upload label styling */
-.file-upload-label {
-  display: inline-block;
-  padding: 10px 20px;
-  background: #eee;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  margin-top: 10px;
-}
-.file-upload-label:hover {
-  background: #ddd;
-}
-
 /* Search result grid */
 .search-grid{max-width:var(--max-width);margin:0 auto;padding:6px}
 .search-card{background:var(--card-bg);border-radius:8px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,0.06);}
@@ -229,10 +215,18 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
 /* controls centered below the title */
 .rec-controls{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;margin:10px 0}
 
-/* submit button positioned below the recognition frame */
+/* Button group for Choose Image and Submit buttons */
+.rec-button-group{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  align-items:center;
+  margin-top:15px;
+}
+
+/* submit button and choose image button with matching styles */
 .rec-submit{
-  display:block;
-  margin:100px auto 20px auto;
+  display:inline-block;
   padding:12px 32px;
   border-radius:12px;
   background:#4876FF;
@@ -242,6 +236,7 @@ nav.buttons[hidden], nav.buttons[aria-hidden="true"]{
   font-weight:600;
   cursor:pointer;
   box-shadow:0 4px 12px rgba(72,118,255,0.3);
+  text-align:center;
 }
 .rec-submit:hover{
   background:#3a5fd9;
