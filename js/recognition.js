@@ -2,7 +2,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('file-input');
   const preview = document.getElementById('preview');
-  const searchBtn = document.getElementById('search-similar');
   const submitBtn = document.getElementById('rec-submit');
   const recHelper = document.getElementById('rec-helper');
   const recKeywords = document.getElementById('rec-keywords');
@@ -37,9 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }catch(e){}
   });
 
-  // click -> send the uploaded image to local /api/recognize endpoint (background search)
-  if(searchBtn){
-    searchBtn.addEventListener('click', async () => {
+  // Submit button - send the uploaded image to local /api/recognize endpoint (background search)
+  if(submitBtn){
+    submitBtn.addEventListener('click', async () => {
       if(!window._uploadedFile){ showToast('Please upload an image first'); return; }
       
       // Check if backend is configured
@@ -69,11 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
         window.open(window.location.pathname + '#recognition-results', '_blank');
       }catch(e){ console.error(e); showToast('Recognition error'); }
     });
-  }
-
-  // Submit button (same as 'Search similar')
-  if(submitBtn){
-    submitBtn.addEventListener('click', (e) => { if(searchBtn) searchBtn.click(); });
   }
 
   // Local search using pasted/edited keywords - search biterdata_index.json and render up to 3 matches
