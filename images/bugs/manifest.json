@@ -1,51 +1,559 @@
-﻿[
-    "images/bugs/aedes_mosquito.png",
-    "images/bugs/apache_recluse.png",
-    "images/bugs/arizona_bark_scorpion.png",
-    "images/bugs/arizona_recluse.png",
-    "images/bugs/asian_tiger_mosquito.png",
-    "images/bugs/baja_recluse.png",
-    "images/bugs/bed_bug.png",
-    "images/bugs/big_bend_recluse.png",
-    "images/bugs/bird_flea.png",
-    "images/bugs/blister_beetle.png",
-    "images/bugs/brown_recluse.png",
-    "images/bugs/brown_widow.png",
-    "images/bugs/bumblebee.png",
-    "images/bugs/cat_flea.png",
-    "images/bugs/cellar_spider.png",
-    "images/bugs/centipede.png",
-    "images/bugs/chilean_recluse.png",
-    "images/bugs/common_house_mosquito.png",
-    "images/bugs/common_house_spider.png",
-    "images/bugs/cuckoo_bees.png",
-    "images/bugs/deathstalker.png",
-    "images/bugs/deer_tick.png",
-    "images/bugs/desert_recluse.png",
-    "images/bugs/dog_flea.png",
-    "images/bugs/grand_canyon_recluse.png",
-    "images/bugs/hobo_spider.png",
-    "images/bugs/honey_bees.png",
-    "images/bugs/hornet.png",
-    "images/bugs/human_botfly.png",
-    "images/bugs/indian_red_scorpion.png",
-    "images/bugs/ixodoidea.png",
-    "images/bugs/killer_bee.png",
-    "images/bugs/lone_star_tick.png",
-    "images/bugs/marthas_recluse.png",
-    "images/bugs/mediterranean_recluse.png",
-    "images/bugs/northern_black_widow.png",
-    "images/bugs/nuttalliella.png",
-    "images/bugs/paper_wasp.png",
-    "images/bugs/red_widow.png",
-    "images/bugs/russells_recluse.png",
-    "images/bugs/solitary_bees.png",
-    "images/bugs/southern_black_widow.png",
-    "images/bugs/stripebacked_scorpion.png",
-    "images/bugs/tarantulas.png",
-    "images/bugs/texas_recluse.png",
-    "images/bugs/tucson_recluse.png",
-    "images/bugs/western_black_widow.png",
-    "images/bugs/wolf_spider.png",
-    "images/bugs/yellow_fat_tailed_scorpion.png"
-]
+﻿{
+    "blister_beetle":  {
+                           "images":  [
+                                          "images/bugs/blister_beetle/blister_beetle.png"
+                                      ],
+                           "thumbnails":  [
+                                              "images/bugs/blister_beetle/thumbnails/blister_beetle.png"
+                                          ]
+                       },
+    "cuckoo_bees":  {
+                        "images":  [
+                                       "images/bugs/cuckoo_bees/cuckoo_bees.png"
+                                   ],
+                        "thumbnails":  [
+                                           "images/bugs/cuckoo_bees/thumbnails/cuckoo_bees.png"
+                                       ]
+                    },
+    "tarantulas":  {
+                       "images":  [
+                                      "images/bugs/tarantulas/tarantulas.jpg",
+                                      "images/bugs/tarantulas/tarantulas2.png"
+                                  ],
+                       "thumbnails":  [
+                                          "images/bugs/tarantulas/thumbnails/tarantulas.jpg",
+                                          "images/bugs/tarantulas/thumbnails/tarantulas2.png"
+                                      ]
+                   },
+    "bed_bug":  {
+                    "images":  [
+                                   "images/bugs/bed_bug/bed_bug_1.jpg",
+                                   "images/bugs/bed_bug/bed_bug_2.jpg",
+                                   "images/bugs/bed_bug/bed_bug_3.jpg",
+                                   "images/bugs/bed_bug/bed_bug_4.jpg",
+                                   "images/bugs/bed_bug/bed_bug_5.jpg"
+                               ],
+                    "thumbnails":  [
+                                       "images/bugs/bed_bug/thumbnails/bed_bug_1.jpg",
+                                       "images/bugs/bed_bug/thumbnails/bed_bug_2.jpg",
+                                       "images/bugs/bed_bug/thumbnails/bed_bug_3.jpg",
+                                       "images/bugs/bed_bug/thumbnails/bed_bug_4.jpg",
+                                       "images/bugs/bed_bug/thumbnails/bed_bug_5.jpg"
+                                   ]
+                },
+    "yellow_fat_tailed_scorpion":  {
+                                       "images":  [
+                                                      "images/bugs/yellow_fat_tailed_scorpion/yellow_fat_tailed_scorpion.jpg",
+                                                      "images/bugs/yellow_fat_tailed_scorpion/yellow_fat_tailed_scorpion.png",
+                                                      "images/bugs/yellow_fat_tailed_scorpion/yellow_fat_tailed_scorpion_2.jpg"
+                                                  ],
+                                       "thumbnails":  [
+                                                          "images/bugs/yellow_fat_tailed_scorpion/thumbnails/yellow_fat_tailed_scorpion.jpg",
+                                                          "images/bugs/yellow_fat_tailed_scorpion/thumbnails/yellow_fat_tailed_scorpion.png",
+                                                          "images/bugs/yellow_fat_tailed_scorpion/thumbnails/yellow_fat_tailed_scorpion_2.jpg"
+                                                      ]
+                                   },
+    "aedes_mosquito":  {
+                           "images":  [
+                                          "images/bugs/aedes_mosquito/aedes_mosquito.jpg",
+                                          "images/bugs/aedes_mosquito/aedes_mosquito_2.jpg"
+                                      ],
+                           "thumbnails":  [
+                                              "images/bugs/aedes_mosquito/thumbnails/aedes_mosquito.jpg",
+                                              "images/bugs/aedes_mosquito/thumbnails/aedes_mosquito_2.jpg"
+                                          ]
+                       },
+    "paper_wasp":  {
+                       "images":  [
+                                      "images/bugs/paper_wasp/paper_wasp.png"
+                                  ],
+                       "thumbnails":  [
+                                          "images/bugs/paper_wasp/thumbnails/paper_wasp.png"
+                                      ]
+                   },
+    "mediterranean_recluse":  {
+                                  "images":  [
+                                                 "images/bugs/mediterranean_recluse/mediterranean_recluse.jpg",
+                                                 "images/bugs/mediterranean_recluse/mediterranean_recluse1.jpg",
+                                                 "images/bugs/mediterranean_recluse/mediterranean_recluse2.jpg",
+                                                 "images/bugs/mediterranean_recluse/mediterranean_recluse3.jpg"
+                                             ],
+                                  "thumbnails":  [
+                                                     "images/bugs/mediterranean_recluse/thumbnails/mediterranean_recluse.jpg",
+                                                     "images/bugs/mediterranean_recluse/thumbnails/mediterranean_recluse1.jpg",
+                                                     "images/bugs/mediterranean_recluse/thumbnails/mediterranean_recluse2.jpg",
+                                                     "images/bugs/mediterranean_recluse/thumbnails/mediterranean_recluse3.jpg"
+                                                 ]
+                              },
+    "lone_star_tick":  {
+                           "images":  [
+                                          "images/bugs/lone_star_tick/lone_star_tick.jpg",
+                                          "images/bugs/lone_star_tick/lone_star_tick2.jpg",
+                                          "images/bugs/lone_star_tick/lone_star_tick3.jpg"
+                                      ],
+                           "thumbnails":  [
+                                              "images/bugs/lone_star_tick/thumbnails/lone_star_tick.jpg",
+                                              "images/bugs/lone_star_tick/thumbnails/lone_star_tick2.jpg",
+                                              "images/bugs/lone_star_tick/thumbnails/lone_star_tick3.jpg"
+                                          ]
+                       },
+    "russells_recluse":  {
+                             "images":  [
+                                            "images/bugs/russells_recluse/russells_recluse.jpeg",
+                                            "images/bugs/russells_recluse/russells_recluse.jpg"
+                                        ],
+                             "thumbnails":  [
+                                                "images/bugs/russells_recluse/thumbnails/russells_recluse.jpeg",
+                                                "images/bugs/russells_recluse/thumbnails/russells_recluse.jpg"
+                                            ]
+                         },
+    "tucson_recluse":  {
+                           "images":  [
+                                          "images/bugs/tucson_recluse/tucson_recluse.jpg"
+                                      ],
+                           "thumbnails":  [
+                                              "images/bugs/tucson_recluse/thumbnails/tucson_recluse.jpg"
+                                          ]
+                       },
+    "honey_bees":  {
+                       "images":  [
+                                      "images/bugs/honey_bees/honey_bees.png"
+                                  ],
+                       "thumbnails":  [
+                                          "images/bugs/honey_bees/thumbnails/honey_bees.png"
+                                      ]
+                   },
+    "nuttalliella":  {
+                         "images":  [
+                                        "images/bugs/nuttalliella/nuttalliella1.jpg",
+                                        "images/bugs/nuttalliella/nuttalliella2.png"
+                                    ],
+                         "thumbnails":  [
+                                            "images/bugs/nuttalliella/thumbnails/nuttalliella1.jpg",
+                                            "images/bugs/nuttalliella/thumbnails/nuttalliella2.png"
+                                        ]
+                     },
+    "deathstalker":  {
+                         "images":  [
+                                        "images/bugs/deathstalker/deathstalker.jpg"
+                                    ],
+                         "thumbnails":  [
+                                            "images/bugs/deathstalker/thumbnails/deathstalker.jpg"
+                                        ]
+                     },
+    "wolf_spider":  {
+                        "images":  [
+                                       "images/bugs/wolf_spider/wolf_spider.png"
+                                   ],
+                        "thumbnails":  [
+                                           "images/bugs/wolf_spider/thumbnails/wolf_spider.png"
+                                       ]
+                    },
+    "stripebacked_scorpion":  {
+                                  "images":  [
+                                                 "images/bugs/stripebacked_scorpion/stripebacked_scorpion.jpg"
+                                             ],
+                                  "thumbnails":  [
+                                                     "images/bugs/stripebacked_scorpion/thumbnails/stripebacked_scorpion.jpg"
+                                                 ]
+                              },
+    "killer_bee":  {
+                       "images":  [
+                                      "images/bugs/killer_bee/killer_bee.jpg"
+                                  ],
+                       "thumbnails":  [
+                                          "images/bugs/killer_bee/thumbnails/killer_bee.jpg"
+                                      ]
+                   },
+    "chilean_recluse":  {
+                            "images":  [
+                                           "images/bugs/chilean_recluse/chilean_recluse.jpg",
+                                           "images/bugs/chilean_recluse/chilean_recluse1.jpg",
+                                           "images/bugs/chilean_recluse/chilean_recluse2.jpg"
+                                       ],
+                            "thumbnails":  [
+                                               "images/bugs/chilean_recluse/thumbnails/chilean_recluse.jpg",
+                                               "images/bugs/chilean_recluse/thumbnails/chilean_recluse1.jpg",
+                                               "images/bugs/chilean_recluse/thumbnails/chilean_recluse2.jpg"
+                                           ]
+                        },
+    "indian_red_scorpion":  {
+                                "images":  [
+                                               "images/bugs/indian_red_scorpion/indian_red_scorpion.jpg",
+                                               "images/bugs/indian_red_scorpion/indian_red_scorpion.png",
+                                               "images/bugs/indian_red_scorpion/indian_red_scorpion_2.jpg"
+                                           ],
+                                "thumbnails":  [
+                                                   "images/bugs/indian_red_scorpion/thumbnails/indian_red_scorpion.jpg",
+                                                   "images/bugs/indian_red_scorpion/thumbnails/indian_red_scorpion.png",
+                                                   "images/bugs/indian_red_scorpion/thumbnails/indian_red_scorpion_2.jpg"
+                                               ]
+                            },
+    "hobo_spider":  {
+                        "images":  [
+                                       "images/bugs/hobo_spider/hobo_spider.jpg",
+                                       "images/bugs/hobo_spider/hobo_spider.png",
+                                       "images/bugs/hobo_spider/hobo_spider2.png"
+                                   ],
+                        "thumbnails":  [
+                                           "images/bugs/hobo_spider/thumbnails/hobo_spider.jpg",
+                                           "images/bugs/hobo_spider/thumbnails/hobo_spider.png",
+                                           "images/bugs/hobo_spider/thumbnails/hobo_spider2.png"
+                                       ]
+                    },
+    "brown_widow":  {
+                        "images":  [
+                                       "images/bugs/brown_widow/brown_widow.jpg",
+                                       "images/bugs/brown_widow/brown_widow_2.jpg",
+                                       "images/bugs/brown_widow/brown_widow_3.jpg",
+                                       "images/bugs/brown_widow/brown_widow_4.jpg"
+                                   ],
+                        "thumbnails":  [
+                                           "images/bugs/brown_widow/thumbnails/brown_widow.jpg",
+                                           "images/bugs/brown_widow/thumbnails/brown_widow_2.jpg",
+                                           "images/bugs/brown_widow/thumbnails/brown_widow_3.jpg",
+                                           "images/bugs/brown_widow/thumbnails/brown_widow_4.jpg"
+                                       ]
+                    },
+    "dog_flea":  {
+                     "images":  [
+                                    "images/bugs/dog_flea/dog_flea.png"
+                                ],
+                     "thumbnails":  [
+                                        "images/bugs/dog_flea/thumbnails/dog_flea.png"
+                                    ]
+                 },
+    "baja_recluse":  {
+                         "images":  [
+                                        "images/bugs/baja_recluse/baja_recluse.jpg",
+                                        "images/bugs/baja_recluse/baja_recluse1.jpg",
+                                        "images/bugs/baja_recluse/baja_recluse2.jpg"
+                                    ],
+                         "thumbnails":  [
+                                            "images/bugs/baja_recluse/thumbnails/baja_recluse.jpg",
+                                            "images/bugs/baja_recluse/thumbnails/baja_recluse1.jpg",
+                                            "images/bugs/baja_recluse/thumbnails/baja_recluse2.jpg"
+                                        ]
+                     },
+    "deer_tick":  {
+                      "images":  [
+                                     "images/bugs/deer_tick/deer_tick.png"
+                                 ],
+                      "thumbnails":  [
+                                         "images/bugs/deer_tick/thumbnails/deer_tick.png"
+                                     ]
+                  },
+    "logos":  [
+                  "images/bugs/aedes_mosquito.png",
+                  "images/bugs/apache_recluse.png",
+                  "images/bugs/arizona_bark_scorpion.png",
+                  "images/bugs/arizona_recluse.png",
+                  "images/bugs/asian_tiger_mosquito.png",
+                  "images/bugs/baja_recluse.png",
+                  "images/bugs/bed_bug.png",
+                  "images/bugs/big_bend_recluse.png",
+                  "images/bugs/bird_flea.png",
+                  "images/bugs/blister_beetle.png",
+                  "images/bugs/brown_recluse.png",
+                  "images/bugs/brown_widow.png",
+                  "images/bugs/bumblebee.png",
+                  "images/bugs/cat_flea.png",
+                  "images/bugs/cellar_spider.png",
+                  "images/bugs/centipede.png",
+                  "images/bugs/chilean_recluse.png",
+                  "images/bugs/common_house_mosquito.png",
+                  "images/bugs/common_house_spider.png",
+                  "images/bugs/cuckoo_bees.png",
+                  "images/bugs/deathstalker.png",
+                  "images/bugs/deer_tick.png",
+                  "images/bugs/desert_recluse.png",
+                  "images/bugs/dog_flea.png",
+                  "images/bugs/grand_canyon_recluse.png",
+                  "images/bugs/hobo_spider.png",
+                  "images/bugs/honey_bees.png",
+                  "images/bugs/hornet.png",
+                  "images/bugs/human_botfly.png",
+                  "images/bugs/indian_red_scorpion.png",
+                  "images/bugs/ixodoidea.png",
+                  "images/bugs/killer_bee.png",
+                  "images/bugs/lone_star_tick.png",
+                  "images/bugs/marthas_recluse.png",
+                  "images/bugs/mediterranean_recluse.png",
+                  "images/bugs/northern_black_widow.png",
+                  "images/bugs/nuttalliella.png",
+                  "images/bugs/paper_wasp.png",
+                  "images/bugs/red_widow.png",
+                  "images/bugs/russells_recluse.png",
+                  "images/bugs/solitary_bees.png",
+                  "images/bugs/southern_black_widow.png",
+                  "images/bugs/stripebacked_scorpion.png",
+                  "images/bugs/tarantulas.png",
+                  "images/bugs/texas_recluse.png",
+                  "images/bugs/tucson_recluse.png",
+                  "images/bugs/western_black_widow.png",
+                  "images/bugs/wolf_spider.png",
+                  "images/bugs/yellow_fat_tailed_scorpion.png"
+              ],
+    "marthas_recluse":  {
+                            "images":  [
+                                           "images/bugs/marthas_recluse/marthas_recluse.jpg"
+                                       ],
+                            "thumbnails":  [
+                                               "images/bugs/marthas_recluse/thumbnails/marthas_recluse.jpg"
+                                           ]
+                        },
+    "solitary_bees":  {
+                          "images":  [
+                                         "images/bugs/solitary_bees/solitary_bees.png"
+                                     ],
+                          "thumbnails":  [
+                                             "images/bugs/solitary_bees/thumbnails/solitary_bees.png"
+                                         ]
+                      },
+    "big_bend_recluse":  {
+                             "images":  [
+                                            "images/bugs/big_bend_recluse/big_bend_recluse.jpg",
+                                            "images/bugs/big_bend_recluse/big_bend_recluse1.jpg",
+                                            "images/bugs/big_bend_recluse/big_bend_recluse2.jpg"
+                                        ],
+                             "thumbnails":  [
+                                                "images/bugs/big_bend_recluse/thumbnails/big_bend_recluse.jpg",
+                                                "images/bugs/big_bend_recluse/thumbnails/big_bend_recluse1.jpg",
+                                                "images/bugs/big_bend_recluse/thumbnails/big_bend_recluse2.jpg"
+                                            ]
+                         },
+    "cellar_spider":  {
+                          "images":  [
+                                         "images/bugs/cellar_spider/cellar_spider.png"
+                                     ],
+                          "thumbnails":  [
+                                             "images/bugs/cellar_spider/thumbnails/cellar_spider.png"
+                                         ]
+                      },
+    "red_widow":  {
+                      "images":  [
+                                     "images/bugs/red_widow/red_widow.jpg",
+                                     "images/bugs/red_widow/red_widow1.jpg"
+                                 ],
+                      "thumbnails":  [
+                                         "images/bugs/red_widow/thumbnails/red_widow.jpg",
+                                         "images/bugs/red_widow/thumbnails/red_widow1.jpg"
+                                     ]
+                  },
+    "cat_flea":  {
+                     "images":  [
+                                    "images/bugs/cat_flea/cat_flea.png"
+                                ],
+                     "thumbnails":  [
+                                        "images/bugs/cat_flea/thumbnails/cat_flea.png"
+                                    ]
+                 },
+    "centipede":  {
+                      "images":  [
+                                     "images/bugs/centipede/centipede.png",
+                                     "images/bugs/centipede/centipede2.png"
+                                 ],
+                      "thumbnails":  [
+                                         "images/bugs/centipede/thumbnails/centipede.png",
+                                         "images/bugs/centipede/thumbnails/centipede2.png"
+                                     ]
+                  },
+    "brown_recluse":  {
+                          "images":  [
+                                         "images/bugs/brown_recluse/brown_recluse_eye_pattern.jpg",
+                                         "images/bugs/brown_recluse/brown_recluse_spider.jpg"
+                                     ],
+                          "thumbnails":  [
+                                             "images/bugs/brown_recluse/thumbnails/brown_recluse_eye_pattern.jpg",
+                                             "images/bugs/brown_recluse/thumbnails/brown_recluse_spider.jpg"
+                                         ]
+                      },
+    "arizona_bark_scorpion":  {
+                                  "images":  [
+                                                 "images/bugs/arizona_bark_scorpion/arizona_bark_scorpion.jpg"
+                                             ],
+                                  "thumbnails":  [
+                                                     "images/bugs/arizona_bark_scorpion/thumbnails/arizona_bark_scorpion.jpg"
+                                                 ]
+                              },
+    "common_house_mosquito":  {
+                                  "images":  [
+                                                 "images/bugs/common_house_mosquito/common_house_mosquito.jpg",
+                                                 "images/bugs/common_house_mosquito/common_house_mosquito1.jpg"
+                                             ],
+                                  "thumbnails":  [
+                                                     "images/bugs/common_house_mosquito/thumbnails/common_house_mosquito.jpg",
+                                                     "images/bugs/common_house_mosquito/thumbnails/common_house_mosquito1.jpg"
+                                                 ]
+                              },
+    "hornet":  {
+                   "images":  [
+                                  "images/bugs/hornet/hornet.png",
+                                  "images/bugs/hornet/hornet2.png"
+                              ],
+                   "thumbnails":  [
+                                      "images/bugs/hornet/thumbnails/hornet.png",
+                                      "images/bugs/hornet/thumbnails/hornet2.png"
+                                  ]
+               },
+    "common_house_spider":  {
+                                "images":  [
+                                               "images/bugs/common_house_spider/common_house_spider.jpg",
+                                               "images/bugs/common_house_spider/common_house_spider.png"
+                                           ],
+                                "thumbnails":  [
+                                                   "images/bugs/common_house_spider/thumbnails/common_house_spider.jpg",
+                                                   "images/bugs/common_house_spider/thumbnails/common_house_spider.png"
+                                               ]
+                            },
+    "desert_recluse":  {
+                           "images":  [
+                                          "images/bugs/desert_recluse/desert_recluse.jpg",
+                                          "images/bugs/desert_recluse/desert_recluse1.jpg",
+                                          "images/bugs/desert_recluse/desert_recluse2.jpg"
+                                      ],
+                           "thumbnails":  [
+                                              "images/bugs/desert_recluse/thumbnails/desert_recluse.jpg",
+                                              "images/bugs/desert_recluse/thumbnails/desert_recluse1.jpg",
+                                              "images/bugs/desert_recluse/thumbnails/desert_recluse2.jpg"
+                                          ]
+                       },
+    "asian_tiger_mosquito":  {
+                                 "images":  [
+                                                "images/bugs/asian_tiger_mosquito/asian_tiger_mosquito.jpg",
+                                                "images/bugs/asian_tiger_mosquito/asian_tiger_mosquito2.jpg"
+                                            ],
+                                 "thumbnails":  [
+                                                    "images/bugs/asian_tiger_mosquito/thumbnails/asian_tiger_mosquito.jpg",
+                                                    "images/bugs/asian_tiger_mosquito/thumbnails/asian_tiger_mosquito2.jpg"
+                                                ]
+                             },
+    "human_botfly":  {
+                         "images":  [
+                                        "images/bugs/human_botfly/human_botfly.png",
+                                        "images/bugs/human_botfly/human_botfly_1.jpeg",
+                                        "images/bugs/human_botfly/human_botfly_1.jpg",
+                                        "images/bugs/human_botfly/human_botfly_1.png",
+                                        "images/bugs/human_botfly/human_botfly_2.jpg",
+                                        "images/bugs/human_botfly/human_botfly_3.jpg"
+                                    ],
+                         "thumbnails":  [
+                                            "images/bugs/human_botfly/thumbnails/human_botfly.png",
+                                            "images/bugs/human_botfly/thumbnails/human_botfly_1.jpeg",
+                                            "images/bugs/human_botfly/thumbnails/human_botfly_1.jpg",
+                                            "images/bugs/human_botfly/thumbnails/human_botfly_1.png",
+                                            "images/bugs/human_botfly/thumbnails/human_botfly_2.jpg",
+                                            "images/bugs/human_botfly/thumbnails/human_botfly_3.jpg"
+                                        ]
+                     },
+    "bird_flea":  {
+                      "images":  [
+                                     "images/bugs/bird_flea/bird_flea.png"
+                                 ],
+                      "thumbnails":  [
+                                         "images/bugs/bird_flea/thumbnails/bird_flea.png"
+                                     ]
+                  },
+    "apache_recluse":  {
+                           "images":  [
+                                          "images/bugs/apache_recluse/apache_recluse.jpg",
+                                          "images/bugs/apache_recluse/apache_recluse1.jpg",
+                                          "images/bugs/apache_recluse/apache_recluse2.jpg"
+                                      ],
+                           "thumbnails":  [
+                                              "images/bugs/apache_recluse/thumbnails/apache_recluse.jpg",
+                                              "images/bugs/apache_recluse/thumbnails/apache_recluse1.jpg",
+                                              "images/bugs/apache_recluse/thumbnails/apache_recluse2.jpg"
+                                          ]
+                       },
+    "southern_black_widow":  {
+                                 "images":  [
+                                                "images/bugs/southern_black_widow/southern_black_widow.jpg",
+                                                "images/bugs/southern_black_widow/southern_black_widow_2.jpg",
+                                                "images/bugs/southern_black_widow/southern_black_widow_3.jpg",
+                                                "images/bugs/southern_black_widow/southern_black_widow_4.jpg",
+                                                "images/bugs/southern_black_widow/southern_black_widow2.jpg"
+                                            ],
+                                 "thumbnails":  [
+                                                    "images/bugs/southern_black_widow/thumbnails/southern_black_widow.jpg",
+                                                    "images/bugs/southern_black_widow/thumbnails/southern_black_widow_2.jpg",
+                                                    "images/bugs/southern_black_widow/thumbnails/southern_black_widow_3.jpg",
+                                                    "images/bugs/southern_black_widow/thumbnails/southern_black_widow_4.jpg",
+                                                    "images/bugs/southern_black_widow/thumbnails/southern_black_widow2.jpg"
+                                                ]
+                             },
+    "northern_black_widow":  {
+                                 "images":  [
+                                                "images/bugs/northern_black_widow/northern_black_widow.jpg",
+                                                "images/bugs/northern_black_widow/northern_black_widow2.jpg"
+                                            ],
+                                 "thumbnails":  [
+                                                    "images/bugs/northern_black_widow/thumbnails/northern_black_widow.jpg",
+                                                    "images/bugs/northern_black_widow/thumbnails/northern_black_widow2.jpg"
+                                                ]
+                             },
+    "texas_recluse":  {
+                          "images":  [
+                                         "images/bugs/texas_recluse/texas_recluse.jpg",
+                                         "images/bugs/texas_recluse/texas_recluse1.jpeg",
+                                         "images/bugs/texas_recluse/texas_recluse2.jpeg"
+                                     ],
+                          "thumbnails":  [
+                                             "images/bugs/texas_recluse/thumbnails/texas_recluse.jpg",
+                                             "images/bugs/texas_recluse/thumbnails/texas_recluse1.jpeg",
+                                             "images/bugs/texas_recluse/thumbnails/texas_recluse2.jpeg"
+                                         ]
+                      },
+    "western_black_widow":  {
+                                "images":  [
+                                               "images/bugs/western_black_widow/western_black_widow_1.jpg",
+                                               "images/bugs/western_black_widow/western_black_widow_2.jpg"
+                                           ],
+                                "thumbnails":  [
+                                                   "images/bugs/western_black_widow/thumbnails/western_black_widow_1.jpg",
+                                                   "images/bugs/western_black_widow/thumbnails/western_black_widow_2.jpg"
+                                               ]
+                            },
+    "arizona_recluse":  {
+                            "images":  [
+                                           "images/bugs/arizona_recluse/arizona_recluse.jpg",
+                                           "images/bugs/arizona_recluse/arizona_recluse1.jpg",
+                                           "images/bugs/arizona_recluse/arizona_recluse2.jpg"
+                                       ],
+                            "thumbnails":  [
+                                               "images/bugs/arizona_recluse/thumbnails/arizona_recluse.jpg",
+                                               "images/bugs/arizona_recluse/thumbnails/arizona_recluse1.jpg",
+                                               "images/bugs/arizona_recluse/thumbnails/arizona_recluse2.jpg"
+                                           ]
+                        },
+    "bumblebee":  {
+                      "images":  [
+                                     "images/bugs/bumblebee/bumblebee.png",
+                                     "images/bugs/bumblebee/bumblebee1.png"
+                                 ],
+                      "thumbnails":  [
+                                         "images/bugs/bumblebee/thumbnails/bumblebee.png",
+                                         "images/bugs/bumblebee/thumbnails/bumblebee1.png"
+                                     ]
+                  },
+    "ixodoidea":  {
+                      "images":  [
+                                     "images/bugs/ixodoidea/ixodoidea1.jpg",
+                                     "images/bugs/ixodoidea/ixodoidea2.jpg",
+                                     "images/bugs/ixodoidea/ixodoidea4.jpg"
+                                 ],
+                      "thumbnails":  [
+                                         "images/bugs/ixodoidea/thumbnails/ixodoidea1.jpg",
+                                         "images/bugs/ixodoidea/thumbnails/ixodoidea2.jpg",
+                                         "images/bugs/ixodoidea/thumbnails/ixodoidea4.jpg"
+                                     ]
+                  },
+    "grand_canyon_recluse":  {
+                                 "images":  [
+                                                "images/bugs/grand_canyon_recluse/grand_canyon_recluse.jpg"
+                                            ],
+                                 "thumbnails":  [
+                                                    "images/bugs/grand_canyon_recluse/thumbnails/grand_canyon_recluse.jpg"
+                                                ]
+                             }
+}

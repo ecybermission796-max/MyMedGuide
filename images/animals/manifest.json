@@ -1,59 +1,727 @@
-﻿[
-    "images/animals/animas_ridgenose_rattlesnake.png",
-    "images/animals/arizona_black_rattlesnake.png",
-    "images/animals/arizona_coral_snake.png",
-    "images/animals/arizona_ridgenose_rattlesnake.png",
-    "images/animals/banded_gila_monster.png",
-    "images/animals/banded_rock_rattlesnake.png",
-    "images/animals/black_mamba.png",
-    "images/animals/broad_banded_copperhead.png",
-    "images/animals/carolina_pygmy_rattlesnake.png",
-    "images/animals/colorado_desert_sidewinder.png",
-    "images/animals/desert_massasauga.png",
-    "images/animals/dusky_pygmy_rattlesnake.png",
-    "images/animals/eastern_coral_snake.png",
-    "images/animals/eastern_cottonmouth.png",
-    "images/animals/eastern_diamondback_rattlesnake.png",
-    "images/animals/eastern_massasauga.png",
-    "images/animals/florida_cottonmouth.png",
-    "images/animals/geography_cone.png",
-    "images/animals/german_shepherd.png",
-    "images/animals/giant_freshwater_stingray.png",
-    "images/animals/grand_canyon_rattlesnake.png",
-    "images/animals/great_basin_rattlesnake.png",
-    "images/animals/hopi_rattlesnake.png",
-    "images/animals/inland_taipan.png",
-    "images/animals/king_cobra.png",
-    "images/animals/midget_faded_rattlesnake.png",
-    "images/animals/mojave_desert_sidewinder.png",
-    "images/animals/mojave_rattlesnake.png",
-    "images/animals/mottled_rock_rattlesnake.png",
-    "images/animals/northern_black_tailed_rattlesnake.png",
-    "images/animals/northern_copperhead.png",
-    "images/animals/northern_pacific_rattlesnake.png",
-    "images/animals/osage_copperhead.png",
-    "images/animals/panamint_speckled_rattlesnake.png",
-    "images/animals/pit_bull.png",
-    "images/animals/prairie_rattlesnake.png",
-    "images/animals/red_diamond_rattlesnake.png",
-    "images/animals/reticulated_gila_monster.png",
-    "images/animals/rottweilers.png",
-    "images/animals/short_tail_stingray.png",
-    "images/animals/smooth_stingray.png",
-    "images/animals/sonoran_desert_sidewinder.png",
-    "images/animals/southern_copperhead.png",
-    "images/animals/southern_pacific_rattlesnake.png",
-    "images/animals/southwestern_speckled_rattlesnake.png",
-    "images/animals/texas_coral_snake.png",
-    "images/animals/textile_cone.png",
-    "images/animals/tiger_rattlesnake.png",
-    "images/animals/timber_rattlesnake.png",
-    "images/animals/trans_pecos_copperhead.png",
-    "images/animals/tulip_cone.png",
-    "images/animals/western_cottonmouth.png",
-    "images/animals/western_diamondback_rattlesnake.png",
-    "images/animals/western_massasauga.png",
-    "images/animals/western_pygmy_rattlesnake.png",
-    "images/animals/western_twin_spotted_rattlesnake.png",
-    "images/animals/yellow_bellied_sea_snake.png"
-]
+﻿{
+    "sonoran_desert_sidewinder":  {
+                                      "images":  [
+                                                     "images/animals/sonoran_desert_sidewinder/sonoran_desert_sidewinder.jpg",
+                                                     "images/animals/sonoran_desert_sidewinder/sonoran_desert_sidewinder_2.jpg",
+                                                     "images/animals/sonoran_desert_sidewinder/sonoran_desert_sidewinder_3.jpg"
+                                                 ],
+                                      "thumbnails":  [
+                                                         "images/animals/sonoran_desert_sidewinder/thumbnails/sonoran_desert_sidewinder.jpg",
+                                                         "images/animals/sonoran_desert_sidewinder/thumbnails/sonoran_desert_sidewinder_2.jpg",
+                                                         "images/animals/sonoran_desert_sidewinder/thumbnails/sonoran_desert_sidewinder_3.jpg"
+                                                     ]
+                                  },
+    "northern_black_tailed_rattlesnake":  {
+                                              "images":  [
+                                                             "images/animals/northern_black_tailed_rattlesnake/northern_black_tailed_rattlesnake_1.jpg",
+                                                             "images/animals/northern_black_tailed_rattlesnake/northern_black_tailed_rattlesnake_2.jpg",
+                                                             "images/animals/northern_black_tailed_rattlesnake/northern_black_tailed_rattlesnake_3.jpg",
+                                                             "images/animals/northern_black_tailed_rattlesnake/northern_black_tailed_rattlesnake_4.jpg",
+                                                             "images/animals/northern_black_tailed_rattlesnake/northern_black_tailed_rattlesnake_5.jpg",
+                                                             "images/animals/northern_black_tailed_rattlesnake/northern_black_tailed_rattlesnake_6.jpg",
+                                                             "images/animals/northern_black_tailed_rattlesnake/northern_black_tailed_rattlesnake_7.jpg",
+                                                             "images/animals/northern_black_tailed_rattlesnake/northern_black_tailed_rattlesnake_8.jpg"
+                                                         ],
+                                              "thumbnails":  [
+                                                                 "images/animals/northern_black_tailed_rattlesnake/thumbnails/northern_black_tailed_rattlesnake_1.jpg",
+                                                                 "images/animals/northern_black_tailed_rattlesnake/thumbnails/northern_black_tailed_rattlesnake_2.jpg",
+                                                                 "images/animals/northern_black_tailed_rattlesnake/thumbnails/northern_black_tailed_rattlesnake_3.jpg",
+                                                                 "images/animals/northern_black_tailed_rattlesnake/thumbnails/northern_black_tailed_rattlesnake_4.jpg",
+                                                                 "images/animals/northern_black_tailed_rattlesnake/thumbnails/northern_black_tailed_rattlesnake_5.jpg",
+                                                                 "images/animals/northern_black_tailed_rattlesnake/thumbnails/northern_black_tailed_rattlesnake_6.jpg",
+                                                                 "images/animals/northern_black_tailed_rattlesnake/thumbnails/northern_black_tailed_rattlesnake_7.jpg",
+                                                                 "images/animals/northern_black_tailed_rattlesnake/thumbnails/northern_black_tailed_rattlesnake_8.jpg"
+                                                             ]
+                                          },
+    "trans_pecos_copperhead":  {
+                                   "images":  [
+                                                  "images/animals/trans_pecos_copperhead/trans_pecos_copperhead.jpg"
+                                              ],
+                                   "thumbnails":  [
+                                                      "images/animals/trans_pecos_copperhead/thumbnails/trans_pecos_copperhead.jpg"
+                                                  ]
+                               },
+    "tulip_cone":  {
+                       "images":  [
+                                      "images/animals/tulip_cone/tulip_cone.jpg"
+                                  ],
+                       "thumbnails":  [
+                                          "images/animals/tulip_cone/thumbnails/tulip_cone.jpg"
+                                      ]
+                   },
+    "timber_rattlesnake":  {
+                               "images":  [
+                                              "images/animals/timber_rattlesnake/timber_rattlesnake.jpg",
+                                              "images/animals/timber_rattlesnake/timber_rattlesnake_3.jpg",
+                                              "images/animals/timber_rattlesnake/timber_rattlesnake2.jpg"
+                                          ],
+                               "thumbnails":  [
+                                                  "images/animals/timber_rattlesnake/thumbnails/timber_rattlesnake.jpg",
+                                                  "images/animals/timber_rattlesnake/thumbnails/timber_rattlesnake_3.jpg",
+                                                  "images/animals/timber_rattlesnake/thumbnails/timber_rattlesnake2.jpg"
+                                              ]
+                           },
+    "grand_canyon_rattlesnake":  {
+                                     "images":  [
+                                                    "images/animals/grand_canyon_rattlesnake/grand_canyon_rattlesnake.jpg"
+                                                ],
+                                     "thumbnails":  [
+                                                        "images/animals/grand_canyon_rattlesnake/thumbnails/grand_canyon_rattlesnake.jpg"
+                                                    ]
+                                 },
+    "southern_copperhead":  {
+                                "images":  [
+                                               "images/animals/southern_copperhead/southern_copperhead1.jpg",
+                                               "images/animals/southern_copperhead/southern_copperhead2.jpg",
+                                               "images/animals/southern_copperhead/southern_copperhead3.jpg"
+                                           ],
+                                "thumbnails":  [
+                                                   "images/animals/southern_copperhead/thumbnails/southern_copperhead1.jpg",
+                                                   "images/animals/southern_copperhead/thumbnails/southern_copperhead2.jpg",
+                                                   "images/animals/southern_copperhead/thumbnails/southern_copperhead3.jpg"
+                                               ]
+                            },
+    "mojave_rattlesnake":  {
+                               "images":  [
+                                              "images/animals/mojave_rattlesnake/mojave_rattlesnake.jpg",
+                                              "images/animals/mojave_rattlesnake/mojave_rattlesnake_2.jpg",
+                                              "images/animals/mojave_rattlesnake/mojave_rattlesnake_3_.jpg"
+                                          ],
+                               "thumbnails":  [
+                                                  "images/animals/mojave_rattlesnake/thumbnails/mojave_rattlesnake.jpg",
+                                                  "images/animals/mojave_rattlesnake/thumbnails/mojave_rattlesnake_2.jpg",
+                                                  "images/animals/mojave_rattlesnake/thumbnails/mojave_rattlesnake_3_.jpg"
+                                              ]
+                           },
+    "eastern_massasauga":  {
+                               "images":  [
+                                              "images/animals/eastern_massasauga/eastern_massasauga1.jpg",
+                                              "images/animals/eastern_massasauga/eastern_massasauga2.jpg",
+                                              "images/animals/eastern_massasauga/eastern_massasauga3.jpg"
+                                          ],
+                               "thumbnails":  [
+                                                  "images/animals/eastern_massasauga/thumbnails/eastern_massasauga1.jpg",
+                                                  "images/animals/eastern_massasauga/thumbnails/eastern_massasauga2.jpg",
+                                                  "images/animals/eastern_massasauga/thumbnails/eastern_massasauga3.jpg"
+                                              ]
+                           },
+    "banded_rock_rattlesnake":  {
+                                    "images":  [
+                                                   "images/animals/banded_rock_rattlesnake/banded_rock_rattlesnake1.jpg",
+                                                   "images/animals/banded_rock_rattlesnake/banded_rock_rattlesnake2.jpg",
+                                                   "images/animals/banded_rock_rattlesnake/banded_rock_rattlesnake3.jpg",
+                                                   "images/animals/banded_rock_rattlesnake/banded_rock_rattlesnake4.jpg"
+                                               ],
+                                    "thumbnails":  [
+                                                       "images/animals/banded_rock_rattlesnake/thumbnails/banded_rock_rattlesnake1.jpg",
+                                                       "images/animals/banded_rock_rattlesnake/thumbnails/banded_rock_rattlesnake2.jpg",
+                                                       "images/animals/banded_rock_rattlesnake/thumbnails/banded_rock_rattlesnake3.jpg",
+                                                       "images/animals/banded_rock_rattlesnake/thumbnails/banded_rock_rattlesnake4.jpg"
+                                                   ]
+                                },
+    "eastern_coral_snake":  {
+                                "images":  [
+                                               "images/animals/eastern_coral_snake/eastern_coral_snake.jpg",
+                                               "images/animals/eastern_coral_snake/eastern_coral_snake2.jpg"
+                                           ],
+                                "thumbnails":  [
+                                                   "images/animals/eastern_coral_snake/thumbnails/eastern_coral_snake.jpg",
+                                                   "images/animals/eastern_coral_snake/thumbnails/eastern_coral_snake2.jpg"
+                                               ]
+                            },
+    "mojave_desert_sidewinder":  {
+                                     "images":  [
+                                                    "images/animals/mojave_desert_sidewinder/mojave_desert_sidewinder.jpg",
+                                                    "images/animals/mojave_desert_sidewinder/mojave_desert_sidewinder_2.jpg",
+                                                    "images/animals/mojave_desert_sidewinder/mojave_desert_sidewinder_3.jpg",
+                                                    "images/animals/mojave_desert_sidewinder/mojave_desert_sidewinder_4.jpg",
+                                                    "images/animals/mojave_desert_sidewinder/mojave_desert_sidewinder_in_sand.jpg",
+                                                    "images/animals/mojave_desert_sidewinder/mojave_desert_sidewinder_in_sand_1.jpg"
+                                                ],
+                                     "thumbnails":  [
+                                                        "images/animals/mojave_desert_sidewinder/thumbnails/mojave_desert_sidewinder.jpg",
+                                                        "images/animals/mojave_desert_sidewinder/thumbnails/mojave_desert_sidewinder_2.jpg",
+                                                        "images/animals/mojave_desert_sidewinder/thumbnails/mojave_desert_sidewinder_3.jpg",
+                                                        "images/animals/mojave_desert_sidewinder/thumbnails/mojave_desert_sidewinder_4.jpg",
+                                                        "images/animals/mojave_desert_sidewinder/thumbnails/mojave_desert_sidewinder_in_sand.jpg",
+                                                        "images/animals/mojave_desert_sidewinder/thumbnails/mojave_desert_sidewinder_in_sand_1.jpg"
+                                                    ]
+                                 },
+    "florida_cottonmouth":  {
+                                "images":  [
+                                               "images/animals/florida_cottonmouth/florida_cottonmouth1.jpg",
+                                               "images/animals/florida_cottonmouth/florida_cottonmouth2.jpg",
+                                               "images/animals/florida_cottonmouth/florida_cottonmouth3.jpg",
+                                               "images/animals/florida_cottonmouth/florida_cottonmouth4.jpg",
+                                               "images/animals/florida_cottonmouth/florida_cottonmouth5.jpg",
+                                               "images/animals/florida_cottonmouth/florida_cottonmouth6.jpg"
+                                           ],
+                                "thumbnails":  [
+                                                   "images/animals/florida_cottonmouth/thumbnails/florida_cottonmouth1.jpg",
+                                                   "images/animals/florida_cottonmouth/thumbnails/florida_cottonmouth2.jpg",
+                                                   "images/animals/florida_cottonmouth/thumbnails/florida_cottonmouth3.jpg",
+                                                   "images/animals/florida_cottonmouth/thumbnails/florida_cottonmouth4.jpg",
+                                                   "images/animals/florida_cottonmouth/thumbnails/florida_cottonmouth5.jpg",
+                                                   "images/animals/florida_cottonmouth/thumbnails/florida_cottonmouth6.jpg"
+                                               ]
+                            },
+    "smooth_stingray":  {
+                            "images":  [
+                                           "images/animals/smooth_stingray/smooth_stingray.jpg",
+                                           "images/animals/smooth_stingray/smooth_stingray_1.jpg",
+                                           "images/animals/smooth_stingray/smooth_stingray_1.png",
+                                           "images/animals/smooth_stingray/smooth_stingray_2.png",
+                                           "images/animals/smooth_stingray/smooth_stingray2.png"
+                                       ],
+                            "thumbnails":  [
+                                               "images/animals/smooth_stingray/thumbnails/smooth_stingray.jpg",
+                                               "images/animals/smooth_stingray/thumbnails/smooth_stingray_1.jpg",
+                                               "images/animals/smooth_stingray/thumbnails/smooth_stingray_1.png",
+                                               "images/animals/smooth_stingray/thumbnails/smooth_stingray_2.png",
+                                               "images/animals/smooth_stingray/thumbnails/smooth_stingray2.png"
+                                           ]
+                        },
+    "arizona_black_rattlesnake":  {
+                                      "images":  [
+                                                     "images/animals/arizona_black_rattlesnake/arizona_black_rattlesnake1.jpg",
+                                                     "images/animals/arizona_black_rattlesnake/arizona_black_rattlesnake2.jpg",
+                                                     "images/animals/arizona_black_rattlesnake/arizona_black_rattlesnake3.jpg",
+                                                     "images/animals/arizona_black_rattlesnake/arizona_black_rattlesnake4.jpg"
+                                                 ],
+                                      "thumbnails":  [
+                                                         "images/animals/arizona_black_rattlesnake/thumbnails/arizona_black_rattlesnake1.jpg",
+                                                         "images/animals/arizona_black_rattlesnake/thumbnails/arizona_black_rattlesnake2.jpg",
+                                                         "images/animals/arizona_black_rattlesnake/thumbnails/arizona_black_rattlesnake3.jpg",
+                                                         "images/animals/arizona_black_rattlesnake/thumbnails/arizona_black_rattlesnake4.jpg"
+                                                     ]
+                                  },
+    "great_basin_rattlesnake":  {
+                                    "images":  [
+                                                   "images/animals/great_basin_rattlesnake/great_basin_rattlesnake.jpg"
+                                               ],
+                                    "thumbnails":  [
+                                                       "images/animals/great_basin_rattlesnake/thumbnails/great_basin_rattlesnake.jpg"
+                                                   ]
+                                },
+    "giant_freshwater_stingray":  {
+                                      "images":  [
+                                                     "images/animals/giant_freshwater_stingray/giant_freshwater_stingray.jpg",
+                                                     "images/animals/giant_freshwater_stingray/giant_freshwater_stingray_1.jpg",
+                                                     "images/animals/giant_freshwater_stingray/giant_freshwater_stingray_1.png",
+                                                     "images/animals/giant_freshwater_stingray/giant_freshwater_stingray_2.png"
+                                                 ],
+                                      "thumbnails":  [
+                                                         "images/animals/giant_freshwater_stingray/thumbnails/giant_freshwater_stingray.jpg",
+                                                         "images/animals/giant_freshwater_stingray/thumbnails/giant_freshwater_stingray_1.jpg",
+                                                         "images/animals/giant_freshwater_stingray/thumbnails/giant_freshwater_stingray_1.png",
+                                                         "images/animals/giant_freshwater_stingray/thumbnails/giant_freshwater_stingray_2.png"
+                                                     ]
+                                  },
+    "osage_copperhead":  {
+                             "images":  [
+                                            "images/animals/osage_copperhead/osage_copperhead1.jpg",
+                                            "images/animals/osage_copperhead/osage_copperhead2.jpg"
+                                        ],
+                             "thumbnails":  [
+                                                "images/animals/osage_copperhead/thumbnails/osage_copperhead1.jpg",
+                                                "images/animals/osage_copperhead/thumbnails/osage_copperhead2.jpg"
+                                            ]
+                         },
+    "hopi_rattlesnake":  {
+                             "images":  [
+                                            "images/animals/hopi_rattlesnake/hopi_rattlesnake_1.jpg",
+                                            "images/animals/hopi_rattlesnake/hopi_rattlesnake_2.jpg"
+                                        ],
+                             "thumbnails":  [
+                                                "images/animals/hopi_rattlesnake/thumbnails/hopi_rattlesnake_1.jpg",
+                                                "images/animals/hopi_rattlesnake/thumbnails/hopi_rattlesnake_2.jpg"
+                                            ]
+                         },
+    "red_diamond_rattlesnake":  {
+                                    "images":  [
+                                                   "images/animals/red_diamond_rattlesnake/red_diamond_rattlesnake.jpg",
+                                                   "images/animals/red_diamond_rattlesnake/red_diamond_rattlesnake_2.jpg",
+                                                   "images/animals/red_diamond_rattlesnake/red_diamond_rattlesnake_defense.jpg"
+                                               ],
+                                    "thumbnails":  [
+                                                       "images/animals/red_diamond_rattlesnake/thumbnails/red_diamond_rattlesnake.jpg",
+                                                       "images/animals/red_diamond_rattlesnake/thumbnails/red_diamond_rattlesnake_2.jpg",
+                                                       "images/animals/red_diamond_rattlesnake/thumbnails/red_diamond_rattlesnake_defense.jpg"
+                                                   ]
+                                },
+    "southwestern_speckled_rattlesnake":  {
+                                              "images":  [
+                                                             "images/animals/southwestern_speckled_rattlesnake/southwestern_speckled_rattlesnake.jpg",
+                                                             "images/animals/southwestern_speckled_rattlesnake/southwestern_speckled_rattlesnake_2.jpg",
+                                                             "images/animals/southwestern_speckled_rattlesnake/southwestern_speckled_rattlesnake_camo.jpg"
+                                                         ],
+                                              "thumbnails":  [
+                                                                 "images/animals/southwestern_speckled_rattlesnake/thumbnails/southwestern_speckled_rattlesnake.jpg",
+                                                                 "images/animals/southwestern_speckled_rattlesnake/thumbnails/southwestern_speckled_rattlesnake_2.jpg",
+                                                                 "images/animals/southwestern_speckled_rattlesnake/thumbnails/southwestern_speckled_rattlesnake_camo.jpg"
+                                                             ]
+                                          },
+    "short_tail_stingray":  {
+                                "images":  [
+                                               "images/animals/short_tail_stingray/short_tail_stingray.jpg",
+                                               "images/animals/short_tail_stingray/short_tail_stingray_1.jpg",
+                                               "images/animals/short_tail_stingray/short_tail_stingray_1.png",
+                                               "images/animals/short_tail_stingray/short_tail_stingray_2.png"
+                                           ],
+                                "thumbnails":  [
+                                                   "images/animals/short_tail_stingray/thumbnails/short_tail_stingray.jpg",
+                                                   "images/animals/short_tail_stingray/thumbnails/short_tail_stingray_1.jpg",
+                                                   "images/animals/short_tail_stingray/thumbnails/short_tail_stingray_1.png",
+                                                   "images/animals/short_tail_stingray/thumbnails/short_tail_stingray_2.png"
+                                               ]
+                            },
+    "northern_pacific_rattlesnake":  {
+                                         "images":  [
+                                                        "images/animals/northern_pacific_rattlesnake/northern_pacific_rattlesnake.jpg",
+                                                        "images/animals/northern_pacific_rattlesnake/northern_pacific_rattlesnake_defense.jpg",
+                                                        "images/animals/northern_pacific_rattlesnake/northern_pacific_rattlesnake_defense2.jpg"
+                                                    ],
+                                         "thumbnails":  [
+                                                            "images/animals/northern_pacific_rattlesnake/thumbnails/northern_pacific_rattlesnake.jpg",
+                                                            "images/animals/northern_pacific_rattlesnake/thumbnails/northern_pacific_rattlesnake_defense.jpg",
+                                                            "images/animals/northern_pacific_rattlesnake/thumbnails/northern_pacific_rattlesnake_defense2.jpg"
+                                                        ]
+                                     },
+    "black_mamba":  {
+                        "images":  [
+                                       "images/animals/black_mamba/black_mamba.jpg",
+                                       "images/animals/black_mamba/black_mamba.png",
+                                       "images/animals/black_mamba/black_mamba_1.png"
+                                   ],
+                        "thumbnails":  [
+                                           "images/animals/black_mamba/thumbnails/black_mamba.jpg",
+                                           "images/animals/black_mamba/thumbnails/black_mamba.png",
+                                           "images/animals/black_mamba/thumbnails/black_mamba_1.png"
+                                       ]
+                    },
+    "western_pygmy_rattlesnake":  {
+                                      "images":  [
+                                                     "images/animals/western_pygmy_rattlesnake/western_pygmy_rattlesnake.jpg"
+                                                 ],
+                                      "thumbnails":  [
+                                                         "images/animals/western_pygmy_rattlesnake/thumbnails/western_pygmy_rattlesnake.jpg"
+                                                     ]
+                                  },
+    "banded_gila_monster":  {
+                                "images":  [
+                                               "images/animals/banded_gila_monster/banded_gila_monster.jpg"
+                                           ],
+                                "thumbnails":  [
+                                                   "images/animals/banded_gila_monster/thumbnails/banded_gila_monster.jpg"
+                                               ]
+                            },
+    "reticulated_gila_monster":  {
+                                     "images":  [
+                                                    "images/animals/reticulated_gila_monster/reticulated_gila_monster.jpg",
+                                                    "images/animals/reticulated_gila_monster/reticulated_gila_monster1.jpg"
+                                                ],
+                                     "thumbnails":  [
+                                                        "images/animals/reticulated_gila_monster/thumbnails/reticulated_gila_monster.jpg",
+                                                        "images/animals/reticulated_gila_monster/thumbnails/reticulated_gila_monster1.jpg"
+                                                    ]
+                                 },
+    "pit_bull":  {
+                     "images":  [
+                                    "images/animals/pit_bull/pit_bull.jpg",
+                                    "images/animals/pit_bull/pit_bull.png",
+                                    "images/animals/pit_bull/pit_bull_1.png"
+                                ],
+                     "thumbnails":  [
+                                        "images/animals/pit_bull/thumbnails/pit_bull.jpg",
+                                        "images/animals/pit_bull/thumbnails/pit_bull.png",
+                                        "images/animals/pit_bull/thumbnails/pit_bull_1.png"
+                                    ]
+                 },
+    "broad_banded_copperhead":  {
+                                    "images":  [
+                                                   "images/animals/broad_banded_copperhead/broad_banded_copperhead1.jpg",
+                                                   "images/animals/broad_banded_copperhead/broad_banded_copperhead2.jpg",
+                                                   "images/animals/broad_banded_copperhead/broad_banded_copperhead3.jpg"
+                                               ],
+                                    "thumbnails":  [
+                                                       "images/animals/broad_banded_copperhead/thumbnails/broad_banded_copperhead1.jpg",
+                                                       "images/animals/broad_banded_copperhead/thumbnails/broad_banded_copperhead2.jpg",
+                                                       "images/animals/broad_banded_copperhead/thumbnails/broad_banded_copperhead3.jpg"
+                                                   ]
+                                },
+    "logos":  [
+                  "images/animals/animas_ridgenose_rattlesnake.png",
+                  "images/animals/arizona_black_rattlesnake.png",
+                  "images/animals/arizona_coral_snake.png",
+                  "images/animals/arizona_ridgenose_rattlesnake.png",
+                  "images/animals/banded_gila_monster.png",
+                  "images/animals/banded_rock_rattlesnake.png",
+                  "images/animals/black_mamba.png",
+                  "images/animals/broad_banded_copperhead.png",
+                  "images/animals/carolina_pygmy_rattlesnake.png",
+                  "images/animals/colorado_desert_sidewinder.png",
+                  "images/animals/desert_massasauga.png",
+                  "images/animals/dusky_pygmy_rattlesnake.png",
+                  "images/animals/eastern_coral_snake.png",
+                  "images/animals/eastern_cottonmouth.png",
+                  "images/animals/eastern_diamondback_rattlesnake.png",
+                  "images/animals/eastern_massasauga.png",
+                  "images/animals/florida_cottonmouth.png",
+                  "images/animals/geography_cone.png",
+                  "images/animals/german_shepherd.png",
+                  "images/animals/giant_freshwater_stingray.png",
+                  "images/animals/grand_canyon_rattlesnake.png",
+                  "images/animals/great_basin_rattlesnake.png",
+                  "images/animals/hopi_rattlesnake.png",
+                  "images/animals/inland_taipan.png",
+                  "images/animals/king_cobra.png",
+                  "images/animals/midget_faded_rattlesnake.png",
+                  "images/animals/mojave_desert_sidewinder.png",
+                  "images/animals/mojave_rattlesnake.png",
+                  "images/animals/mottled_rock_rattlesnake.png",
+                  "images/animals/northern_black_tailed_rattlesnake.png",
+                  "images/animals/northern_copperhead.png",
+                  "images/animals/northern_pacific_rattlesnake.png",
+                  "images/animals/osage_copperhead.png",
+                  "images/animals/panamint_speckled_rattlesnake.png",
+                  "images/animals/pit_bull.png",
+                  "images/animals/prairie_rattlesnake.png",
+                  "images/animals/red_diamond_rattlesnake.png",
+                  "images/animals/reticulated_gila_monster.png",
+                  "images/animals/rottweilers.png",
+                  "images/animals/short_tail_stingray.png",
+                  "images/animals/smooth_stingray.png",
+                  "images/animals/sonoran_desert_sidewinder.png",
+                  "images/animals/southern_copperhead.png",
+                  "images/animals/southern_pacific_rattlesnake.png",
+                  "images/animals/southwestern_speckled_rattlesnake.png",
+                  "images/animals/texas_coral_snake.png",
+                  "images/animals/textile_cone.png",
+                  "images/animals/tiger_rattlesnake.png",
+                  "images/animals/timber_rattlesnake.png",
+                  "images/animals/trans_pecos_copperhead.png",
+                  "images/animals/tulip_cone.png",
+                  "images/animals/western_cottonmouth.png",
+                  "images/animals/western_diamondback_rattlesnake.png",
+                  "images/animals/western_massasauga.png",
+                  "images/animals/western_pygmy_rattlesnake.png",
+                  "images/animals/western_twin_spotted_rattlesnake.png",
+                  "images/animals/yellow_bellied_sea_snake.png"
+              ],
+    "textile_cone":  {
+                         "images":  [
+                                        "images/animals/textile_cone/textile_cone.jpg"
+                                    ],
+                         "thumbnails":  [
+                                            "images/animals/textile_cone/thumbnails/textile_cone.jpg"
+                                        ]
+                     },
+    "western_twin_spotted_rattlesnake":  {
+                                             "images":  [
+                                                            "images/animals/western_twin_spotted_rattlesnake/western_twin_spotted_rattlesnake.jpg"
+                                                        ],
+                                             "thumbnails":  [
+                                                                "images/animals/western_twin_spotted_rattlesnake/thumbnails/western_twin_spotted_rattlesnake.jpg"
+                                                            ]
+                                         },
+    "dusky_pygmy_rattlesnake":  {
+                                    "images":  [
+                                                   "images/animals/dusky_pygmy_rattlesnake/dusky_pygmy_rattlesnake1.jpg",
+                                                   "images/animals/dusky_pygmy_rattlesnake/dusky_pygmy_rattlesnake2.jpg"
+                                               ],
+                                    "thumbnails":  [
+                                                       "images/animals/dusky_pygmy_rattlesnake/thumbnails/dusky_pygmy_rattlesnake1.jpg",
+                                                       "images/animals/dusky_pygmy_rattlesnake/thumbnails/dusky_pygmy_rattlesnake2.jpg"
+                                                   ]
+                                },
+    "yellow_bellied_sea_snake":  {
+                                     "images":  [
+                                                    "images/animals/yellow_bellied_sea_snake/yellow_bellied_sea_snake1.jpg",
+                                                    "images/animals/yellow_bellied_sea_snake/yellow_bellied_sea_snake2.jpg",
+                                                    "images/animals/yellow_bellied_sea_snake/yellow_bellied_sea_snake3.jpg"
+                                                ],
+                                     "thumbnails":  [
+                                                        "images/animals/yellow_bellied_sea_snake/thumbnails/yellow_bellied_sea_snake1.jpg",
+                                                        "images/animals/yellow_bellied_sea_snake/thumbnails/yellow_bellied_sea_snake2.jpg",
+                                                        "images/animals/yellow_bellied_sea_snake/thumbnails/yellow_bellied_sea_snake3.jpg"
+                                                    ]
+                                 },
+    "eastern_diamondback_rattlesnake":  {
+                                            "images":  [
+                                                           "images/animals/eastern_diamondback_rattlesnake/eastern_diamondback_rattlesnake1.jpg",
+                                                           "images/animals/eastern_diamondback_rattlesnake/eastern_diamondback_rattlesnake2.jpg",
+                                                           "images/animals/eastern_diamondback_rattlesnake/eastern_diamondback_rattlesnake3.jpg",
+                                                           "images/animals/eastern_diamondback_rattlesnake/eastern_diamondback_rattlesnake4.jpg"
+                                                       ],
+                                            "thumbnails":  [
+                                                               "images/animals/eastern_diamondback_rattlesnake/thumbnails/eastern_diamondback_rattlesnake1.jpg",
+                                                               "images/animals/eastern_diamondback_rattlesnake/thumbnails/eastern_diamondback_rattlesnake2.jpg",
+                                                               "images/animals/eastern_diamondback_rattlesnake/thumbnails/eastern_diamondback_rattlesnake3.jpg",
+                                                               "images/animals/eastern_diamondback_rattlesnake/thumbnails/eastern_diamondback_rattlesnake4.jpg"
+                                                           ]
+                                        },
+    "king_cobra":  {
+                       "images":  [
+                                      "images/animals/king_cobra/king_cobra.jpg"
+                                  ],
+                       "thumbnails":  [
+                                          "images/animals/king_cobra/thumbnails/king_cobra.jpg"
+                                      ]
+                   },
+    "arizona_coral_snake":  {
+                                "images":  [
+                                               "images/animals/arizona_coral_snake/arizona_coral_snake.jpg"
+                                           ],
+                                "thumbnails":  [
+                                                   "images/animals/arizona_coral_snake/thumbnails/arizona_coral_snake.jpg"
+                                               ]
+                            },
+    "carolina_pygmy_rattlesnake":  {
+                                       "images":  [
+                                                      "images/animals/carolina_pygmy_rattlesnake/carolina_pygmy_rattlesnake1.jpg",
+                                                      "images/animals/carolina_pygmy_rattlesnake/carolina_pygmy_rattlesnake2.jpg"
+                                                  ],
+                                       "thumbnails":  [
+                                                          "images/animals/carolina_pygmy_rattlesnake/thumbnails/carolina_pygmy_rattlesnake1.jpg",
+                                                          "images/animals/carolina_pygmy_rattlesnake/thumbnails/carolina_pygmy_rattlesnake2.jpg"
+                                                      ]
+                                   },
+    "geography_cone":  {
+                           "images":  [
+                                          "images/animals/geography_cone/geography_cone.jpg"
+                                      ],
+                           "thumbnails":  [
+                                              "images/animals/geography_cone/thumbnails/geography_cone.jpg"
+                                          ]
+                       },
+    "arizona_ridgenose_rattlesnake":  {
+                                          "images":  [
+                                                         "images/animals/arizona_ridgenose_rattlesnake/arizona_ridgenose_rattlesnake1.jpg",
+                                                         "images/animals/arizona_ridgenose_rattlesnake/arizona_ridgenose_rattlesnake2.jpg",
+                                                         "images/animals/arizona_ridgenose_rattlesnake/arizona_ridgenose_rattlesnake3.jpg"
+                                                     ],
+                                          "thumbnails":  [
+                                                             "images/animals/arizona_ridgenose_rattlesnake/thumbnails/arizona_ridgenose_rattlesnake1.jpg",
+                                                             "images/animals/arizona_ridgenose_rattlesnake/thumbnails/arizona_ridgenose_rattlesnake2.jpg",
+                                                             "images/animals/arizona_ridgenose_rattlesnake/thumbnails/arizona_ridgenose_rattlesnake3.jpg"
+                                                         ]
+                                      },
+    "tiger_rattlesnake":  {
+                              "images":  [
+                                             "images/animals/tiger_rattlesnake/tiger_rattlesnake.jpg",
+                                             "images/animals/tiger_rattlesnake/tiger_rattlesnake_2.jpg",
+                                             "images/animals/tiger_rattlesnake/tiger_rattlesnake_3.jpg"
+                                         ],
+                              "thumbnails":  [
+                                                 "images/animals/tiger_rattlesnake/thumbnails/tiger_rattlesnake.jpg",
+                                                 "images/animals/tiger_rattlesnake/thumbnails/tiger_rattlesnake_2.jpg",
+                                                 "images/animals/tiger_rattlesnake/thumbnails/tiger_rattlesnake_3.jpg"
+                                             ]
+                          },
+    "mottled_rock_rattlesnake":  {
+                                     "images":  [
+                                                    "images/animals/mottled_rock_rattlesnake/mottled_rock_rattlesnake.jpg"
+                                                ],
+                                     "thumbnails":  [
+                                                        "images/animals/mottled_rock_rattlesnake/thumbnails/mottled_rock_rattlesnake.jpg"
+                                                    ]
+                                 },
+    "german_shepherd":  {
+                            "images":  [
+                                           "images/animals/german_shepherd/german_shepherd_1.jpg",
+                                           "images/animals/german_shepherd/german_shepherd_1.png",
+                                           "images/animals/german_shepherd/german_shepherd_2.png",
+                                           "images/animals/german_shepherd/german_shepherd_4.jpg",
+                                           "images/animals/german_shepherd/german_shepherd_5.jpg",
+                                           "images/animals/german_shepherd/german_shepherd_6.jpg"
+                                       ],
+                            "thumbnails":  [
+                                               "images/animals/german_shepherd/thumbnails/german_shepherd_1.jpg",
+                                               "images/animals/german_shepherd/thumbnails/german_shepherd_1.png",
+                                               "images/animals/german_shepherd/thumbnails/german_shepherd_2.png",
+                                               "images/animals/german_shepherd/thumbnails/german_shepherd_4.jpg",
+                                               "images/animals/german_shepherd/thumbnails/german_shepherd_5.jpg",
+                                               "images/animals/german_shepherd/thumbnails/german_shepherd_6.jpg"
+                                           ]
+                        },
+    "eastern_cottonmouth":  {
+                                "images":  [
+                                               "images/animals/eastern_cottonmouth/eastern_cottonmouth1.jpg",
+                                               "images/animals/eastern_cottonmouth/eastern_cottonmouth2.jpg",
+                                               "images/animals/eastern_cottonmouth/eastern_cottonmouth3.jpg",
+                                               "images/animals/eastern_cottonmouth/eastern_cottonmouth4.jpg",
+                                               "images/animals/eastern_cottonmouth/eastern_cottonmouth5.jpg"
+                                           ],
+                                "thumbnails":  [
+                                                   "images/animals/eastern_cottonmouth/thumbnails/eastern_cottonmouth1.jpg",
+                                                   "images/animals/eastern_cottonmouth/thumbnails/eastern_cottonmouth2.jpg",
+                                                   "images/animals/eastern_cottonmouth/thumbnails/eastern_cottonmouth3.jpg",
+                                                   "images/animals/eastern_cottonmouth/thumbnails/eastern_cottonmouth4.jpg",
+                                                   "images/animals/eastern_cottonmouth/thumbnails/eastern_cottonmouth5.jpg"
+                                               ]
+                            },
+    "rottweilers":  {
+                        "images":  [
+                                       "images/animals/rottweilers/rottweilers.jpg",
+                                       "images/animals/rottweilers/rottweilers_1.png",
+                                       "images/animals/rottweilers/rottweilers_2.png"
+                                   ],
+                        "thumbnails":  [
+                                           "images/animals/rottweilers/thumbnails/rottweilers.jpg",
+                                           "images/animals/rottweilers/thumbnails/rottweilers_1.png",
+                                           "images/animals/rottweilers/thumbnails/rottweilers_2.png"
+                                       ]
+                    },
+    "panamint_speckled_rattlesnake":  {
+                                          "images":  [
+                                                         "images/animals/panamint_speckled_rattlesnake/panamint_speckled_rattlesnake.jpg",
+                                                         "images/animals/panamint_speckled_rattlesnake/panamint_speckled_rattlesnake_2.jpg"
+                                                     ],
+                                          "thumbnails":  [
+                                                             "images/animals/panamint_speckled_rattlesnake/thumbnails/panamint_speckled_rattlesnake.jpg",
+                                                             "images/animals/panamint_speckled_rattlesnake/thumbnails/panamint_speckled_rattlesnake_2.jpg"
+                                                         ]
+                                      },
+    "western_cottonmouth":  {
+                                "images":  [
+                                               "images/animals/western_cottonmouth/western_cottonmouth1.jpg",
+                                               "images/animals/western_cottonmouth/western_cottonmouth2.jpg",
+                                               "images/animals/western_cottonmouth/western_cottonmouth3.jpg",
+                                               "images/animals/western_cottonmouth/western_cottonmouth4.jpg",
+                                               "images/animals/western_cottonmouth/western_cottonmouth5.jpg"
+                                           ],
+                                "thumbnails":  [
+                                                   "images/animals/western_cottonmouth/thumbnails/western_cottonmouth1.jpg",
+                                                   "images/animals/western_cottonmouth/thumbnails/western_cottonmouth2.jpg",
+                                                   "images/animals/western_cottonmouth/thumbnails/western_cottonmouth3.jpg",
+                                                   "images/animals/western_cottonmouth/thumbnails/western_cottonmouth4.jpg",
+                                                   "images/animals/western_cottonmouth/thumbnails/western_cottonmouth5.jpg"
+                                               ]
+                            },
+    "texas_coral_snake":  {
+                              "images":  [
+                                             "images/animals/texas_coral_snake/texas_coral_snake.jpg"
+                                         ],
+                              "thumbnails":  [
+                                                 "images/animals/texas_coral_snake/thumbnails/texas_coral_snake.jpg"
+                                             ]
+                          },
+    "western_diamondback_rattlesnake":  {
+                                            "images":  [
+                                                           "images/animals/western_diamondback_rattlesnake/western_diamondback_rattlesnake.jpg",
+                                                           "images/animals/western_diamondback_rattlesnake/western_diamondback_rattlesnake_camoflauged.jpg",
+                                                           "images/animals/western_diamondback_rattlesnake/western_diamondback_rattlesnake_head.jpg"
+                                                       ],
+                                            "thumbnails":  [
+                                                               "images/animals/western_diamondback_rattlesnake/thumbnails/western_diamondback_rattlesnake.jpg",
+                                                               "images/animals/western_diamondback_rattlesnake/thumbnails/western_diamondback_rattlesnake_camoflauged.jpg",
+                                                               "images/animals/western_diamondback_rattlesnake/thumbnails/western_diamondback_rattlesnake_head.jpg"
+                                                           ]
+                                        },
+    "northern_copperhead":  {
+                                "images":  [
+                                               "images/animals/northern_copperhead/northern_copperhead`1.jpg",
+                                               "images/animals/northern_copperhead/northern_copperhead2.jpg",
+                                               "images/animals/northern_copperhead/northern_copperhead3.jpg",
+                                               "images/animals/northern_copperhead/northern_copperhead4.jpg",
+                                               "images/animals/northern_copperhead/northern_copperhead5.jpg",
+                                               "images/animals/northern_copperhead/northern_copperhead6.jpg"
+                                           ],
+                                "thumbnails":  [
+                                                   "images/animals/northern_copperhead/thumbnails/northern_copperhead`1.jpg",
+                                                   "images/animals/northern_copperhead/thumbnails/northern_copperhead2.jpg",
+                                                   "images/animals/northern_copperhead/thumbnails/northern_copperhead3.jpg",
+                                                   "images/animals/northern_copperhead/thumbnails/northern_copperhead4.jpg",
+                                                   "images/animals/northern_copperhead/thumbnails/northern_copperhead5.jpg",
+                                                   "images/animals/northern_copperhead/thumbnails/northern_copperhead6.jpg"
+                                               ]
+                            },
+    "prairie_rattlesnake":  {
+                                "images":  [
+                                               "images/animals/prairie_rattlesnake/prairie_rattlesnake.jpg",
+                                               "images/animals/prairie_rattlesnake/prairie_rattlesnake_1.jpg",
+                                               "images/animals/prairie_rattlesnake/prairie_rattlesnake_2.jpg"
+                                           ],
+                                "thumbnails":  [
+                                                   "images/animals/prairie_rattlesnake/thumbnails/prairie_rattlesnake.jpg",
+                                                   "images/animals/prairie_rattlesnake/thumbnails/prairie_rattlesnake_1.jpg",
+                                                   "images/animals/prairie_rattlesnake/thumbnails/prairie_rattlesnake_2.jpg"
+                                               ]
+                            },
+    "colorado_desert_sidewinder":  {
+                                       "images":  [
+                                                      "images/animals/colorado_desert_sidewinder/colorado_desert_sidewinder1.jpg",
+                                                      "images/animals/colorado_desert_sidewinder/colorado_desert_sidewinder2.jpg",
+                                                      "images/animals/colorado_desert_sidewinder/colorado_desert_sidewinder3.jpg",
+                                                      "images/animals/colorado_desert_sidewinder/colorado_desert_sidewinder4.jpg"
+                                                  ],
+                                       "thumbnails":  [
+                                                          "images/animals/colorado_desert_sidewinder/thumbnails/colorado_desert_sidewinder1.jpg",
+                                                          "images/animals/colorado_desert_sidewinder/thumbnails/colorado_desert_sidewinder2.jpg",
+                                                          "images/animals/colorado_desert_sidewinder/thumbnails/colorado_desert_sidewinder3.jpg",
+                                                          "images/animals/colorado_desert_sidewinder/thumbnails/colorado_desert_sidewinder4.jpg"
+                                                      ]
+                                   },
+    "western_massasauga":  {
+                               "images":  [
+                                              "images/animals/western_massasauga/western_massasauga.jpg",
+                                              "images/animals/western_massasauga/western_massasauga_2.jpg"
+                                          ],
+                               "thumbnails":  [
+                                                  "images/animals/western_massasauga/thumbnails/western_massasauga.jpg",
+                                                  "images/animals/western_massasauga/thumbnails/western_massasauga_2.jpg"
+                                              ]
+                           },
+    "animas_ridgenose_rattlesnake":  {
+                                         "images":  [
+                                                        "images/animals/animas_ridgenose_rattlesnake/animas_ridgenose_rattlesnake.jpg"
+                                                    ],
+                                         "thumbnails":  [
+                                                            "images/animals/animas_ridgenose_rattlesnake/thumbnails/animas_ridgenose_rattlesnake.jpg"
+                                                        ]
+                                     },
+    "desert_massasauga":  {
+                              "images":  [
+                                             "images/animals/desert_massasauga/desert_massasauga1.jpg",
+                                             "images/animals/desert_massasauga/desert_massasauga2.jpg",
+                                             "images/animals/desert_massasauga/desert_massasauga3.jpg"
+                                         ],
+                              "thumbnails":  [
+                                                 "images/animals/desert_massasauga/thumbnails/desert_massasauga1.jpg",
+                                                 "images/animals/desert_massasauga/thumbnails/desert_massasauga2.jpg",
+                                                 "images/animals/desert_massasauga/thumbnails/desert_massasauga3.jpg"
+                                             ]
+                          },
+    "midget_faded_rattlesnake":  {
+                                     "images":  [
+                                                    "images/animals/midget_faded_rattlesnake/midget_faded_rattlesnake.jpg"
+                                                ],
+                                     "thumbnails":  [
+                                                        "images/animals/midget_faded_rattlesnake/thumbnails/midget_faded_rattlesnake.jpg"
+                                                    ]
+                                 },
+    "southern_pacific_rattlesnake":  {
+                                         "images":  [
+                                                        "images/animals/southern_pacific_rattlesnake/southern_pacific_rattlesnake.jpg",
+                                                        "images/animals/southern_pacific_rattlesnake/southern_pacific_rattlesnake_2.jpg",
+                                                        "images/animals/southern_pacific_rattlesnake/southern_pacific_rattlesnake_3.jpg"
+                                                    ],
+                                         "thumbnails":  [
+                                                            "images/animals/southern_pacific_rattlesnake/thumbnails/southern_pacific_rattlesnake.jpg",
+                                                            "images/animals/southern_pacific_rattlesnake/thumbnails/southern_pacific_rattlesnake_2.jpg",
+                                                            "images/animals/southern_pacific_rattlesnake/thumbnails/southern_pacific_rattlesnake_3.jpg"
+                                                        ]
+                                     },
+    "inland_taipan":  {
+                          "images":  [
+                                         "images/animals/inland_taipan/inland_taipan.jpg",
+                                         "images/animals/inland_taipan/inland_taipan.png",
+                                         "images/animals/inland_taipan/inland_taipan_1.png"
+                                     ],
+                          "thumbnails":  [
+                                             "images/animals/inland_taipan/thumbnails/inland_taipan.jpg",
+                                             "images/animals/inland_taipan/thumbnails/inland_taipan.png",
+                                             "images/animals/inland_taipan/thumbnails/inland_taipan_1.png"
+                                         ]
+                      }
+}
