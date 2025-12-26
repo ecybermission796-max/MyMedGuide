@@ -506,9 +506,9 @@ window.loadAnimalsImages = async function(){
     }catch(e){ lastError = `Fetch error for ${mp}: ${e.message}`; }
   }
 
-  if(!manifestLoaded || !files || !files.length){
-    console.warn('could not load animals manifest or manifest empty', lastError);
-    files = [];
+  if(!manifestLoaded || !files){
+    console.warn('could not load animals manifest', lastError);
+    files = {};
   }
 
   // Coerce non-array manifests into arrays
@@ -824,10 +824,9 @@ window.loadPlantsImages = async function(){
     }
   }
 
-  if(!manifestLoaded || !files || !files.length){
-    console.warn('could not load plants manifest or manifest empty', lastError);
-    const fallbackFiles = [];
-    files = fallbackFiles;
+  if(!manifestLoaded || !files){
+    console.warn('could not load plants manifest', lastError);
+    files = {};
   }
 
   // Ensure we have an array. Some manifests were saved as a single JSON string
