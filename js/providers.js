@@ -73,14 +73,36 @@ window.initProviders = async function(){
     return !excludeKeywords.some(keyword => nameLower.includes(keyword));
   }
   
-  // Helper function to search by keyword
+  // Fast amenity-based search for initial load
+  async function searchByAmenity(lat, lon, radiusMeters) {
+    const overpassQuery = `[out:json][timeout:10];
+      (
+        node["amenity"="hospital"](around:${radiusMeters},${lat},${lon});
+        way["amenity"="hospital"](around:${radiusMeters},${lat},${lon});
+        node["amenity"="clinic"]["healthcare"="clinic"](around:${radiusMeters},${lat},${lon});
+        way["amenity"="clinic"]["healthcare"="clinic"](around:${radiusMeters},${lat},${lon});
+      );
+      out center;`;
+    
+    const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(overpassQuery);
+    
+    const r = await fetch(url);
+    if(!r.ok) {
+      if(r.status === 429) throw new Error('Too many requests. Please wait a moment.');
+      if(r.status === 504) throw new Error('Request timeout. Try zooming in for a smaller area.');
+      throw new Error(`API error: ${r.status}`);
+    }
+    
+    const data = await r.json();
+    return data.elements || [];
+  }
+  
+  // Helper function to search by keyword (for supplementary searches)
   async function searchByKeyword(keyword, lat, lon, radiusMeters) {
     const overpassQuery = `[out:json][timeout:10];
       (
-        node["name"~"${keyword}",i](around:${radiusMeters},${lat},${lon});
-        way["name"~"${keyword}",i](around:${radiusMeters},${lat},${lon});
-        node["amenity"~"hospital|clinic"]["name"~"${keyword}",i](around:${radiusMeters},${lat},${lon});
-        way["amenity"~"hospital|clinic"]["name"~"${keyword}",i](around:${radiusMeters},${lat},${lon});
+        node["name"~"${keyword}",i]["amenity"~"hospital|clinic"](around:${radiusMeters},${lat},${lon});
+        way["name"~"${keyword}",i]["amenity"~"hospital|clinic"](around:${radiusMeters},${lat},${lon});
       );
       out center;`;
     
@@ -98,14 +120,33 @@ window.initProviders = async function(){
   }
   
   // Process elements into provider objects
-  function processElements(elements, lat, lon, facilityType) {
+  function processElements(elements, lat, lon, defaultType = null) {
     return elements.map(el => {
       const providerLat = el.lat || (el.center && el.center.lat);
       const providerLon = el.lon || (el.center && el.center.lon);
       const distance = calculateDistance(lat, lon, providerLat, providerLon);
       const name = (el.tags && (el.tags.name || el.tags.official_name)) || 'Healthcare Facility';
+      const nameLower = name.toLowerCase();
       
       if(!filterProvider(name, el)) return null;
+      
+      // Determine facility type
+      let facilityType = defaultType || 'Healthcare Facility';
+      if(!defaultType) {
+        if(el.tags && el.tags.amenity === 'hospital' || nameLower.includes('hospital')) {
+          facilityType = 'Hospital';
+        } else if(nameLower.includes('urgent care')) {
+          facilityType = 'Urgent Care';
+        } else if(nameLower.includes('emergency')) {
+          facilityType = 'Emergency Room';
+        } else if(nameLower.includes('medical center')) {
+          facilityType = 'Medical Center';
+        } else if(nameLower.includes('ambulatory')) {
+          facilityType = 'Ambulatory Care';
+        } else if(el.tags && el.tags.amenity === 'clinic') {
+          facilityType = 'Clinic';
+        }
+      }
       
       return {
         lat: providerLat,
@@ -138,30 +179,35 @@ window.initProviders = async function(){
     try {
       let allProviders = [];
       
-      // Sequential search strategy - search for specific facility types in order
-      const searchOrder = [
-        { keyword: 'emergency', type: 'Emergency Room' },
-        { keyword: 'hospital', type: 'Hospital' },
-        { keyword: 'medical center', type: 'Medical Center' },
-        { keyword: 'urgent care', type: 'Urgent Care' },
-        { keyword: 'ambulatory', type: 'Ambulatory Care' }
-      ];
+      // Start with fast amenity-based search for hospitals and clinics
+      const amenityElements = await searchByAmenity(lat, lon, radiusMeters);
+      const amenityProviders = processElements(amenityElements, lat, lon);
+      allProviders = amenityProviders;
       
-      for(const search of searchOrder) {
-        if(allProviders.length >= 20) break; // Stop if we have enough results
+      // If we don't have 20 results, supplement with keyword searches
+      if(allProviders.length < 20) {
+        const searchOrder = [
+          { keyword: 'emergency', type: 'Emergency Room' },
+          { keyword: 'urgent care', type: 'Urgent Care' },
+          { keyword: 'medical center', type: 'Medical Center' }
+        ];
         
-        const elements = await searchByKeyword(search.keyword, lat, lon, radiusMeters);
-        const providers = processElements(elements, lat, lon, search.type);
-        
-        // Add new providers (avoid duplicates by checking coordinates)
-        providers.forEach(p => {
-          const isDuplicate = allProviders.some(existing => 
-            Math.abs(existing.lat - p.lat) < 0.0001 && Math.abs(existing.lon - p.lon) < 0.0001
-          );
-          if(!isDuplicate) {
-            allProviders.push(p);
-          }
-        });
+        for(const search of searchOrder) {
+          if(allProviders.length >= 20) break;
+          
+          const elements = await searchByKeyword(search.keyword, lat, lon, radiusMeters);
+          const providers = processElements(elements, lat, lon, search.type);
+          
+          // Add new providers (avoid duplicates by checking coordinates)
+          providers.forEach(p => {
+            const isDuplicate = allProviders.some(existing => 
+              Math.abs(existing.lat - p.lat) < 0.0001 && Math.abs(existing.lon - p.lon) < 0.0001
+            );
+            if(!isDuplicate) {
+              allProviders.push(p);
+            }
+          });
+        }
       }
       
       isLoading = false;
