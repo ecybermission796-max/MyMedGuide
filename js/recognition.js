@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
       
-      showToast('Searching image in background...');
       try{
         const file = window._uploadedFile;
         const b64 = await fileToBase64(file);

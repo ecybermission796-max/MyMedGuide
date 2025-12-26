@@ -94,9 +94,68 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
 .search-box{width:100%;display:flex;align-items:center;background:#fff;border-radius:999px;padding:8px 12px;box-shadow:0 6px 18px rgba(0,0,0,0.08)}
 .search-box input[type="search"]{flex:1;border:0;outline:none;padding:10px;font-size:1.1rem;border-radius:999px}
 .search-btn{background:transparent;border:0;padding:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}
-.search-controls{width:100%;display:flex;justify-content:center;align-items:center;gap:8px}
-.search-controls select{width:220px;padding:8px;border-radius:8px;border:1px solid #ccc}
+.search-controls{width:100%;display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap}
+.search-controls select{width:220px;padding:8px;border-radius:8px;border:1px solid #ccc;min-width:150px}
 .search-label{color:#000;font-weight:600;margin-right:6px}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .buttons {
+    top: 70px;
+    gap: 3px;
+  }
+  .img-btn img {
+    height: 35px !important;
+  }
+  .search-container {
+    width: 90vw;
+  }
+  .search-controls {
+    gap: 6px;
+  }
+  .search-controls select {
+    width: 140px;
+    min-width: 120px;
+    font-size: 0.9rem;
+  }
+  .search-label {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .buttons {
+    top: 65px;
+    gap: 2px;
+  }
+  .img-btn img {
+    height: 30px !important;
+  }
+  .search-controls select {
+    width: 110px;
+    min-width: 100px;
+    font-size: 0.85rem;
+    padding: 6px;
+  }
+  .search-label {
+    font-size: 0.85rem;
+    margin-right: 4px;
+  }
+}
+
+/* File upload label styling */
+.file-upload-label {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #eee;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 10px;
+}
+.file-upload-label:hover {
+  background: #ddd;
+}
 
 /* Search result grid */
 .search-grid{max-width:var(--max-width);margin:0 auto;padding:6px}
@@ -117,6 +176,9 @@ html,body,#app{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI
   align-items: center;
   z-index: 99999; /* keep nav above all content */
   pointer-events: auto;
+  flex-wrap: wrap;
+  max-width: 95vw;
+  padding: 0 10px;
 }
 
 /* If JS or other code attempts to hide the nav via the hidden attribute or aria-hidden,
