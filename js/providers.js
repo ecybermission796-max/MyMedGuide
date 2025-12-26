@@ -106,7 +106,7 @@ window.initProviders = async function(){
       }
       
       // Process and calculate distances
-      const providers = data.elements.map(el => {
+      let providers = data.elements.map(el => {
         const providerLat = el.lat || (el.center && el.center.lat);
         const providerLon = el.lon || (el.center && el.center.lon);
         const distance = calculateDistance(lat, lon, providerLat, providerLon);
