@@ -135,7 +135,7 @@ app.post('/api/recognize', async (req, res) => {
           contents: [{
             parts: [
               {
-                text: "What is shown in this picture? Return common name or scientific names. If similar to multiple animals/plants, return the top three possibilities."
+                text: "Identify the animal/bug/plants in the picture and return the top three best hits of the identified animal/bug/plant."
               },
               {
                 inline_data: {
