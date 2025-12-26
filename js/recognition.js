@@ -114,10 +114,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const items = [];
         for(const it of top){
           let imgPath = await findImageForKeyword(it.key, it.class);
-          // If not found in manifest, construct default path
+          console.debug('Recognition search - keyword:', it.key, 'class:', it.class, 'found in manifest:', imgPath);
+          // If not found in manifest, construct default path and test it
           if(!imgPath){
             const normalized = it.key.replace(/[(),']/g, '').replace(/[ \-]+/g, '_').toLowerCase();
-            imgPath = `images/${it.class.toLowerCase()}/${normalized}.png`;
+            const possiblePaths = [
+              `images/${it.class.toLowerCase()}/${normalized}.png`,
+              `images/${it.class.toLowerCase()}/${normalized}.jpg`
+            ];
+            // Test which one exists
+            for(const testPath of possiblePaths){
+              try{
+                const testResp = await fetch(testPath, {method: 'HEAD', cache: 'no-store'});
+                if(testResp && testResp.ok){
+                  imgPath = testPath;
+                  console.debug('Recognition search - found fallback image:', imgPath);
+                  break;
+                }
+              }catch(e){/*ignore*/}
+            }
+            // Default to .png if neither works (will show error in browser)
+            if(!imgPath) imgPath = possiblePaths[0];
           }
           items.push({ keyword: it.key, class: it.class, img: imgPath });
         }
