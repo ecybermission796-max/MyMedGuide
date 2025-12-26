@@ -52,8 +52,8 @@ if (-not (Test-Path $outputDir -PathType Container)) {
   New-Item -ItemType Directory -Path $outputDir -Force | Out-Null
 }
 
-# Write to file
-$json | Out-File -FilePath $OutputFile -Encoding UTF8
+# Write to file without BOM
+[System.IO.File]::WriteAllText($OutputFile, $json)
 
 Write-Host "Generated manifest: $OutputFile"
 Write-Host "Total keywords: $($keywordDirs.Count)"
