@@ -125,10 +125,22 @@ window.initProviders = async function(){
       const providerLat = el.lat || (el.center && el.center.lat);
       const providerLon = el.lon || (el.center && el.center.lon);
       const distance = calculateDistance(lat, lon, providerLat, providerLon);
-      const name = (el.tags && (el.tags.name || el.tags.official_name)) || 'Healthcare Facility';
+      const name = (el.tags && (el.tags.name || el.tags.official_name)) || null;
+      
+      // Skip if no name
+      if(!name) return null;
+      
       const nameLower = name.toLowerCase();
       
       if(!filterProvider(name, el)) return null;
+      
+      // Calculate address
+      const address = el.tags && el.tags['addr:full'] || 
+                     (el.tags && `${el.tags['addr:housenumber'] || ''} ${el.tags['addr:street'] || ''} ${el.tags['addr:city'] || ''}`.trim()) || 
+                     null;
+      
+      // Skip if no address
+      if(!address) return null;
       
       // Determine facility type
       let facilityType = defaultType || 'Healthcare Facility';
@@ -153,9 +165,7 @@ window.initProviders = async function(){
         lon: providerLon,
         name: name,
         type: facilityType,
-        address: el.tags && el.tags['addr:full'] || 
-                 (el.tags && `${el.tags['addr:housenumber'] || ''} ${el.tags['addr:street'] || ''} ${el.tags['addr:city'] || ''}`.trim()) || 
-                 'Address not available',
+        address: address,
         phone: el.tags && el.tags.phone || '',
         distance: distance
       };
@@ -258,9 +268,11 @@ window.initProviders = async function(){
       // If we don't have 20 results, supplement with keyword searches in background
       if(allProviders.length < 20) {
         const searchOrder = [
-          { keyword: 'emergency', type: 'Emergency Room' },
+          { keyword: 'emergency room', type: 'Emergency Room' },
+          { keyword: 'hospital', type: 'Hospital' },
+          { keyword: 'medical center', type: 'Medical Center' },
           { keyword: 'urgent care', type: 'Urgent Care' },
-          { keyword: 'medical center', type: 'Medical Center' }
+          { keyword: 'ambulatory care', type: 'Ambulatory Care' }
         ];
         
         for(const search of searchOrder) {
