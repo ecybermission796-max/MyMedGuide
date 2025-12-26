@@ -82,7 +82,7 @@ window.initProviders = async function(){
         node["amenity"="clinic"](around:${radiusMeters},${lat},${lon});
         way["amenity"="clinic"](around:${radiusMeters},${lat},${lon});
       );
-      out center;
+      out center;`;
     
     const url = 'https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(overpassQuery);
     
