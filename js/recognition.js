@@ -109,15 +109,15 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('AI identified:', aiText);
         
         if(matches.length === 0){
-          // No matches - display AI text
-          showStatus('AI Response: ' + aiText + '\n\nNo matches found in local database.');
-          showToast('No local matches. See AI response above.');
-          renderLocalResults([]);
+          // No matches - display AI text with half screen width
+          if(recStatus) recStatus.style.display = 'none';
+          showToast('No local matches found');
+          renderLocalResults([], aiText);
         } else {
-          // Found matches
-          showStatus('Found ' + matches.length + ' local match(es)! AI Response: ' + aiText);
-          showToast('Found local matches!');
-          renderLocalResults(matches);
+          // Found matches - hide status and show results
+          if(recStatus) recStatus.style.display = 'none';
+          showToast('Found ' + matches.length + ' local match(es)!');
+          renderLocalResults(matches, '');
         }
         
         // Store results
@@ -136,8 +136,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Render results for local recognition into a simple grid
-  function renderLocalResults(items){
+  // Render results for local recognition into a grid matching search.js format
+  function renderLocalResults(items, aiText=''){
     const viewId = 'rec-search-results';
     let v = document.getElementById(viewId);
     if(!v){ 
@@ -149,10 +149,24 @@ document.addEventListener('DOMContentLoaded', () => {
       const parent = document.getElementById('recognition'); 
       if(parent) parent.appendChild(v);
     }
+    
+    // If no matches, show AI text with half screen width
     if(!items || items.length === 0){
-      v.innerHTML = `<header class="view-header"><h2>Recognition Results</h2></header><div class="placeholder">No local matches found.</div>`;
+      if(aiText){
+        v.innerHTML = `
+          <header class="view-header"><h2>AI Analysis</h2></header>
+          <div style="max-width: 50%; margin: 20px auto; padding: 20px; background: #f5f5f5; border-radius: 8px; line-height: 1.6;">
+            ${aiText.replace(/\n/g, '<br>')}
+          </div>
+          <div class="placeholder" style="margin-top: 20px;">No matching entries found in local database.</div>
+        `;
+      } else {
+        v.innerHTML = `<header class="view-header"><h2>Recognition Results</h2></header><div class="placeholder">No local matches found.</div>`;
+      }
       return;
     }
+    
+    // Build grid like search.js (centered flex layout)
     const container = document.createElement('div'); 
     container.className = 'search-grid'; 
     container.style.display='flex'; 
@@ -166,17 +180,18 @@ document.addEventListener('DOMContentLoaded', () => {
       card.style.width='220px'; 
       card.style.textAlign='center';
       
-      const params = new URLSearchParams({ action: 'detail', cls: it.class, kw: it.keyword, img: it.img || '' });
+      // Build URL matching search.js format for modal popup
+      const params = new URLSearchParams({ action: 'detail', cls: it.class, kw: it.key, img: it.img || '' });
       const url = window.location.pathname + '#' + params.toString();
       
       const a = document.createElement('a'); 
       a.href = url; 
-      a.target='_blank'; 
-      a.rel='noopener noreferrer';
+      a.className = 'result-link';
+      // This will trigger the modal popup via app.js hash routing
       
       const img = document.createElement('img'); 
       img.src = it.img ? encodeURI(it.img) : ''; 
-      img.alt = it.keyword; 
+      img.alt = it.key || it.keyword; 
       img.style.maxWidth='100%'; 
       img.style.height='140px'; 
       img.style.objectFit='cover'; 
@@ -188,14 +203,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const name = document.createElement('div'); 
       name.className='result-name'; 
       name.style.marginTop='6px'; 
-      name.textContent = it.keyword;
+      name.textContent = it.key || it.keyword;
       
       card.appendChild(a); 
       card.appendChild(name); 
       container.appendChild(card);
     });
     
-    v.innerHTML = `<header class="view-header"><h2>Local Matches Found</h2></header>`; 
+    v.innerHTML = `<header class="view-header"><h2>Recognition Results - Local Matches</h2></header>`; 
     v.appendChild(container);
   }
 
