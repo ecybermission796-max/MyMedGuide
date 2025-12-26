@@ -324,14 +324,14 @@ window.initProviders = async function(){
     navigator.geolocation.getCurrentPosition(pos => {
       map.setView([pos.coords.latitude, pos.coords.longitude], 13);
       L.circle([pos.coords.latitude, pos.coords.longitude], {radius: 40, color:'blue'}).addTo(map);
-      updateResults();
+      showMarkers(); // Call directly for immediate initial results
     }, err => {
       // fallback: sample coordinates (e.g., New York)
       map.setView([40.7128, -74.0060], 13);
-      updateResults();
+      showMarkers(); // Call directly for immediate initial results
     });
   } else {
     map.setView([40.7128, -74.0060], 13);
-    updateResults();
+    showMarkers(); // Call directly for immediate initial results
   }
 };
