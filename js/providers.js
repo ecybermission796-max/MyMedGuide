@@ -76,7 +76,7 @@ window.initProviders = async function(){
     const radiusMeters = radiusMiles * 1609.34; // Convert miles to meters
     
     // Simplified query - just hospitals and clinics (more reliable)
-    const overpassQuery = `[out:json][timeout:15];
+    const overpassQuery = `[out:json][timeout:25];
       (
         node["amenity"="hospital"](around:${radiusMeters},${lat},${lon});
         node["amenity"="clinic"](around:${radiusMeters},${lat},${lon});
@@ -232,7 +232,7 @@ window.initProviders = async function(){
     // Clear existing timer
     if(debounceTimer) clearTimeout(debounceTimer);
     
-    // Wait 1 second after user stops moving/zooming before making request
+    // Wait 2 seconds after user stops moving/zooming before making request
     debounceTimer = setTimeout(() => {
       const center = map.getCenter();
       const zoom = map.getZoom();
@@ -243,7 +243,7 @@ window.initProviders = async function(){
       if(zoom < 11) radius = 10;
       
       showMarkers([center.lat, center.lng], radius);
-    }, 1000); // 1 second debounce
+    }, 2000); // 2 second debounce
   }
   
   // Add event listeners for map interaction
