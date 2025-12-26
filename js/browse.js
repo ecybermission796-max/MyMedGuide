@@ -82,20 +82,23 @@ window.loadBugsImages = async function(){
     }
   }
 
-  // fallback: if manifest couldn't be fetched, use a built-in list so the page still works
-  if(!manifestLoaded || !files || !files.length){
-    console.warn('could not load manifest or manifest empty', lastError);
-    files = [];
+  // fallback: if manifest couldn't be fetched, set to empty object
+  if(!manifestLoaded || !files){
+    console.warn('could not load manifest', lastError);
+    files = {};
   }
 
   // Extract thumbnails from manifest structure {keyword: {thumbnails: [...]}}
   if(!Array.isArray(files)){
-    if(typeof files === 'object'){
+    if(typeof files === 'object' && files !== null){
       try{
         files = Object.values(files)
           .map(v => v && v.thumbnails && v.thumbnails[0])
           .filter(v => typeof v === 'string');
-      }catch(e){ files = []; }
+      }catch(e){ 
+        console.error('Error extracting thumbnails:', e);
+        files = []; 
+      }
     } else {
       files = [];
     }
