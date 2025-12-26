@@ -269,7 +269,7 @@ app.post('/api/recognize', async (req, res) => {
     const matches = [];
     for(const item of top){
       const img = await findImageForKeyword(item.key, item.class);
-      matches.push({ keyword: item.key, class: item.class, img, score: item.score });
+      matches.push({ key: item.key, keyword: item.key, class: item.class, img, score: item.score });
     }
 
     res.json({ 
