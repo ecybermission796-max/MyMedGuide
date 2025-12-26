@@ -116,6 +116,14 @@ window.initProviders = async function(){
         const name = (el.tags && (el.tags.name || el.tags.official_name)) || 'Healthcare Facility';
         const nameLower = name.toLowerCase();
         
+        // Filter out unwanted facility types
+        const excludeKeywords = ['senior care', 'speech clinic', 'diagnostic', 'plastic surgery', 
+                                 'cosmetic surgery', 'rehabilitation', 'integrative care', 
+                                 'assisted living', 'nursing home', 'speech therapy'];
+        const shouldExclude = excludeKeywords.some(keyword => nameLower.includes(keyword));
+        
+        if(shouldExclude) return null; // Mark for filtering
+        
         if(el.tags && el.tags.amenity === 'hospital' || nameLower.includes('hospital')) {
           facilityType = 'Hospital';
         } else if(nameLower.includes('urgent care')) {
@@ -141,7 +149,7 @@ window.initProviders = async function(){
           phone: el.tags && el.tags.phone || '',
           distance: distance
         };
-      });
+      }).filter(p => p !== null); // Remove excluded facilities
       
       // Sort by distance
       providers.sort((a, b) => a.distance - b.distance);
@@ -164,6 +172,20 @@ window.initProviders = async function(){
           </div>
         `;
         marker.bindPopup(info);
+        
+        // Scroll to corresponding result when marker is clicked
+        marker.on('click', () => {
+          const resultDiv = document.getElementById(`provider-${index}`);
+          if(resultDiv) {
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Highlight the result briefly
+            resultDiv.style.background = '#ffe0e0';
+            setTimeout(() => {
+              resultDiv.style.background = 'white';
+            }, 1500);
+          }
+        });
+        
         markers.push(marker);
       });
       
@@ -172,7 +194,7 @@ window.initProviders = async function(){
       providers.forEach((provider, index) => {
         const number = index + 1;
         resultsHTML += `
-          <div style="margin-bottom:15px; padding:10px; background:white; border-radius:5px; border-left: 3px solid #e74c3c; cursor:pointer;" 
+          <div id="provider-${index}" style="margin-bottom:15px; padding:10px; background:white; border-radius:5px; border-left: 3px solid #e74c3c; cursor:pointer; transition: background 0.3s;" 
                onclick="document.querySelectorAll('.leaflet-marker-icon')[${index}].click()">
             <div style="display:flex; align-items:start;">
               <div style="background:#e74c3c; color:white; border-radius:50%; width:24px; height:24px; display:flex; align-items:center; justify-content:center; font-weight:bold; margin-right:10px; flex-shrink:0;">${number}</div>
@@ -210,10 +232,10 @@ window.initProviders = async function(){
       const center = map.getCenter();
       const zoom = map.getZoom();
       // Adjust radius based on zoom level (more zoom = smaller radius)
-      let radius = 10; // default 10 miles
-      if(zoom > 13) radius = 5;
-      if(zoom > 15) radius = 2;
-      if(zoom < 11) radius = 20;
+      let radius = 5; // default 5 miles
+      if(zoom > 13) radius = 3;
+      if(zoom > 15) radius = 1.5;
+      if(zoom < 11) radius = 10;
       
       showMarkers([center.lat, center.lng], radius);
     }, 1000); // 1 second debounce
