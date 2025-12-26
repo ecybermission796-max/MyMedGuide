@@ -112,8 +112,8 @@ app.post('/api/recognize', async (req, res) => {
     
     console.log('[server] Calling Gemini API for image recognition...');
 
-    // Call Google AI Gemini API - use gemini-pro-vision for image analysis
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=${apiKey}`;
+    // Call Google AI Gemini API - use gemini-3-pro-preview
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-preview:generateContent?key=${apiKey}`;
     const geminiBody = {
       contents: [{
         parts: [
