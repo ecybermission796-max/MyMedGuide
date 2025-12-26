@@ -1,12 +1,14 @@
-// Recognition: Submit image to Google AI for identification
+// Recognition: Submit image to Google AI (via backend) for identification
 document.addEventListener('DOMContentLoaded', () => {
   const input = document.getElementById('file-input');
   const preview = document.getElementById('preview');
   const submitBtn = document.getElementById('rec-submit');
   const recStatus = document.getElementById('rec-status');
 
-  // Google AI API key
-  const GOOGLE_AI_API_KEY = 'AIzaSyBPzetzEYwObWy2tEDLFbSv9YEEYNFhNRI';
+  // Backend API endpoint
+  const BACKEND_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:3001'
+    : 'https://your-backend-server.com'; // Update with your deployed backend URL
 
   function showToast(msg, timeout=2500){
     const t = document.getElementById('toast'); 
@@ -42,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(recStatus) recStatus.style.display = 'none';
   });
 
-  // Submit button - send image to Google AI for identification
+  // Submit button - send image to backend for Gemini AI identification
   if(submitBtn){
     submitBtn.addEventListener('click', async () => {
       if(!window._uploadedFile){ 
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const file = window._uploadedFile;
       showStatus('Analyzing image with Google AI...');
-      showToast('Sending to Google AI...');
+      showToast('Sending to AI...');
       
       try{
         // Convert image to base64
@@ -62,204 +64,78 @@ document.addEventListener('DOMContentLoaded', () => {
         // Determine mime type
         let mimeType = file.type;
         if(!mimeType || !mimeType.startsWith('image/')){
-          // Fallback based on file extension
           const ext = file.name.split('.').pop().toLowerCase();
           if(ext === 'jpg' || ext === 'jpeg') mimeType = 'image/jpeg';
           else if(ext === 'png') mimeType = 'image/png';
           else if(ext === 'gif') mimeType = 'image/gif';
           else if(ext === 'webp') mimeType = 'image/webp';
-          else mimeType = 'image/jpeg'; // default
+          else mimeType = 'image/jpeg';
         }
         
-        console.log('Sending to Gemini - mime type:', mimeType, 'file size:', base64Image.length);
+        console.log('Sending to backend - mime type:', mimeType);
         
-        // Call Google AI Gemini API
-        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GOOGLE_AI_API_KEY}`, {
+        // Call backend API endpoint
+        const response = await fetch(`${BACKEND_URL}/api/recognize`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            contents: [{
-              parts: [
-                {
-                  text: "What is shown in this picture? Return common name or scientific names. If similar to multiple animals/plants, return the top three possibilities."
-                },
-                {
-                  inline_data: {
-                    mime_type: mimeType,
-                    data: base64Image
-                  }
-                }
-              ]
-            }]
+            image: base64Image,
+            mimeType: mimeType
           })
         });
 
         if(!response.ok){
-          const errorText = await response.text();
-          console.error('Google AI error response:', errorText);
-          throw new Error(`Google AI API error: ${response.status} - ${errorText}`);
+          const errorData = await response.json().catch(() => ({}));
+          console.error('Backend error:', errorData);
+          throw new Error(errorData.error || `Backend error: ${response.status}`);
         }
 
         const result = await response.json();
-        console.log('Google AI response:', result);
+        console.log('Backend response:', result);
         
-        // Extract text from response
-        let aiText = '';
-        if(result.candidates && result.candidates[0] && result.candidates[0].content && result.candidates[0].content.parts){
-          aiText = result.candidates[0].content.parts.map(p => p.text || '').join(' ');
+        if(!result.ok){
+          throw new Error(result.error || 'Recognition failed');
         }
+
+        const aiText = result.aiResponse || '';
+        const matches = result.matches || [];
         
         if(!aiText){
-          showStatus('Google AI returned no response. Raw response: ' + JSON.stringify(result));
+          showStatus('No AI response received');
           showToast('No response from AI');
           return;
         }
         
-        showStatus('AI Response: ' + aiText);
         console.log('AI identified:', aiText);
         
-        // Search local index for matches
-        showToast('Searching local database...');
-        await searchLocalIndex(aiText);
+        if(matches.length === 0){
+          // No matches - display AI text
+          showStatus('AI Response: ' + aiText + '\n\nNo matches found in local database.');
+          showToast('No local matches. See AI response above.');
+          renderLocalResults([]);
+        } else {
+          // Found matches
+          showStatus('Found ' + matches.length + ' local match(es)! AI Response: ' + aiText);
+          showToast('Found local matches!');
+          renderLocalResults(matches);
+        }
+        
+        // Store results
+        localStorage.setItem('recognitionResults', JSON.stringify({ 
+          matches, 
+          aiResponse: aiText,
+          fallback: [], 
+          candidates: result.candidates || [] 
+        }));
         
       }catch(e){
-        console.error('Google AI error:', e);
+        console.error('Recognition error:', e);
         showStatus('Error: ' + e.message);
-        showToast('AI recognition failed. Check console for details.', 4000);
+        showToast('AI recognition failed. Make sure the backend server is running (npm start).', 5000);
       }
     });
-  }
-
-  // Search local index using AI-identified names
-  async function searchLocalIndex(aiText){
-    try{
-      const res = await fetch('data/biterdata_index.json', {cache: 'no-store'});
-      if(!res.ok) throw new Error('Index load failed');
-      const index = await res.json();
-      
-      // Extract potential names from AI text
-      const tokens = aiText.toLowerCase()
-        .replace(/[,;.\n\r()]/g, ' ')
-        .split(/\s+/)
-        .map(s=>s.trim())
-        .filter(s => s.length > 2);
-      
-      console.log('Searching for tokens:', tokens);
-      
-      // Score entries by matched tokens
-      const scored = [];
-      for(const key of Object.keys(index)){
-        const entry = index[key];
-        const name = (key||'').toLowerCase();
-        const sciName = (entry.Scientific_name||'').toLowerCase();
-        const otherName = (entry.Other_name||'').toLowerCase();
-        
-        let matchCount = 0;
-        
-        // Check each token
-        for(const t of tokens){
-          if(name.includes(t)){
-            matchCount += 3;
-          } else if(sciName.includes(t)){
-            matchCount += 2;
-          } else if(otherName.includes(t)){
-            matchCount += 2;
-          }
-        }
-        
-        // Check if full phrases match
-        if(name && aiText.toLowerCase().includes(name)){
-          matchCount += 10;
-        }
-        if(sciName && aiText.toLowerCase().includes(sciName)){
-          matchCount += 10;
-        }
-        if(otherName && aiText.toLowerCase().includes(otherName)){
-          matchCount += 10;
-        }
-        
-        if(matchCount > 0){
-          scored.push({ key, class: entry.class, score: matchCount });
-        }
-      }
-      
-      scored.sort((a,b) => b.score - a.score);
-      const top = scored.slice(0, 3);
-      
-      console.log('Local matches:', top);
-      
-      if(top.length === 0){
-        // No matches - display AI text
-        showStatus('AI Response: ' + aiText + '\n\nNo matches found in local database.');
-        showToast('No local matches. See AI response above.');
-        renderLocalResults([]);
-        return;
-      }
-      
-      // Found matches - get images and display
-      showStatus('Found ' + top.length + ' local match(es)! AI Response: ' + aiText);
-      showToast('Found local matches!');
-      
-      const items = [];
-      for(const it of top){
-        let imgPath = await findImageForKeyword(it.key, it.class);
-        if(!imgPath){
-          const normalized = it.key.replace(/[(),']/g, '').replace(/[ \-]+/g, '_').toLowerCase();
-          imgPath = `images/${it.class.toLowerCase()}/${normalized}.png`;
-        }
-        items.push({ keyword: it.key, class: it.class, img: imgPath, score: it.score });
-      }
-      
-      renderLocalResults(items);
-      
-      localStorage.setItem('recognitionResults', JSON.stringify({ 
-        matches: items, 
-        aiResponse: aiText,
-        fallback: [], 
-        candidates: [] 
-      }));
-      
-    }catch(e){
-      console.error('Local search error:', e);
-      showStatus('Error searching local database: ' + e.message);
-    }
-  }
-
-  // find an image for keyword by checking images/<class>/manifest.json
-  async function findImageForKeyword(keyword, cls){
-    const manifestPaths = [
-      `images/${cls.toLowerCase()}/manifest.json`,
-      `./images/${cls.toLowerCase()}/manifest.json`,
-      `/images/${cls.toLowerCase()}/manifest.json`
-    ];
-    
-    // Normalize the keyword for matching
-    const normalizedKeyword = keyword.replace(/[(),']/g, '').replace(/[ \-]+/g, '_').toLowerCase();
-    
-    for(const mp of manifestPaths){
-      try{
-        const r = await fetch(mp, {cache:'no-store'});
-        if(r && r.ok){
-          let manifest = await r.json();
-          // New manifest structure: {keyword: {images: [...], thumbnails: [...]}}
-          if(manifest && manifest[normalizedKeyword]){
-            const imgs = manifest[normalizedKeyword].images || [];
-            if(imgs.length > 0) return imgs[0]; // Return first image
-          }
-          // Also check logos
-          if(manifest && manifest.logos && Array.isArray(manifest.logos)){
-            for(const logo of manifest.logos){
-              if(logo.toLowerCase().includes(normalizedKeyword)){
-                return logo;
-              }
-            }
-          }
-        }
-      }catch(e){ /* ignore manifest load errors */ }
-    }
-    return null;
   }
 
   // Render results for local recognition into a simple grid

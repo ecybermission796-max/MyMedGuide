@@ -101,107 +101,161 @@ app.post('/run-script/:scriptName', (req, res) => {
   });
 });
 
-// Recognition endpoint: accepts JSON { image: '<base64-data>' }
+// Recognition endpoint: accepts JSON { image: '<base64-data>', mimeType: 'image/jpeg' }
 app.post('/api/recognize', async (req, res) => {
   try{
-    const { image } = req.body || {};
+    const { image, mimeType } = req.body || {};
     if(!image) return res.status(400).json({ error: 'Missing image (base64) in request body' });
 
-    const apiKey = process.env.GOOGLE_VISION_API_KEY;
-    if(!apiKey){
-      return res.status(501).json({ error: 'Server-side Google Vision API key not configured. Set GOOGLE_VISION_API_KEY.' });
-    }
+    // Gemini API key - stored securely on server
+    const apiKey = process.env.GEMINI_API_KEY || 'AIzaSyCp3Syx3XdUn_0SXMJtsY8gcm4EKKUFDaA';
+    
+    console.log('[server] Calling Gemini API for image recognition...');
 
-    // Build Vision API request
-    const visionUrl = `https://vision.googleapis.com/v1/images:annotate?key=${encodeURIComponent(apiKey)}`;
-    const body = {
-      requests: [
-        {
-          image: { content: image },
-          features: [
-            { type: 'WEB_DETECTION', maxResults: 10 },
-            { type: 'LABEL_DETECTION', maxResults: 10 }
-          ]
-        }
-      ]
+    // Call Google AI Gemini API
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const geminiBody = {
+      contents: [{
+        parts: [
+          {
+            text: "What is shown in this picture? Return common name or scientific names. If similar to multiple animals/plants, return the top three possibilities."
+          },
+          {
+            inline_data: {
+              mime_type: mimeType || 'image/jpeg',
+              data: image
+            }
+          }
+        ]
+      }]
     };
 
-    const vres = await fetch(visionUrl, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+    const geminiRes = await fetch(geminiUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(geminiBody)
     });
-    if(!vres.ok){
-      const txt = await vres.text();
-      console.error('[vision] non-ok', vres.status, txt);
-      return res.status(502).json({ error: 'Vision API request failed', detail: txt });
-    }
-    const vjson = await vres.json();
-    const resp = (vjson.responses && vjson.responses[0]) || {};
 
-    // Extract candidate names from webDetection and labelAnnotations
-    const candidates = new Set();
-    if(resp.webDetection){
-      (resp.webDetection.bestGuessLabels || []).forEach(b=>{ if(b.label) candidates.add(b.label.toLowerCase()); });
-      (resp.webDetection.webEntities || []).forEach(e=>{ if(e.description) candidates.add(e.description.toLowerCase()); });
-    }
-    if(resp.labelAnnotations){
-      (resp.labelAnnotations || []).forEach(l=>{ if(l.description) candidates.add(l.description.toLowerCase()); });
+    if(!geminiRes.ok){
+      const errorText = await geminiRes.text();
+      console.error('[gemini] API error:', geminiRes.status, errorText);
+      return res.status(502).json({ error: 'Gemini API request failed', detail: errorText, status: geminiRes.status });
     }
 
-    // Now load local biter index and score matches (simple token matching)
+    const geminiJson = await geminiRes.json();
+    console.log('[gemini] Response:', JSON.stringify(geminiJson, null, 2));
+
+    // Extract AI text response
+    let aiText = '';
+    if(geminiJson.candidates && geminiJson.candidates[0] && geminiJson.candidates[0].content && geminiJson.candidates[0].content.parts){
+      aiText = geminiJson.candidates[0].content.parts.map(p => p.text || '').join(' ');
+    }
+
+    if(!aiText){
+      console.error('[gemini] No text in response');
+      return res.status(502).json({ error: 'Gemini returned no text', raw: geminiJson });
+    }
+
+    console.log('[gemini] AI identified:', aiText);
+
+    // Load local biter index and search for matches
     const indexRaw = await fs.readFile(path.join(__dirname, 'data', 'biterdata_index.json'), 'utf8');
-    // strip BOM if present (common on Windows)
-    const indexStr = indexRaw.replace(/^\uFEFF/, '');
+    const indexStr = indexRaw.replace(/^\uFEFF/, ''); // strip BOM
     const index = JSON.parse(indexStr);
-    const tokens = Array.from(candidates).flatMap(s => s.split(/[,;\s]+/)).map(s=>s.trim()).filter(Boolean);
 
-    function scoreEntry(key, entry){
-      const name = (key||'').toLowerCase();
-      const others = (entry.OtherKeywords||[]).map(o=>o.toLowerCase());
-      let score = 0;
-      for(const t of tokens){ if(!t) continue; if(name.includes(t)) score += 3; else if(others.some(o=>o.includes(t))) score += 2; }
-      return score;
-    }
+    // Extract tokens from AI response
+    const tokens = aiText.toLowerCase()
+      .replace(/[,;.\n\r()]/g, ' ')
+      .split(/\s+/)
+      .map(s => s.trim())
+      .filter(s => s.length > 2);
 
+    console.log('[server] Searching for tokens:', tokens);
+
+    // Score entries by matched tokens
     const scored = [];
-    for(const k of Object.keys(index)){
-      const s = scoreEntry(k, index[k]);
-      if(s>0) scored.push({ key: k, class: index[k].class, score: s });
-    }
-    scored.sort((a,b)=>b.score - a.score);
+    for(const key of Object.keys(index)){
+      const entry = index[key];
+      const name = (key || '').toLowerCase();
+      const sciName = (entry.Scientific_name || '').toLowerCase();
+      const otherName = (entry.Other_name || '').toLowerCase();
 
-    // For each top result try to locate an image path in images/<class>/manifest.json
+      let matchCount = 0;
+
+      // Check each token
+      for(const t of tokens){
+        if(name.includes(t)){
+          matchCount += 3;
+        } else if(sciName.includes(t)){
+          matchCount += 2;
+        } else if(otherName.includes(t)){
+          matchCount += 2;
+        }
+      }
+
+      // Check if full phrases match
+      if(name && aiText.toLowerCase().includes(name)){
+        matchCount += 10;
+      }
+      if(sciName && aiText.toLowerCase().includes(sciName)){
+        matchCount += 10;
+      }
+      if(otherName && aiText.toLowerCase().includes(otherName)){
+        matchCount += 10;
+      }
+
+      if(matchCount > 0){
+        scored.push({ key, class: entry.class, score: matchCount });
+      }
+    }
+
+    scored.sort((a, b) => b.score - a.score);
+    const top = scored.slice(0, 3);
+
+    console.log('[server] Found', top.length, 'matches:', top);
+
+    // Find images for matches
     async function findImageForKeyword(keyword, cls){
       const manifestPath = path.join(__dirname, 'images', cls.toLowerCase(), 'manifest.json');
       try{
         const mf = await fs.readFile(manifestPath, 'utf8');
-        let files = JSON.parse(mf);
-        if(!Array.isArray(files)){
-          if(typeof files === 'string') files = [files];
-          else if(files && typeof files === 'object'){
-            if(Array.isArray(files.files)) files = files.files;
-            else if(Array.isArray(files.paths)) files = files.paths;
-            else files = Object.values(files).flat().filter(v=>typeof v === 'string');
-          } else files = [];
+        let manifest = JSON.parse(mf);
+        
+        const normalizedKeyword = keyword.replace(/[(),']/g, '').replace(/[ \-]+/g, '_').toLowerCase();
+        
+        // New manifest structure: {keyword: {images: [...], thumbnails: [...]}}
+        if(manifest && manifest[normalizedKeyword]){
+          const imgs = manifest[normalizedKeyword].images || [];
+          if(imgs.length > 0) return imgs[0];
         }
-        const k = keyword.toLowerCase();
-        for(const f of files){
-          const base = path.basename(f).replace(/\.(jpg|jpeg|png)$/i,'').replace(/[_\-]+/g,' ').trim().toLowerCase();
-          if(base === k) return f;
+        
+        // Also check logos
+        if(manifest && manifest.logos && Array.isArray(manifest.logos)){
+          for(const logo of manifest.logos){
+            if(logo.toLowerCase().includes(normalizedKeyword)){
+              return logo;
+            }
+          }
         }
-      }catch(e){ /* ignore */ }
+      }catch(e){ 
+        console.error('[server] Error loading manifest for', cls, ':', e.message);
+      }
       return null;
     }
 
     const matches = [];
-    for(const s of scored.slice(0,3)){
-      const img = await findImageForKeyword(s.key, s.class);
-      matches.push({ keyword: s.key, class: s.class, img });
+    for(const item of top){
+      const img = await findImageForKeyword(item.key, item.class);
+      matches.push({ keyword: item.key, class: item.class, img, score: item.score });
     }
 
-    // Prepare helpful fallback links (pagesWithMatchingImages)
-    const fallbackPages = (resp.webDetection && resp.webDetection.pagesWithMatchingImages) ? resp.webDetection.pagesWithMatchingImages.map(p=>p.url) : [];
+    res.json({ 
+      ok: true, 
+      aiResponse: aiText,
+      matches, 
+      candidates: tokens.slice(0, 20)
+    });
 
-    res.json({ ok: true, candidates: Array.from(candidates).slice(0,20), matches, fallbackPages });
   }catch(err){
     console.error('[server/recognize] error', err);
     res.status(500).json({ error: err && err.message ? err.message : String(err) });
@@ -219,5 +273,6 @@ app.listen(PORT, () => {
   console.log(`  POST /run-script/generate-bugs-manifest.ps1`);
   console.log(`  POST /run-script/generate-animals-manifest.ps1`);
   console.log(`  POST /run-script/generate-plants-manifest.ps1`);
+  console.log(`  POST /api/recognize - Gemini AI image recognition`);
   console.log(`  GET /health`);
 });
