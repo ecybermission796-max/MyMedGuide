@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
               matches.forEach(m => {
                 const params = new URLSearchParams({ action: 'detail', cls: m.class, kw: m.keyword, img: m.img || '' });
                 const url = window.location.pathname + '#' + params.toString();
-                const img = m.img ? `<img src="${encodeURIComponent(m.img)}" alt="${m.keyword}" style="max-width:100%; height:140px; object-fit:cover; display:block; margin:0 auto;" />` : '<div style="width:140px; height:140px; background:#eee; display:flex; align-items:center; justify-content:center;">No Image</div>';
+                const img = m.img ? `<img src="${encodeURI(m.img)}" alt="${m.keyword}" style="max-width:100%; height:140px; object-fit:cover; display:block; margin:0 auto;" onerror="this.parentElement.innerHTML='<div style=&quot;width:140px; height:140px; background:#eee; display:flex; align-items:center; justify-content:center;&quot;>No Image</div>';" />` : '<div style="width:140px; height:140px; background:#eee; display:flex; align-items:center; justify-content:center;">No Image</div>';
                 html += `<div style="width:220px; text-align:center;"><a href="${url}" target="_blank" rel="noopener noreferrer">${img}</a><div style="margin-top:6px; font-weight:bold;">${m.keyword}</div></div>`;
               });
               html += `</div>`;

@@ -136,6 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
       base = base.replace(/[ \-]+/g, '_');
       return base.toLowerCase();
     }
+    // Normalize the keyword for matching
+    const normalizedKeyword = keyword.replace(/[(),']/g, '').replace(/[ \-]+/g, '_').toLowerCase();
+    
     for(const mp of manifestPaths){
       try{
         const r = await fetch(mp, {cache:'no-store'});
@@ -151,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
               }
             } else files = [];
           }
-          for(const f of files){ if(filenameToKey(f) === keyword.toLowerCase()) return f; }
+          for(const f of files){ if(filenameToKey(f) === normalizedKeyword) return f; }
         }
       }catch(e){ /* ignore manifest load errors */ }
     }
