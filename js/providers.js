@@ -256,58 +256,19 @@ window.initProviders = async function(){
       const amenityElements = await searchByAmenity(lat, lon, radiusMeters);
       let allProviders = processElements(amenityElements, lat, lon);
       
-      // Display initial results immediately
+      // Sort and limit to top 20
+      allProviders.sort((a, b) => a.distance - b.distance);
+      allProviders = allProviders.slice(0, 20);
+      
+      // Display results
       if(allProviders.length > 0) {
-        allProviders.sort((a, b) => a.distance - b.distance);
-        displayResults(allProviders.slice(0, 20));
-      }
-      
-      // Release the loading lock so pan movements can trigger new searches
-      isLoading = false;
-      
-      // If we don't have 20 results, supplement with keyword searches in background
-      if(allProviders.length < 20) {
-        const searchOrder = [
-          { keyword: 'emergency room', type: 'Emergency Room' },
-          { keyword: 'hospital', type: 'Hospital' },
-          { keyword: 'medical center', type: 'Medical Center' },
-          { keyword: 'urgent care', type: 'Urgent Care' },
-          { keyword: 'ambulatory care', type: 'Ambulatory Care' }
-        ];
-        
-        for(const search of searchOrder) {
-          if(allProviders.length >= 20) break;
-          
-          try {
-            const elements = await searchByKeyword(search.keyword, lat, lon, radiusMeters);
-            const providers = processElements(elements, lat, lon, search.type);
-            
-            // Add new providers (avoid duplicates)
-            providers.forEach(p => {
-              const isDuplicate = allProviders.some(existing => 
-                Math.abs(existing.lat - p.lat) < 0.0001 && Math.abs(existing.lon - p.lon) < 0.0001
-              );
-              if(!isDuplicate) {
-                allProviders.push(p);
-              }
-            });
-            
-            // Update display with new results
-            if(providers.length > 0) {
-              allProviders.sort((a, b) => a.distance - b.distance);
-              displayResults(allProviders.slice(0, 20));
-            }
-          } catch(err) {
-            console.warn(`Keyword search for ${search.keyword} failed:`, err);
-            // Continue with other searches
-          }
-        }
-      }
-      
-      if(allProviders.length === 0) {
+        displayResults(allProviders);
+      } else {
         resultsPanel.innerHTML = '<div style="color:#666; text-align:center; padding:20px;">No providers found in this area</div>';
-        return;
       }
+      
+      // Release the loading lock
+      isLoading = false;
       
     } catch(err) {
       isLoading = false;
