@@ -1,35 +1,36 @@
 <#
-Convert an exported TAB-delimited TXT (from Excel "Save As" tab delimited) into a nested JSON structure for the Bugs pages.
+Convert an exported TAB-delimited TSV (from Excel "Save As" tab delimited) into a nested JSON structure for the Bugs pages.
 Usage (from repo root):
-  Powershell.exe -ExecutionPolicy Bypass -File .\scripts\convert-biters-txt.ps1 -txt .\rawfiles\biters.txt -out .\data\Biterdata.json
+  Powershell.exe -ExecutionPolicy Bypass -File .\scripts\convert-biters-txt.ps1 -txt .\data\Biterdata.tsv -out .\data\Biterdata.json
 
-TXT format expected (headers):
-  Keywords\tSection\tTitle\tDescription
+TSV format expected (headers):
+  Keywords\tSection\tDescription
 
 Behavior:
   - Non-recursive grouping by Keywords.
-  - Within each keyword pages are grouped by Section; within Section grouped by Title.
-  - Multiple rows with the same Title are combined into a single description (joined with blank line between paragraphs).
+  - Within each keyword pages are grouped by Section.
+  - Multiple rows with the same Section are combined into a single description (joined with blank line between paragraphs).
   - Outputs a JSON object keyed by the keyword string (exact text from Keywords column).
+  - Index includes Class, state, Category, Scientific_name, and Other_name as additional keywords for search.
 #>
 
 param(
-  [Parameter(Mandatory=$false)] [string]$txt = ".\rawfiles\biters.txt",
+  [Parameter(Mandatory=$false)] [string]$txt = ".\data\Biterdata.tsv",
   [Parameter(Mandatory=$false)] [string]$out = ".\data\Biterdata.json"
 )
 
 if(-not (Test-Path $txt)){
-  Write-Error "TXT file not found: $txt. Export your Excel file to Tab-delimited text first and provide the path via -txt"
+  Write-Error "TSV file not found: $txt. Export your Excel file to Tab-delimited text first and provide the path via -txt"
   exit 2
 }
 
 # Import-CSV with tab delimiter; this handles the header row similarly to CSV
 $rows = Import-Csv -Path $txt -Delimiter "`t" -ErrorAction Stop
-if($rows.Count -eq 0){ Write-Error "No rows found in TXT"; exit 3 }
+if($rows.Count -eq 0){ Write-Error "No rows found in TSV"; exit 3 }
 
-# Build nested grouping: keyword -> section -> title -> [descriptions]
+# Build nested grouping: keyword -> section -> [descriptions]
 $grouped = @{}
-# collect per-keyword metadata for index (Class and OtherKeywords)
+# collect per-keyword metadata for index (Class, state, Category, Scientific_name, Other_name)
 $indexMeta = @{}
 foreach($row in $rows){
   $kw = $row.Keywords
@@ -43,70 +44,71 @@ foreach($row in $rows){
   $sec = $row.Section
   if ($sec -eq $null) { $sec = '' } else { $sec = [string]$sec }
   $sec = $sec.Trim()
-  if($sec -eq ''){ $sec = 'General' }
-
-  $title = $row.Title
-  if ($title -eq $null) { $title = '' } else { $title = [string]$title }
-  $title = $title.Trim()
-  if($title -eq ''){ $title = 'Details' }
+  if($sec -eq ''){ continue }
 
   $desc = $row.Description
   if ($desc -eq $null) { $desc = '' } else { $desc = [string]$desc }
 
-  # If the TXT encodes Class or OtherKeywords using the Section column,
-  # treat those rows as metadata and populate the index, then skip content insertion.
+  # Initialize metadata for this keyword if not present
+  if(-not $indexMeta.ContainsKey($kw)){ 
+    $indexMeta[$kw] = @{ 
+      Class = ''; 
+      state = @(); 
+      Category = ''; 
+      Scientific_name = ''; 
+      Other_name = '' 
+    } 
+  }
+
+  # Capture metadata fields from Section column
   $secLower = $sec.ToLower()
   if($secLower -eq 'class'){
-    if(-not $indexMeta.ContainsKey($kw)){ $indexMeta[$kw] = @{ Class = ''; OtherKeywords = @() } }
     if(-not [string]::IsNullOrWhiteSpace($desc) -and [string]::IsNullOrWhiteSpace($indexMeta[$kw].Class)){
       $indexMeta[$kw].Class = $desc.Trim()
     }
     continue
   }
-  if($secLower -eq 'otherkeywords' -or $secLower -eq 'other keywords'){
-    if(-not $indexMeta.ContainsKey($kw)){ $indexMeta[$kw] = @{ Class = ''; OtherKeywords = @() } }
+  if($secLower -eq 'state'){
     if(-not [string]::IsNullOrWhiteSpace($desc)){
-      $parts = ($desc -split ',') | ForEach-Object { ($_ -replace '"','').Trim() } | Where-Object { $_ -ne '' }
-      foreach($p in $parts){ if(-not ($indexMeta[$kw].OtherKeywords -contains $p)){ $indexMeta[$kw].OtherKeywords += $p } }
+      # Split by comma, semicolon, and/or "and"/"or" words
+      $parts = ($desc -split '[,;]|\\band\\b|\\bor\\b') | ForEach-Object { ($_ -replace '"','').Trim() } | Where-Object { $_ -ne '' }
+      foreach($p in $parts){ 
+        if(-not ($indexMeta[$kw].state -contains $p)){ 
+          $indexMeta[$kw].state += $p 
+        } 
+      }
     }
     continue
   }
+  if($secLower -eq 'category'){
+    if(-not [string]::IsNullOrWhiteSpace($desc) -and [string]::IsNullOrWhiteSpace($indexMeta[$kw].Category)){
+      $indexMeta[$kw].Category = $desc.Trim()
+    }
+    continue
+  }
+  if($secLower -eq 'scientific_name' -or $secLower -eq 'scientificname'){
+    if(-not [string]::IsNullOrWhiteSpace($desc) -and [string]::IsNullOrWhiteSpace($indexMeta[$kw].Scientific_name)){
+      $indexMeta[$kw].Scientific_name = $desc.Trim()
+    }
+    # Don't continue - also add as a content section for display
+  }
+  if($secLower -eq 'other_name' -or $secLower -eq 'othername'){
+    if(-not [string]::IsNullOrWhiteSpace($desc) -and [string]::IsNullOrWhiteSpace($indexMeta[$kw].Other_name)){
+      $indexMeta[$kw].Other_name = $desc.Trim()
+    }
+    # Don't continue - also add as a content section for display
+  }
 
+  # For content sections, add to grouped data
   if(-not $grouped.ContainsKey($kw)){
     $grouped[$kw] = @{}
-    # initialize index meta for this keyword only if not already present
-    if(-not $indexMeta.ContainsKey($kw)){ $indexMeta[$kw] = @{ Class = ''; OtherKeywords = @() } }
   }
   $sections = $grouped[$kw]
 
   if(-not $sections.ContainsKey($sec)){
-    $sections[$sec] = @{}
+    $sections[$sec] = @()
   }
-  $titles = $sections[$sec]
-
-  if(-not $titles.ContainsKey($title)){
-    $titles[$title] = @()
-  }
-  $titles[$title] += $desc
-
-  # capture Class and OtherKeywords fields if provided as separate columns (case-insensitive)
-  $classVal = $null
-  $okVal = $null
-  if($row.PSObject.Properties.Match('Class')){ $classVal = [string]$row.Class }
-  elseif($row.PSObject.Properties.Match('class')){ $classVal = [string]$row.class }
-  if($row.PSObject.Properties.Match('OtherKeywords')){ $okVal = [string]$row.OtherKeywords }
-  elseif($row.PSObject.Properties.Match('Otherkeywords')){ $okVal = [string]$row.Otherkeywords }
-  elseif($row.PSObject.Properties.Match('otherkeywords')){ $okVal = [string]$row.otherkeywords }
-
-  if($classVal -ne $null -and $classVal.Trim() -ne ''){
-    if([string]::IsNullOrWhiteSpace($indexMeta[$kw].Class)){
-      $indexMeta[$kw].Class = $classVal.Trim()
-    }
-  }
-  if($okVal -ne $null -and $okVal.Trim() -ne ''){
-    $parts = ($okVal -split ',') | ForEach-Object { ($_ -replace '"','').Trim() } | Where-Object { $_ -ne '' }
-    foreach($p in $parts){ if(-not ($indexMeta[$kw].OtherKeywords -contains $p)){ $indexMeta[$kw].OtherKeywords += $p } }
-  }
+  $sections[$sec] += $desc
 }
 
 # Compose output structure
@@ -115,16 +117,19 @@ foreach($kw in $grouped.Keys){
   $secArr = @()
   $sections = $grouped[$kw]
   foreach($secName in $sections.Keys){
-    $items = @()
-    $titles = $sections[$secName]
-    foreach($t in $titles.Keys){
-      $descParts = $titles[$t] | Where-Object { $_ -ne $null }
-      $descText = ($descParts -join "\n\n").Trim()
-      $items += @{ title = $t; description = $descText }
-    }
-    $secArr += @{ name = $secName; items = $items }
+    $descParts = $sections[$secName] | Where-Object { $_ -ne $null }
+    $descText = ($descParts -join "\n\n").Trim()
+    $secArr += @{ name = $secName; description = $descText }
   }
   $outObj[$kw] = @{ sections = $secArr }
+}
+
+# Also add keywords that only have metadata (no content sections)
+foreach($kw in $indexMeta.Keys){
+  if(-not $outObj.ContainsKey($kw)){
+    # Add empty sections array for keywords with only metadata
+    $outObj[$kw] = @{ sections = @() }
+  }
 }
 
 # Build index object from collected metadata
@@ -133,9 +138,22 @@ foreach($kw in $outObj.Keys){
   $meta = $indexMeta[$kw]
   $classVal = ''
   if($meta -and $meta.Class){ $classVal = $meta.Class.Trim() }
-  $oks = @()
-  if($meta -and $meta.OtherKeywords){ $oks = $meta.OtherKeywords }
-  $indexObj[$kw] = @{ class = $classVal; OtherKeywords = $oks }
+  $stateVal = @()
+  if($meta -and $meta.state){ $stateVal = $meta.state }
+  $catVal = ''
+  if($meta -and $meta.Category){ $catVal = $meta.Category.Trim() }
+  $sciVal = ''
+  if($meta -and $meta.Scientific_name){ $sciVal = $meta.Scientific_name.Trim() }
+  $otherVal = ''
+  if($meta -and $meta.Other_name){ $otherVal = $meta.Other_name.Trim() }
+  
+  $indexObj[$kw] = @{ 
+    class = $classVal; 
+    state = $stateVal; 
+    Category = $catVal; 
+    Scientific_name = $sciVal; 
+    Other_name = $otherVal 
+  }
 }
 
 # Build a filename->keyword map to help client-side matching (e.g. bed_bug -> "bed_bug")
@@ -143,20 +161,16 @@ $filenameMap = @{ }
 foreach($kw in $outObj.Keys){
   $nk = $kw
   if ($nk -eq $null) { $nk = '' } else { $nk = [string]$nk }
-  $nk = $nk.Trim().ToLower()
+  $nk = $nk.Trim()
   if($nk -eq ''){ continue }
-  $variants = @()
-  $variants += $nk
-  $variants += ($nk -replace '\s+','_')
-  $variants += ($nk -replace '\s+','-')
-  $variants += ($nk -replace '\s+','')
-  $aggressive = ($nk -replace '[^a-z0-9]','')
-  if($aggressive -ne ''){ $variants += $aggressive }
-
-  foreach($v in $variants | Select-Object -Unique){
-    if(-not $filenameMap.ContainsKey($v)){
-      $filenameMap[$v] = $kw
-    }
+  
+  # Standardized normalization: 1) Remove parentheses, commas, and apostrophes, 2) Replace spaces/hyphens with underscores, 3) Lowercase
+  $normalized = $nk -replace "[(),']",""
+  $normalized = $normalized -replace '[ \-]+','_'
+  $normalized = $normalized.ToLower()
+  
+  if(-not $filenameMap.ContainsKey($normalized)){
+    $filenameMap[$normalized] = $kw
   }
 }
 
@@ -166,15 +180,12 @@ if(-not (Test-Path $odir)){ New-Item -ItemType Directory -Path $odir | Out-Null 
 
 
 
-# Validation: each item must have a class and at least one OtherKeywords entry
+# Validation: each item must have a class
 $errors = @()
 foreach($k in $indexObj.Keys){
   $entry = $indexObj[$k]
   if([string]::IsNullOrWhiteSpace($entry.class)){
     $errors += "Missing Class for keyword: '$k'"
-  }
-  if(-not $entry.OtherKeywords -or $entry.OtherKeywords.Count -eq 0){
-    $errors += "Missing OtherKeywords for keyword: '$k'"
   }
 }
 if($errors.Count -gt 0){

@@ -41,6 +41,13 @@ document.addEventListener('DOMContentLoaded', () => {
   if(searchBtn){
     searchBtn.addEventListener('click', async () => {
       if(!window._uploadedFile){ showToast('Please upload an image first'); return; }
+      
+      // Check if backend is configured
+      if(window.API_CONFIG && !window.API_CONFIG.IS_CONFIGURED){
+        showToast('Image recognition backend not configured yet. Please contact the site administrator.', 4000);
+        return;
+      }
+      
       showToast('Searching image in background...');
       try{
         const file = window._uploadedFile;
@@ -124,8 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function filenameToKey(fname){
       let base = fname.split('/').pop();
       base = base.replace(/\.(jpg|jpeg|png)$/i,'');
-      base = base.replace(/[_\-]+/g,' ').replace(/\s+/g,' ').trim();
-      try{ base = base.normalize('NFD').replace(/\p{Diacritic}/gu,''); }catch(e){ base = base.replace(/[\u0300-\u036f]/g,''); }
+      // Standardized normalization: 1) Remove parentheses, commas, and apostrophes, 2) Replace spaces/hyphens with underscores, 3) Lowercase
+      base = base.replace(/[(),']/g, '');
+      base = base.replace(/[ \-]+/g, '_');
       return base.toLowerCase();
     }
     for(const mp of manifestPaths){

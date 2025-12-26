@@ -1,2 +1,0 @@
-animal/bugs: http://www.venombyte.com/
-Plant:https://guides.library.illinois.edu/plantstoxictoanimals
