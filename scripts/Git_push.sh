@@ -7,7 +7,7 @@
 git add .
 
 # 3. Commit with a message describing the update
-git commit -m "Add search function, trial 4"
+git commit -m "Improve Gemini search accuracy"
 
 # 4. Push to GitHub (main branch)
 git push origin main
