@@ -518,12 +518,20 @@ window.loadAnimalsImages = async function(){
     else if(files && typeof files === 'object'){
       if(Array.isArray(files.files)) files = files.files;
       else if(Array.isArray(files.paths)) files = files.paths;
-      else { try{ files = Object.values(files).flat().filter(v=>typeof v === 'string'); }catch(e){ files = []; } }
+      else {
+        // Extract first thumbnail from each category (manifest structure: {keyword: {thumbnails: [...]}})
+        try{
+          files = Object.values(files)
+            .map(v => v && v.thumbnails && v.thumbnails[0])
+            .filter(v => typeof v === 'string');
+        }catch(e){ files = []; }
+      }
     } else files = [];
   }
 
-  const topLevelPattern = /^images\/animals\/[^\/]+\.(jpg|jpeg|png)$/i;
-  files = files.filter(p => topLevelPattern.test(p));
+  // Allow subfolder paths, just filter for valid image extensions
+  const imagePattern = /\.(jpg|jpeg|png)$/i;
+  files = files.filter(p => typeof p === 'string' && imagePattern.test(p));
   files = files.filter((v, i, a) => a.indexOf(v) === i);
   console.debug('loadAnimalsImages - final files list:', files);
 
@@ -833,15 +841,21 @@ window.loadPlantsImages = async function(){
       if(Array.isArray(files.files)) files = files.files;
       else if(Array.isArray(files.paths)) files = files.paths;
       else {
-        try{ files = Object.values(files).flat().filter(v=>typeof v === 'string'); }catch(e){ files = []; }
+        // Extract first thumbnail from each category
+        try{
+          files = Object.values(files)
+            .map(v => v && v.thumbnails && v.thumbnails[0])
+            .filter(v => typeof v === 'string');
+        }catch(e){ files = []; }
       }
     } else {
       files = [];
     }
   }
 
-  const topLevelPattern = /^images\/plants\/[^\/]+\.(jpg|jpeg|png)$/i;
-  files = files.filter(p => topLevelPattern.test(p));
+  // Allow subfolder paths, just filter for valid image extensions
+  const imagePattern = /\.(jpg|jpeg|png)$/i;
+  files = files.filter(p => typeof p === 'string' && imagePattern.test(p));
   files = files.filter((v, i, a) => a.indexOf(v) === i);
   console.debug('loadPlantsImages - final files list:', files);
 
