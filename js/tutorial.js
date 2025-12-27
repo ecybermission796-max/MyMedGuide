@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Doctor image
     const doctorImg = document.createElement('img');
-    doctorImg.src = 'images/Doctor_firsttime.png';
+    doctorImg.src = 'images/Tutorial/Doctor_firsttime.png';
     doctorImg.alt = 'Tutorial Prompt';
     doctorImg.style.cssText = 'max-width: 400px; width: 90%; display: block;';
     
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Yes button
     const yesBtn = document.createElement('img');
-    yesBtn.src = 'images/Yes.png';
+    yesBtn.src = 'images/Tutorial/Yes.png';
     yesBtn.alt = 'Yes - Start Tutorial';
     yesBtn.style.cssText = 'cursor: pointer; max-width: 120px; transition: transform 0.2s;';
     yesBtn.onmouseover = () => yesBtn.style.transform = 'scale(1.1)';
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // No button
     const noBtn = document.createElement('img');
-    noBtn.src = 'images/No.png';
+    noBtn.src = 'images/Tutorial/No.png';
     noBtn.alt = 'No - Skip Tutorial';
     noBtn.style.cssText = 'cursor: pointer; max-width: 120px; transition: transform 0.2s;';
     noBtn.onmouseover = () => noBtn.style.transform = 'scale(1.1)';
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     
     const doctorImg = document.createElement('img');
-    doctorImg.src = 'images/Doctor_second.png';
+    doctorImg.src = 'images/Tutorial/Doctor_second.png';
     doctorImg.alt = 'Tutorial';
     doctorImg.style.cssText = 'max-width: 150px; display: block;';
     
@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     
     const slideImg = document.createElement('img');
-    slideImg.src = `images/Slide${currentSlide}.JPG`;
+    slideImg.src = `images/Tutorial/Slide${currentSlide}.JPG`;
     slideImg.alt = `Tutorial Slide ${currentSlide}`;
     slideImg.style.cssText = `
       max-width: 100%;
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // After fade out, change image and fade in
         setTimeout(() => {
           currentSlide++;
-          slideImg.src = `images/Slide${currentSlide}.JPG`;
+          slideImg.src = `images/Tutorial/Slide${currentSlide}.JPG`;
           slideImg.alt = `Tutorial Slide ${currentSlide}`;
           progress.textContent = `${currentSlide}/${SLIDE_COUNT}`;
           
