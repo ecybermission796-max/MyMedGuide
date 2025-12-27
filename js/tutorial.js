@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.id = 'tutorial-prompt-overlay';
     overlay.style.cssText = `
       position: fixed;
-      top: 80px;
+      top: calc(80px + 20vh);
       left: 50%;
       transform: translateX(-50%);
       z-index: 100;
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnContainer.id = 'doctor-second-btn';
     btnContainer.style.cssText = `
       position: fixed;
-      top: 95px;
+      top: calc(95px + 30vh);
       left: 50%;
       transform: translateX(-50%);
       z-index: 50;
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const doctorImg = document.createElement('img');
     doctorImg.src = 'images/Tutorial/Doctor_second.png';
     doctorImg.alt = 'Tutorial';
-    doctorImg.style.cssText = 'max-width: 150px; display: block;';
+    doctorImg.style.cssText = 'max-width: 450px; display: block;';
     
     btnContainer.onmouseover = () => btnContainer.style.transform = 'translateX(-50%) scale(1.1)';
     btnContainer.onmouseout = () => btnContainer.style.transform = 'translateX(-50%) scale(1)';
