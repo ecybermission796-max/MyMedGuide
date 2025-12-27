@@ -221,13 +221,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   
+  // Show/hide tutorial elements based on current view
+  function updateTutorialVisibility() {
+    const homeView = document.getElementById('home');
+    const isHomeActive = homeView && homeView.classList.contains('active');
+    
+    const promptOverlay = document.getElementById('tutorial-prompt-overlay');
+    const doctorSecondBtn = document.getElementById('doctor-second-btn');
+    
+    if (promptOverlay) {
+      promptOverlay.style.display = isHomeActive ? 'flex' : 'none';
+    }
+    if (doctorSecondBtn) {
+      doctorSecondBtn.style.display = isHomeActive ? 'block' : 'none';
+    }
+  }
+  
+  // Hook into view changes by observing the home view class changes
+  const homeView = document.getElementById('home');
+  if (homeView) {
+    const observer = new MutationObserver(updateTutorialVisibility);
+    observer.observe(homeView, { attributes: true, attributeFilter: ['class'] });
+  }
+  
   // Initialize tutorial on page load
   if (!isTutorialCompleted()) {
     // Show first-time prompt after a brief delay to let page load
-    setTimeout(showFirstTimePrompt, 500);
+    setTimeout(() => {
+      showFirstTimePrompt();
+      updateTutorialVisibility();
+    }, 500);
   } else {
     // Show Doctor_second button for returning users
     showDoctorSecondButton();
+    setTimeout(updateTutorialVisibility, 100);
   }
   
   // Expose function globally for manual trigger
