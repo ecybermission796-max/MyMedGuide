@@ -135,7 +135,7 @@ app.post('/api/recognize', async (req, res) => {
           contents: [{
             parts: [
               {
-                text: "Identify the animal/bug/plants in the picture and return the top three best hits of the identified animal/bug/plant."
+                text: "Identify the animal/bug/plants in the picture and return in the following format: Category: xxx, Top three hits: 1...  2... 3....  In the Category part, fill in either Mosquitos, Plants, Snake, Spider, Scorpion, Lizard, Other Bugs, Fleas, Snakes, Bees, Scorpions, Ticks, Snail, Dogs, Stingray, or unidentified. and then return the top three best hits of the identified animal/bug/plant."
               },
               {
                 inline_data: {
@@ -198,6 +198,47 @@ app.post('/api/recognize', async (req, res) => {
 
     console.log('[gemini] AI identified:', aiText);
 
+    // Extract Category from Gemini response
+    const categoryMatch = aiText.match(/Category:\s*([^,\n]+)/i);
+    let category = categoryMatch ? categoryMatch[1].trim() : 'unidentified';
+    console.log('[server] Extracted category:', category);
+    
+    // Map category to class name (handle plural/singular variations)
+    const categoryMap = {
+      'mosquitos': 'bugs',
+      'plants': 'plants',
+      'snake': 'animals',
+      'snakes': 'animals',
+      'spider': 'bugs',
+      'scorpion': 'bugs',
+      'scorpions': 'bugs',
+      'lizard': 'animals',
+      'other bugs': 'bugs',
+      'fleas': 'bugs',
+      'bees': 'bugs',
+      'ticks': 'bugs',
+      'snail': 'bugs',
+      'dogs': 'animals',
+      'stingray': 'animals',
+      'unidentified': null
+    };
+    
+    const targetClass = categoryMap[category.toLowerCase()];
+    console.log('[server] Target class:', targetClass);
+    
+    // If category is unidentified or not recognized, return full Gemini text with no local matches
+    if(!targetClass){
+      console.log('[server] Category unidentified or not recognized, returning full Gemini response');
+      return res.json({
+        ok: true,
+        aiResponse: aiText,
+        matches: [],
+        candidates: [],
+        noLocalMatch: true,
+        category: category
+      });
+    }
+
     // Load local biter index and search for matches
     const indexRaw = await fs.readFile(path.join(__dirname, 'data', 'biterdata_index.json'), 'utf8');
     const indexStr = indexRaw.replace(/^\uFEFF/, ''); // strip BOM
@@ -225,10 +266,19 @@ app.post('/api/recognize', async (req, res) => {
 
     console.log('[server] Searching for tokens:', tokens);
 
-    // Score entries by matched tokens
+    // Zero-score keywords that don't count as matches
+    const zeroScoreKeywords = ['common', 'general'];
+
+    // Score entries by matched tokens (only within target class)
     const scored = [];
     for(const key of Object.keys(index)){
       const entry = index[key];
+      
+      // Only search within the target class
+      if(entry.class && entry.class.toLowerCase() !== targetClass.toLowerCase()){
+        continue;
+      }
+      
       const name = (key || '').toLowerCase();
       const sciName = (entry.Scientific_name || '').toLowerCase();
       const otherName = (entry.Other_name || '').toLowerCase();
@@ -251,8 +301,13 @@ app.post('/api/recognize', async (req, res) => {
         }
       }
 
-      // Check each token for partial matches
+      // Check each token for partial matches (skip zero-score keywords)
       for(const t of tokens){
+        // Skip zero-score keywords
+        if(zeroScoreKeywords.includes(t)){
+          continue;
+        }
+        
         if(name.includes(t)){
           matchCount += 2;
         } else if(sciName.includes(t)){
@@ -271,6 +326,19 @@ app.post('/api/recognize', async (req, res) => {
     const top = scored.slice(0, 3);
 
     console.log('[server] Found', top.length, 'matches:', top);
+    
+    // If no local matches found, return full Gemini text
+    if(top.length === 0){
+      console.log('[server] No local matches found, returning full Gemini response');
+      return res.json({
+        ok: true,
+        aiResponse: aiText,
+        matches: [],
+        candidates: tokens.slice(0, 20),
+        noLocalMatch: true,
+        category: category
+      });
+    }
 
     // Find images for matches
     async function findImageForKeyword(keyword, cls){
@@ -311,7 +379,9 @@ app.post('/api/recognize', async (req, res) => {
       ok: true, 
       aiResponse: aiText,
       matches, 
-      candidates: tokens.slice(0, 20)
+      candidates: tokens.slice(0, 20),
+      category: category,
+      targetClass: targetClass
     });
 
   }catch(err){
