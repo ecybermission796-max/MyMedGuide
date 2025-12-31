@@ -244,15 +244,27 @@ app.post('/api/recognize', async (req, res) => {
     const indexStr = indexRaw.replace(/^\uFEFF/, ''); // strip BOM
     const index = JSON.parse(indexStr);
 
-    // Extract species names from numbered list (e.g., "1. **Western Rattlesnake** (_Crotalus oreganus_)")
+    // Extract species names from numbered list
+    // Handle various formats:
+    // "1. Poison Ivy" or "1. **Poison Ivy**" or "Top three hits: 1. Poison Ivy 2. ..."
     const speciesNames = [];
-    const lines = aiText.split('\n');
-    for(const line of lines){
-      // Match patterns like: "1. **Species Name** (_Scientific name_)" or "1. Species Name (Scientific name)"
-      const match = line.match(/^\d+\.\s+\*{0,2}([^*(_]+)\*{0,2}\s*(?:\([^)]*\))?/);
-      if(match){
-        const commonName = match[1].trim();
-        speciesNames.push(commonName);
+    
+    // Try to extract from "Top three hits:" section if present
+    const topHitsMatch = aiText.match(/Top three hits?:(.+?)(?:\n\n|$)/is);
+    const searchText = topHitsMatch ? topHitsMatch[1] : aiText;
+    
+    console.log('[server] Searching for species in text:', searchText.substring(0, 200));
+    
+    // Match numbered items: "1. Name" or "1. **Name**" or "1... Name"
+    const numberPattern = /\d+[\.\)]\s*\.?\s*\*{0,2}([^*\n\d][^*(\n]{2,50}?)\*{0,2}/g;
+    let match;
+    while((match = numberPattern.exec(searchText)) !== null){
+      let name = match[1].trim();
+      // Clean up trailing punctuation and parenthetical info
+      name = name.replace(/[\(\[].*?[\)\]]$/g, '').trim();
+      name = name.replace(/[,\.\-_]+$/g, '').trim();
+      if(name.length > 2){
+        speciesNames.push(name);
       }
     }
 
