@@ -135,7 +135,7 @@ app.post('/api/recognize', async (req, res) => {
           contents: [{
             parts: [
               {
-                text: "Identify the animal/bug/plants in the picture and return in the following format: Category: xxx, Top three hits: 1...  2... 3....  In the Category part, fill in either Mosquitos, Plants, Snake, Spider, Scorpion, Lizard, Other Bugs, Fleas, Snakes, Bees, Scorpions, Ticks, Snail, Dogs, Stingray, or unidentified. and then return the top three best hits of the identified animal/bug/plant."
+                text: "Identify the animal/bug/plants in the picture and return in the following format: Category: xxx, Top three hits: 1...  2... 3...., possible consequences if bitten/wounded from this animal/bug/plant, and first aid suggested. In the Category part, fill in either Mosquitos, Plants, Snake, Spider, Scorpion, Lizard, Other Bugs, Fleas, Snakes, Bees, Scorpions, Ticks, Snail, Dogs, Stingray, or unidentified. and then return the top three best hits of the identified animal/bug/plant, and the remaining text."
               },
               {
                 inline_data: {
