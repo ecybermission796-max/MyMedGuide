@@ -203,31 +203,42 @@ app.post('/api/recognize', async (req, res) => {
     let category = categoryMatch ? categoryMatch[1].trim() : 'unidentified';
     console.log('[server] Extracted category:', category);
     
-    // Map category to class name (handle plural/singular variations)
-    const categoryMap = {
-      'mosquitos': 'bugs',
-      'plants': 'plants',
-      'snake': 'animals',
-      'snakes': 'animals',
-      'spider': 'bugs',
-      'scorpion': 'bugs',
-      'scorpions': 'bugs',
-      'lizard': 'animals',
-      'other bugs': 'bugs',
-      'fleas': 'bugs',
-      'bees': 'bugs',
-      'ticks': 'bugs',
-      'snail': 'bugs',
-      'dogs': 'animals',
-      'stingray': 'animals',
+    // Normalize category to match database format (singular, capitalized)
+    // Map Gemini's plural/lowercase categories to database categories
+    const categoryNormalizeMap = {
+      'mosquitos': 'Mosquito',
+      'mosquito': 'Mosquito',
+      'plants': 'Plants',
+      'plant': 'Plants',
+      'snake': 'Snake',
+      'snakes': 'Snake',
+      'spider': 'Spider',
+      'spiders': 'Spider',
+      'scorpion': 'Scorpion',
+      'scorpions': 'Scorpion',
+      'lizard': 'Lizard',
+      'lizards': 'Lizard',
+      'other bugs': 'Other Bugs',
+      'fleas': 'Flea',
+      'flea': 'Flea',
+      'bees': 'Bee',
+      'bee': 'Bee',
+      'ticks': 'Tick',
+      'tick': 'Tick',
+      'snail': 'Snail',
+      'snails': 'Snail',
+      'dogs': 'Dogs',
+      'dog': 'Dogs',
+      'stingray': 'Stingray',
+      'stingrays': 'Stingray',
       'unidentified': null
     };
     
-    const targetClass = categoryMap[category.toLowerCase()];
-    console.log('[server] Target class:', targetClass);
+    const normalizedCategory = categoryNormalizeMap[category.toLowerCase()];
+    console.log('[server] Normalized category for database search:', normalizedCategory);
     
     // If category is unidentified or not recognized, return full Gemini text with no local matches
-    if(!targetClass){
+    if(!normalizedCategory){
       console.log('[server] Category unidentified or not recognized, returning full Gemini response');
       return res.json({
         ok: true,
@@ -277,26 +288,26 @@ app.post('/api/recognize', async (req, res) => {
       .filter(s => s.length > 2);
 
     console.log('[server] Searching for tokens:', tokens);
-    console.log('[server] Target class for filtering:', targetClass);
+    console.log('[server] Target category for filtering:', normalizedCategory);
 
     // Zero-score keywords that don't count as matches
     const zeroScoreKeywords = ['common', 'general'];
 
-    // Score entries by matched tokens (only within target class)
+    // Score entries by matched tokens (only within target category)
     const scored = [];
     let entriesChecked = 0;
-    let entriesInTargetClass = 0;
+    let entriesInTargetCategory = 0;
     
     for(const key of Object.keys(index)){
       const entry = index[key];
       entriesChecked++;
       
-      // Only search within the target class
-      if(entry.class && entry.class.toLowerCase() !== targetClass.toLowerCase()){
+      // Only search within the target category
+      if(entry.Category && entry.Category !== normalizedCategory){
         continue;
       }
       
-      entriesInTargetClass++;
+      entriesInTargetCategory++;
       
       const name = (key || '').toLowerCase();
       const sciName = (entry.Scientific_name || '').toLowerCase();
@@ -344,7 +355,7 @@ app.post('/api/recognize', async (req, res) => {
       }
     }
     
-    console.log(`[server] Checked ${entriesChecked} total entries, ${entriesInTargetClass} in target class "${targetClass}"`);
+    console.log(`[server] Checked ${entriesChecked} total entries, ${entriesInTargetCategory} in target category "${normalizedCategory}"`);
 
     scored.sort((a, b) => b.score - a.score);
     const top = scored.slice(0, 3);
@@ -405,7 +416,7 @@ app.post('/api/recognize', async (req, res) => {
       matches, 
       candidates: tokens.slice(0, 20),
       category: category,
-      targetClass: targetClass
+      normalizedCategory: normalizedCategory
     });
 
   }catch(err){
