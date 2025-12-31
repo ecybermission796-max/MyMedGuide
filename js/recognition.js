@@ -269,12 +269,35 @@ document.addEventListener('DOMContentLoaded', () => {
       html += '<h3 style="margin-top: 0;">Local search not found. Here are more information from AI:</h3>';
       
       if(remainingText){
-        // Convert markdown/text to HTML
+        // Convert markdown/text to HTML with proper paragraph formatting
         let formattedText = remainingText
-          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')  // Bold
-          .replace(/\*(.+?)\*/g, '<em>$1</em>')  // Italic
-          .replace(/\n/g, '<br>');  // Line breaks
-        html += `<div style="line-height: 1.6; margin-top: 10px;">${formattedText}</div>`;
+          .trim()
+          // Convert headings: ## Heading -> <h4>Heading</h4>
+          .replace(/^##\s+(.+)$/gm, '<h4>$1</h4>')
+          // Convert bold: **text** -> <strong>text</strong>
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+          // Convert italic: *text* -> <em>text</em>
+          .replace(/\*(.+?)\*/g, '<em>$1</em>')
+          // Convert bullet points: - item -> <li>item</li>
+          .replace(/^[\-\*]\s+(.+)$/gm, '<li>$1</li>')
+          // Wrap consecutive <li> in <ul>
+          .replace(/(<li>.+<\/li>)/gs, '<ul style="margin: 10px 0; padding-left: 20px;">$1</ul>')
+          // Convert double line breaks to paragraphs
+          .split('\n\n')
+          .map(para => {
+            para = para.trim();
+            if(!para) return '';
+            // Don't wrap if already has HTML tags
+            if(para.startsWith('<h') || para.startsWith('<ul') || para.startsWith('<ol')){
+              return para;
+            }
+            // Replace single line breaks with <br> within paragraphs
+            para = para.replace(/\n/g, '<br>');
+            return `<p style="margin: 10px 0; line-height: 1.6;">${para}</p>`;
+          })
+          .join('');
+        
+        html += `<div style="margin-top: 10px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;">${formattedText}</div>`;
       }
       
       // Display images from AI response
