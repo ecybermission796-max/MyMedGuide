@@ -265,19 +265,26 @@ app.post('/api/recognize', async (req, res) => {
       .filter(s => s.length > 2);
 
     console.log('[server] Searching for tokens:', tokens);
+    console.log('[server] Target class for filtering:', targetClass);
 
     // Zero-score keywords that don't count as matches
     const zeroScoreKeywords = ['common', 'general'];
 
     // Score entries by matched tokens (only within target class)
     const scored = [];
+    let entriesChecked = 0;
+    let entriesInTargetClass = 0;
+    
     for(const key of Object.keys(index)){
       const entry = index[key];
+      entriesChecked++;
       
       // Only search within the target class
       if(entry.class && entry.class.toLowerCase() !== targetClass.toLowerCase()){
         continue;
       }
+      
+      entriesInTargetClass++;
       
       const name = (key || '').toLowerCase();
       const sciName = (entry.Scientific_name || '').toLowerCase();
@@ -292,12 +299,15 @@ app.post('/api/recognize', async (req, res) => {
         // Exact or substring match with extracted species names
         if(name.includes(lower) || lower.includes(name)){
           matchCount += 15;
+          console.log(`[server] Match found! "${key}" matches species "${speciesName}" (score +15)`);
         }
         if(sciName && (sciName.includes(lower) || lower.includes(sciName))){
           matchCount += 12;
+          console.log(`[server] Match found! "${key}" sci name matches "${speciesName}" (score +12)`);
         }
         if(otherName && (otherName.includes(lower) || lower.includes(otherName))){
           matchCount += 12;
+          console.log(`[server] Match found! "${key}" other name matches "${speciesName}" (score +12)`);
         }
       }
 
@@ -321,6 +331,8 @@ app.post('/api/recognize', async (req, res) => {
         scored.push({ key, class: entry.class, score: matchCount });
       }
     }
+    
+    console.log(`[server] Checked ${entriesChecked} total entries, ${entriesInTargetClass} in target class "${targetClass}"`);
 
     scored.sort((a, b) => b.score - a.score);
     const top = scored.slice(0, 3);
