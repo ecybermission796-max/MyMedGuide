@@ -263,6 +263,48 @@ document.addEventListener('DOMContentLoaded', () => {
       v.innerHTML = html;
       v.appendChild(container);
       
+      // Also show additional AI information below local results
+      if(remainingText || imageUrls.length > 0){
+        const aiInfoDiv = document.createElement('div');
+        aiInfoDiv.style.cssText = 'max-width: 800px; margin: 20px auto; padding: 20px; background: #f0f7ff; border-radius: 8px;';
+        
+        let aiInfoHtml = '<h3 style="margin-top: 0;">Here are more information from AI:</h3>';
+        
+        if(remainingText){
+          let formattedText = remainingText
+            .trim()
+            .replace(/^##\s+(.+)$/gm, '<h4>$1</h4>')
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.+?)\*/g, '<em>$1</em>')
+            .replace(/^[\-\*]\s+(.+)$/gm, '<li>$1</li>')
+            .replace(/(<li>.+<\/li>)/gs, '<ul style="margin: 10px 0; padding-left: 20px;">$1</ul>')
+            .split('\n\n')
+            .map(para => {
+              para = para.trim();
+              if(!para) return '';
+              if(para.startsWith('<h') || para.startsWith('<ul') || para.startsWith('<ol')){
+                return para;
+              }
+              para = para.replace(/\n/g, '<br>');
+              return `<p style="margin: 10px 0; line-height: 1.6;">${para}</p>`;
+            })
+            .join('');
+          
+          aiInfoHtml += `<div style="margin-top: 10px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;">${formattedText}</div>`;
+        }
+        
+        if(imageUrls.length > 0){
+          aiInfoHtml += '<div style="margin-top: 20px;">';
+          imageUrls.forEach(url => {
+            aiInfoHtml += `<img src="${url}" alt="AI result" style="max-width: 100%; height: auto; margin: 10px 0; border-radius: 4px;">`;
+          });
+          aiInfoHtml += '</div>';
+        }
+        
+        aiInfoDiv.innerHTML = aiInfoHtml;
+        v.appendChild(aiInfoDiv);
+      }
+      
     } else {
       // No local matches found - show remaining AI text and images
       html += '<div style="max-width: 800px; margin: 20px auto; padding: 20px; background: #fff3cd; border-radius: 8px;">';
