@@ -114,12 +114,13 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.style.cssText = `
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.9);
-      z-index: 1000;
+      background: rgba(255, 255, 255, 0.5);
+      z-index: 100000;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
+      pointer-events: auto;
     `;
     
     // Create image container with fade transition
@@ -175,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
       align-items: center;
       justify-content: center;
       transition: background 0.3s;
-      z-index: 1001;
+      z-index: 100001;
     `;
     closeBtn.onmouseover = () => closeBtn.style.background = 'rgba(255, 0, 0, 0.8)';
     closeBtn.onmouseout = () => closeBtn.style.background = 'rgba(0, 0, 0, 0.6)';
@@ -189,6 +190,18 @@ document.addEventListener('DOMContentLoaded', () => {
     modal.appendChild(progress);
     modal.appendChild(imgContainer);
     document.body.appendChild(modal);
+    
+    // Add ESC key handler to close tutorial
+    const handleEscKey = (e) => {
+      if (e.key === 'Escape') {
+        closeSlideshow();
+      }
+    };
+    document.addEventListener('keydown', handleEscKey);
+    
+    // Prevent interaction with underlying elements
+    modal.addEventListener('mousedown', (e) => e.stopPropagation());
+    modal.addEventListener('click', (e) => e.stopPropagation());
     
     // Handle click to advance
     modal.onclick = (e) => {
@@ -216,6 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     function closeSlideshow() {
+      document.removeEventListener('keydown', handleEscKey);
       document.body.removeChild(modal);
       markTutorialCompleted();
       showDoctorSecondButton();
