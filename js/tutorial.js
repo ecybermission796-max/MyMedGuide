@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.id = 'tutorial-prompt-overlay';
     overlay.style.cssText = `
       position: fixed;
-      top: calc(80px + 20vh);
+      top: calc(96px + 2.4vh + 5px);
       left: 50%;
       transform: translateX(-50%);
       z-index: 100;
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const doctorImg = document.createElement('img');
     doctorImg.src = 'images/Tutorial/Doctor_firsttime.png';
     doctorImg.alt = 'Tutorial Prompt';
-    doctorImg.style.cssText = 'max-width: 400px; width: 90%; display: block;';
+    doctorImg.style.cssText = 'max-width: 320px; width: 90%; display: block;';
     
     // Button container
     const buttonContainer = document.createElement('div');
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     btnContainer.id = 'doctor-second-btn';
     btnContainer.style.cssText = `
       position: fixed;
-      top: calc(95px + 30vh);
+      top: calc(96px + 2.4vh + 5px);
       left: 50%;
       transform: translateX(-50%);
       z-index: 50;
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const doctorImg = document.createElement('img');
     doctorImg.src = 'images/Tutorial/Doctor_second.png';
     doctorImg.alt = 'Tutorial';
-    doctorImg.style.cssText = 'max-width: 450px; display: block;';
+    doctorImg.style.cssText = 'max-width: 360px; display: block;';
     
     btnContainer.onmouseover = () => btnContainer.style.transform = 'translateX(-50%) scale(1.1)';
     btnContainer.onmouseout = () => btnContainer.style.transform = 'translateX(-50%) scale(1)';
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     closeBtn.style.cssText = `
       position: fixed;
       top: 20px;
-      left: 20px;
+      right: 20px;
       color: white;
       font-size: 40px;
       font-weight: bold;
@@ -175,6 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
       align-items: center;
       justify-content: center;
       transition: background 0.3s;
+      z-index: 1001;
     `;
     closeBtn.onmouseover = () => closeBtn.style.background = 'rgba(255, 0, 0, 0.8)';
     closeBtn.onmouseout = () => closeBtn.style.background = 'rgba(0, 0, 0, 0.6)';
